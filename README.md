@@ -33,7 +33,7 @@ A default django superuser will be created, but only on a development provision:
 
 A default OAuth2 application will be created, but only on a development provision.
 Navigate to http://localhost:7000/o/applications/ to retrieve the client id/secret after
-logging in via http://localhost:70000/admin/
+logging in via http://localhost:7000/admin/
 
 Then run `vagrant up` from the DRIVER repository.
 
