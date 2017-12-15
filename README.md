@@ -17,6 +17,12 @@ To build schema model jar files for the Android app, copy the signing keystore t
 and set the password for the keystore under `keystore_password` in `deployment/ansible/group_vars/all`.
 To run in development without support for jar file building, `touch gradle/data/driver.keystore`.
 
+You will need to install [NFS](https://en.wikipedia.org/wiki/Network_File_System). On Debian/Ubuntu, run:
+
+```
+sudo apt-get install nfs-common nfs-kernel-server
+```
+
 Install plugins before `vagrant up` via: `vagrant plugin install <plugin-name>`
 
 The app runs on localhost on port 7000. The schema editor is available at /editor/.
