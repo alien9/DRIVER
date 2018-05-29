@@ -16,8 +16,8 @@
     },
     "COMMON": {
         "ADD": "Adicionar",
-        "APP_BRAND": "Sistema de Dados de Incidentes na Estrada",
-        "APP_NAME": "MOTORISTA",
+        "APP_BRAND": "Sistema de Dados de Incidentes de Trânsito",
+        "APP_NAME": "VIDA SEGURA",
         "CANCEL": "Cancelar",
         "CLOSE": "Fechar",
         "DATE_RANGE": "Intervalo de Datas",
@@ -113,8 +113,11 @@
     "LOGIN": {
         "LOG_IN_TO": "Entrar para",
         "LOG_IN_WITH": "Entrar com",
+        "EMAIL": "Email",
         "PASSWORD": "Senha",
-        "SIGN_IN": "Inscreva-se",
+        "PASSWORD_CONFIRM": "Confirmar senha",
+        "SIGN_IN": "Entrar",
+        "SIGN_UP": "Inscreva-se",
         "USERNAME": "Nome de Usuário"
     },
     "MANAGEMENT": {
@@ -138,7 +141,7 @@
         "BLACKSPOTS": "Pontos Críticos",
         "CDB_ATTRIBUTION": "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, &copy; <a href='https://cartodb.com/attributions'>CartoDB</a>",
         "ESRI_ATTRIBUTION": "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
-        "HEATMAP": "Mapa Quente",
+        "HEATMAP": "Mapa de Calor",
         "NUM_SEVERE": "Número de Incidentes Severos",
         "SEVERITY_SCORE": "Nota de Severidade",
         "STREETS": "Ruas",

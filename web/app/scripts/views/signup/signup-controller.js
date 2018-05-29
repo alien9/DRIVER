@@ -4,12 +4,8 @@
     /**
      * @ngInject
      */
-    function AuthController ($scope, $state, $stateParams, $translate, $window,
+    function SignupController ($scope, $state, $stateParams, $translate, $window,
                              AuthService, SSOClients, WebConfig) {
-
-        $scope.auth = {};
-        $scope.ssoClients = SSOClients;
-
         $scope.alerts = [];
         $scope.addAlert = function(alertObject) {
             $scope.alerts.push(alertObject);
@@ -18,9 +14,9 @@
             $scope.alerts.splice(index, 1);
         };
 
-        $scope.authenticate = function() {
+        $scope.create = function() {
             $scope.alerts = [];
-            $scope.authenticated = AuthService.authenticate($scope.auth);
+            $scope.authenticated = AuthService.create($scope.auth);
             $scope.authenticated.then(function(result) {
                 if (result.isAuthenticated) {
                     // Since there's no state that's the parent of all other states, there's no way
@@ -31,7 +27,7 @@
                     // if we're redirecting to a target state, we need to use $state.go but reload
                     // after the state transition.
                     if ($stateParams.next && $stateParams.next.name !== $state.name &&
-                            !_.contains(['/', '/login'], $stateParams.next.url)) {
+                            !_.contains(['/', '/signup'], $stateParams.next.url)) {
                         return $state.go($stateParams.next.name, $stateParams.nextParams)
                             .then(function () { $window.location.reload(); });
                     } else {
@@ -43,14 +39,6 @@
             }).catch(handleError);
         };
 
-        $scope.sso = function(client) {
-            $window.location.href = WebConfig.api.hostname + '/openid/openid/' + client;
-        };
-
-        $scope.signup = function(){
-            $state.go('signup');
-        }
-
         var handleError = function(result) {
             $scope.auth.failure = true;
             var msg = result.error ||
@@ -60,8 +48,7 @@
                 msg: msg
             });
         };
+
     }
-
-    angular.module('driver.views.login').controller('AuthController', AuthController);
-
+    angular.module('driver.views.signup').controller('SignupController', SignupController);
 })();

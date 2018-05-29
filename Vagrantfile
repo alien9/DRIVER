@@ -34,11 +34,7 @@ ANSIBLE_GROUPS = {
   "database-servers" => [ "database" ],
   "celery-servers" => [ "celery" ]
 }
-MOUNT_OPTIONS = if Vagrant::Util::Platform.linux? then
-                  ['rw', 'vers=4', 'tcp', 'nolock']
-                else
-                  ['vers=3', 'udp']
-                end
+MOUNT_OPTIONS = ['rw', 'vers=3', 'tcp', 'nolock']
 
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/trusty64"
@@ -60,7 +56,7 @@ Vagrant.configure("2") do |config|
     database.vm.network "private_network", ip: "192.168.12.101"
 
     # For PGAdmin access
-    database.vm.network "forwarded_port", guest: 5432, host: Integer(ENV.fetch("DRIVER_DATABASE_PORT_5432", 5432))
+    database.vm.network "forwarded_port", guest: 5432, host: Integer(ENV.fetch("DRIVER_DATABASE_PORT_5432", 15432))
 
     database.vm.synced_folder ".", "/vagrant", disabled: true
 

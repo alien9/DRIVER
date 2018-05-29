@@ -34,6 +34,7 @@ router.register(r'groups', auth_views.GroupViewSet)
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/', include(router.urls)),
+    url(r'^api/create-user/', auth_views.user_create),
     # get token for given username/password
     url(r'^api-token-auth/', auth_views.obtain_auth_token),
     url(r'^api/sso-token-auth/', auth_views.sso_auth_token),

@@ -474,7 +474,7 @@
                     'longNoTime': 'd MM, Y'
                 }
             },
-            'pt-BR': {
+            'pt-br': {
                 calendar: 'gregorian',
                 language: 'pt-BR',
                 formats: {

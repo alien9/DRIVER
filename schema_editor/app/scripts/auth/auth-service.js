@@ -25,6 +25,32 @@
             return !!(module.getToken() && module.getUserId() >= 0);
         };
 
+        module.create = function(userdata, needsAdmin){
+            console.debug(userdata);
+            var dfd = $q.defer();
+            $http.post(ASEConfig.api.hostname + '/api/create-user/', userdata, {headers: {'Content-Type': 'application/json'} })
+            .success(function(data, status) {
+                console.debug(data);
+                console.debug(status);
+                module.authenticate(userdata);
+            }).error(function(data, status) {
+                var error = _.values(data).join(' ');
+                if (data.username) {
+                    error = 'Username field required.';
+                }
+                if (data.password) {
+                    error = 'Password field required.';
+                }
+                var result = {
+                    isAuthenticated: false,
+                    status: status,
+                    error: error
+                };
+                dfd.resolve(result);
+            });
+            return dfd.promise;
+        }
+
         module.authenticate = function(auth, needsAdmin) {
             var dfd = $q.defer();
             $http.post(ASEConfig.api.hostname + '/api-token-auth/', auth)

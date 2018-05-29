@@ -26,6 +26,8 @@ from django.conf import settings
 from driver_auth.serializers import UserSerializer, GroupSerializer
 from driver_auth.permissions import (IsAdminOrReadSelfOnly, IsAdminOrReadOnly, is_admin_or_writer,
                                      is_admin)
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 # match what auth-service.js looks for
 USER_ID_COOKIE = 'AuthService.userId'
@@ -77,6 +79,19 @@ def authz_cb(request):
 def get_oidc_client_list(request):
     return JsonResponse({'clients': CLIENTS.keys()})
 
+@csrf_exempt
+def user_create(request):
+    #return JsonResponse({'error': request.POST},status=status.HTTP_400_BAD_REQUEST)
+    #if not 'data' in request:
+    #    return JsonResponse({'error': 'missing data'}, status=status.HTTP_400_BAD_REQUEST)
+    d=json.loads(request.body)
+    d['groups']=[]
+    serialized = UserSerializer(data=d,context={"request": request})
+    if serialized.is_valid():
+        serialized.save()
+        return JsonResponse(serialized.data, status=status.HTTP_201_CREATED)
+    else:
+        return JsonResponse(serialized.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class DriverSsoAuthToken(APIView):
     parser_classes = (JSONParser,)
@@ -112,7 +127,6 @@ def validate_oauth_token(token):
             return JsonResponse({'error': 'This login is not valid in this application'}, status=status.HTTP_403_FORBIDDEN)
     except crypt.AppIdentityError:
         return JsonResponse({'error': 'Invalid token'}, status=status.HTTP_403_FORBIDDEN)
-
 
 class UserViewSet(viewsets.ModelViewSet):
     """

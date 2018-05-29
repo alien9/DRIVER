@@ -56,12 +56,13 @@
         $http.defaults.xsrfCookieName = 'csrftoken';
 
         $rootScope.$on('$stateChangeStart', function (event, to, toParams, from, fromParams) {
-
             if (!AuthService.isAuthenticated()) {
+                var nextstate='login';
+                if(to && (to.name=='signup')) nextstate='signup';
                 event.preventDefault();
                 // broadcast success to avoid infinite redirect
                 // see issue: https://github.com/angular-ui/ui-router/issues/178
-                $state.go('login', {next: to, nextParams: toParams}, {notify: false}).then(function() {
+                $state.go(nextstate, {next: to, nextParams: toParams}, {notify: false}).then(function() {
                     $rootScope.$broadcast('$stateChangeSuccess', to, toParams, from, fromParams);
                 });
                 return;
@@ -101,6 +102,7 @@
         'driver.state',
         'driver.stepwise',
         'driver.views.account',
+        'driver.views.signup',
         'driver.views.login',
         'driver.views.dashboard',
         'driver.views.map',
