@@ -38,7 +38,10 @@ MOUNT_OPTIONS = ['rw', 'vers=3', 'tcp', 'nolock']
 
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/trusty64"
-
+  if not Vagrant.has_plugin?("vagrant-vbguest")
+    $stderr.puts "\nERROR: Please install the vagrant-vbguest plugin."
+    exit(1)
+  end
   if Vagrant.has_plugin?("vagrant-hostmanager")
     config.hostmanager.enabled = true
     config.hostmanager.manage_host = false
