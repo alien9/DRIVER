@@ -125,6 +125,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "celery" do |celery|
+    celery.vbguest.auto_update = true
     celery.vm.hostname = "celery"
     celery.hostmanager.aliases = %w(celery.service.driver.internal)
     celery.vm.network "private_network", ip: "192.168.12.103"

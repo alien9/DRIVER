@@ -29,7 +29,7 @@ WORKDIR /opt/app
 
 COPY . /opt/app
 
-RUN pip install --no-cache-dir --process-dependency-links --allow-external djsonb -r requirements.txt
+RUN pip install --process-dependency-links djsonb -r requirements.txt
 
 EXPOSE 4000
 
