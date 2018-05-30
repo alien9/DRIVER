@@ -75,6 +75,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "app" do |app|
+    app.vbguest.auto_update = true
     app.vm.hostname = "app"
     app.hostmanager.aliases = %w(app.service.driver.internal)
     app.vm.network "private_network", ip: "192.168.12.102"
