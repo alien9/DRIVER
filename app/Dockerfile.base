@@ -11,8 +11,9 @@ RUN apt-get update && apt-get install -y \
     python-dev \
     git \
     libssl-dev \
-    build-essential
-
+    build-essential \
+    default-jdk \
+    libfftw3-dev
 # install dependencies for generate_training_input script
 RUN apt-get update && apt-get install -y \
     libgeos-dev \
@@ -29,7 +30,7 @@ WORKDIR /opt/app
 
 COPY . /opt/app
 
-RUN pip install --process-dependency-links djsonb -r requirements.txt
+RUN pip install --process-dependency-links --allow-external djsonb -r requirements.txt
 
 EXPOSE 4000
 
