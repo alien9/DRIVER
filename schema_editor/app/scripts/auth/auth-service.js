@@ -30,17 +30,10 @@
             var dfd = $q.defer();
             $http.post(ASEConfig.api.hostname + '/api/create-user/', userdata, {headers: {'Content-Type': 'application/json'} })
             .success(function(data, status) {
-                console.debug(data);
-                console.debug(status);
-                module.authenticate(userdata);
+                userdata.username=userdata.email;
+                module.authenticate(userdata, false, dfd);
             }).error(function(data, status) {
                 var error = _.values(data).join(' ');
-                if (data.username) {
-                    error = 'Username field required.';
-                }
-                if (data.password) {
-                    error = 'Password field required.';
-                }
                 var result = {
                     isAuthenticated: false,
                     status: status,
@@ -51,8 +44,13 @@
             return dfd.promise;
         }
 
-        module.authenticate = function(auth, needsAdmin) {
-            var dfd = $q.defer();
+        module.authenticate = function(auth, needsAdmin, d) {
+            var dfd;
+            if(!d){
+                dfd = $q.defer();
+            }else{
+                dfd = d;
+            }
             $http.post(ASEConfig.api.hostname + '/api-token-auth/', auth)
             .success(function(data, status) {
                 var result = {

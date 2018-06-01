@@ -18,7 +18,7 @@
     function LeafletDefaultsConfig(LeafletDefaultsProvider, WebConfig) {
         LeafletDefaultsProvider.setDefaults({
             center: WebConfig.localization.centerLatLon,
-            zoom: 5,
+            zoom: 11,
             crs: L.CRS.EPSG3857,
             touchZoom: false,
             scrollWheelZoom: false
@@ -58,7 +58,7 @@
         $rootScope.$on('$stateChangeStart', function (event, to, toParams, from, fromParams) {
             if (!AuthService.isAuthenticated()) {
                 var nextstate='login';
-                if(to && (to.name=='signup')) nextstate='signup';
+                if(to && (to.name==='signup')) {nextstate='signup';}
                 event.preventDefault();
                 // broadcast success to avoid infinite redirect
                 // see issue: https://github.com/angular-ui/ui-router/issues/178

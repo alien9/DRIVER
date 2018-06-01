@@ -2,10 +2,10 @@
     width: 100%;
     position: fixed;
     z-index: 8;
-    top: 52px;
+    top: 92px;
     height: 50px !important;
     padding: 8px 14px !important;
-
+    background-color:#f3d362;
     input[type="search"] {
         width: 240px;
         float: left;
@@ -71,7 +71,7 @@
 }
 
 .no-filterbar {
-    top: 50px;
+    top: 90px;
 }
 
 .saved-filters {
@@ -92,4 +92,11 @@
     a {
         cursor: pointer;
     }
+}
+
+.form-control{
+    background-color:transparent;
+}
+input.form-control{
+    background-color:white;
 }

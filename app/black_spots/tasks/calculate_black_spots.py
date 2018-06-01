@@ -45,6 +45,7 @@ def calculate_black_spots(history_length=datetime.timedelta(days=5 * 365 + 1), r
         label=settings.BLACKSPOT_RECORD_TYPE_LABEL,
         active=True
     ).first()
+
     segments_shp_obj = RoadSegmentsShapefile.objects.all().order_by('-created').first()
     if segments_shp_obj:
         # Get the UUID, since that is what is used when passing to tasks in the chain
@@ -61,7 +62,6 @@ def calculate_black_spots(history_length=datetime.timedelta(days=5 * 365 + 1), r
                                get_segments_shp.s(records_csv_obj_id, roads_srid),
                                create_segments_tar.s())()
         segments_shp_uuid = segments_chain.get()
-
     # - Match events to segments shapefile
     blackspots_output = get_training_noprecip.delay(segments_shp_uuid,
                                                     records_csv_obj_id,

@@ -86,9 +86,15 @@ def user_create(request):
     #    return JsonResponse({'error': 'missing data'}, status=status.HTTP_400_BAD_REQUEST)
     d=json.loads(request.body)
     d['groups']=[]
+    d['username']=d['email']
+    if len(d['password']) < 6:
+        return JsonResponse({"password": ["Password must have at least 6 characters"]}, status=status.HTTP_400_BAD_REQUEST)
+
     serialized = UserSerializer(data=d,context={"request": request})
     if serialized.is_valid():
-        serialized.save()
+        #my_group = Group.objects.get(name='analyst')
+        u=serialized.save()
+        #my_group.user_set.add(u) unfortunately thats too dangerous
         return JsonResponse(serialized.data, status=status.HTTP_201_CREATED)
     else:
         return JsonResponse(serialized.errors, status=status.HTTP_400_BAD_REQUEST)

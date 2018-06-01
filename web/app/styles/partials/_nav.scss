@@ -7,8 +7,7 @@
     z-index: 1001; /* Ensure above Leaflet controls */
     width: 100%;
     top: 0px;
-
-    background-color: #344055;
+    background-color: white;
     border: none;
     border-radius: 0;
 }
@@ -36,29 +35,31 @@ nav {
     .navbar-brand {
         font-weight: 700;
         font-size: 14px;
-
-        border-right: 1px solid #68748A;
-        color: white !important;
+        /*border-right: 1px solid #68748A;*/
+        color: #333 !important;
         margin-right: 10px;
         transition: 0.5s all;
-
+        padding: 0 !important;
         &:hover {
             opacity: 0.65;
-            color: white !important;
+            color: #000 !important;
         }
     }
     .dropdown.open .dropdown-toggle {
-        background-color: #344055 !important;
-        color: white;
+        background-color: #eee !important;
+        color: #333;
     }
     .dropdown-toggle {
-        color: white !important;
+        color: #333 !important;
         transition: 0.5s all;
 
         &:hover {
             opacity: 0.65;
-            color: white !important;
+            color: #000 !important;
         }
+    }
+    .logo{
+        padding:9px;
     }
     .dropdown-menu {
         border: none;
@@ -141,4 +142,17 @@ nav {
 		color: #fff;
         background: #444;
 	}
+}
+
+.nav>.li{
+    margin:10px 0 10px 0;
+    background-color:lime;
+}
+.logo{
+    margin:0 !important;
+    border-right:none;
+    padding-right:20px;
+}
+.navbar-collapse .ng-scope{
+    margin-top:15px;
 }

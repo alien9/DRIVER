@@ -16,6 +16,17 @@
 
         $scope.create = function() {
             $scope.alerts = [];
+            if(!$scope.auth){
+                handleError({
+                    'status':''
+                });
+            }
+            if($scope.auth.password!=$scope.auth.password_confirm){
+                handleError({
+                    'status':'As senhas não coincidem'
+                });
+                return;
+            }
             $scope.authenticated = AuthService.create($scope.auth);
             $scope.authenticated.then(function(result) {
                 if (result.isAuthenticated) {

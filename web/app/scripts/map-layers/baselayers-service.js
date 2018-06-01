@@ -15,8 +15,12 @@
         return module;
 
         function streets() {
+        //'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
+
             var layer = new L.tileLayer(
                 'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
+
+//                'https://vidasegura.prefeitura.sp.gov.br/geoserver/gwc/service/tms/1.0.0/driver:Base@EPSG:900913@png/{z}/{x}/{y}.png',
                 {
                     attribution: $translate.instant('MAP.CDB_ATTRIBUTION'),
                     detectRetina: false,
