@@ -83,3 +83,5 @@ target/
 
 # group_vars config
 deployment/ansible/group_vars/all
+
+.idea
