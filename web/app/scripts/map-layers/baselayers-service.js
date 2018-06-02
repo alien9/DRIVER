@@ -9,6 +9,7 @@
 
         var module = {
             streets: streets,
+            osm: osm,
             satellite: satellite,
             baseLayers: baseLayers
         };
@@ -18,9 +19,20 @@
         //'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
 
             var layer = new L.tileLayer(
-                'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
+                //'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
+                'https://geoserver.alien9.net/geoserver/gwc/service/wmts?layer=driver%3ABase&style=&tilematrixset=EPSG%3A900913&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fpng&TileMatrix=EPSG%3A900913%3A{z}&TileCol={x}&TileRow={y}',
+                {
+                    attribution: $translate.instant('MAP.CDB_ATTRIBUTION'),
+                    detectRetina: false,
+                    zIndex: 1
+                }
+            );
+            return layer;
+        }
 
-//                'https://vidasegura.prefeitura.sp.gov.br/geoserver/gwc/service/tms/1.0.0/driver:Base@EPSG:900913@png/{z}/{x}/{y}.png',
+        function osm() {
+            var layer = new L.tileLayer(
+                'https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png',
                 {
                     attribution: $translate.instant('MAP.CDB_ATTRIBUTION'),
                     detectRetina: false,
@@ -45,8 +57,13 @@
             return [
                 {
                     slugLabel: 'streets',
-                    label: $translate.instant('MAP.STREETS'),
+                    label: $translate.instant('MAP.STREETS_MDC'),
                     layer: streets()
+                },
+                {
+                    slugLabel: 'osm',
+                    label: $translate.instant('MAP.STREETS'),
+                    layer: osm()
                 },
                 {
                     slugLabel: 'satellite',

@@ -144,7 +144,8 @@
         "HEATMAP": "Mapa de Calor",
         "NUM_SEVERE": "Número de Incidentes Severos",
         "SEVERITY_SCORE": "Nota de Severidade",
-        "STREETS": "Ruas",
+        "STREETS_MDC": "Mapa Oficial",
+        "STREETS": "OSM",
         "SATELLITE": "Satélite"
     },
     "MONTH": {

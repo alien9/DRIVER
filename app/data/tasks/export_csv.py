@@ -65,10 +65,10 @@ def export_csv(query_key, user_id):
     # Get user
     user = User.objects.get(pk=user_id)
     # Create files and CSV Writers from Schema
-    if is_admin_or_writer(user):
-        record_writer = AshlarRecordExporter(schema)
-    else:
-        record_writer = ReadOnlyRecordExporter(schema)
+    #if is_admin_or_writer(user):
+    record_writer = AshlarRecordExporter(schema)
+    #else:
+    #    record_writer = ReadOnlyRecordExporter(schema)
 
     # Write records to files
     for rec in records:

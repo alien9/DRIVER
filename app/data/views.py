@@ -102,9 +102,9 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         if details_only_param == 'True' or details_only_param == 'true':
             requested_details_only = True
 
-        if is_admin_or_writer(self.request.user) and not requested_details_only:
-            return DriverRecordSerializer
-        return DetailsReadOnlyRecordSerializer
+        #if is_admin_or_writer(self.request.user) and not requested_details_only:
+        return DriverRecordSerializer
+        #return DetailsReadOnlyRecordSerializer
 
     def get_queryset(self):
         """Override default model ordering"""
@@ -1170,9 +1170,9 @@ class DriverRecordSchemaViewSet(RecordSchemaViewSet):
 
     # Filter out everything except details for read-only users
     def get_serializer_class(self):
-        if is_admin_or_writer(self.request.user):
-            return RecordSchemaSerializer
-        return DetailsReadOnlyRecordSchemaSerializer
+        #if is_admin_or_writer(self.request.user):
+        return RecordSchemaSerializer
+        #return DetailsReadOnlyRecordSchemaSerializer
 
     def perform_create(self, serializer):
         instance = serializer.save()
@@ -1245,6 +1245,7 @@ class RecordCsvExportViewSet(viewsets.ViewSet):
         # real task; it will simply return a task with a status of 'PENDING' that will never
         # complete.
         job_result = export_csv.AsyncResult(pk)
+
         if job_result.state in states.READY_STATES:
             if job_result.state in states.EXCEPTION_STATES:
                 e = job_result.get(propagate=False)
@@ -1261,6 +1262,7 @@ class RecordCsvExportViewSet(viewsets.ViewSet):
         return Response({'status': job_result.state, 'info': job_result.info})
 
     def create(self, request, *args, **kwargs):
+
         """Create a new CSV export task, using the passed filterkey as a parameter
 
         filterkey is the same as the "tilekey" that we pass to Windshaft; it must be requested
@@ -1272,6 +1274,7 @@ class RecordCsvExportViewSet(viewsets.ViewSet):
                             status=status.HTTP_400_BAD_REQUEST)
 
         task = export_csv.delay(filter_key, request.user.pk)
+
         return Response({'success': True, 'taskid': task.id}, status=status.HTTP_201_CREATED)
 
     # TODO: If we switch to a Django/ORM database backend, we can subclass AbortableTask
