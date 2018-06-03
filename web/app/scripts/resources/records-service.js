@@ -34,7 +34,7 @@
             },
             recentCounts: {
                 method: 'GET',
-                url: baseUrl + 'recent_counts/'
+                url: baseUrl + 'recent_counts_last_3_years/'
             },
             report: {
                 url: baseUrl + 'crosstabs/',

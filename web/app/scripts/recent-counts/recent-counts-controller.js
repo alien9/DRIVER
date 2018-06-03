@@ -23,9 +23,9 @@
 
         function loadRecords() {
             RecordAggregates.recentCounts().then(function(aggregate) {
-                ctl.year = aggregate.year;
-                ctl.quarter = aggregate.quarter;
-                ctl.month = aggregate.month;
+                ctl.ano0 = aggregate.ano0;
+                ctl.ano1 = aggregate.ano1;
+                ctl.ano2 = aggregate.ano2;
             });
         }
     }

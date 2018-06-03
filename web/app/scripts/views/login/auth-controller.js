@@ -49,7 +49,7 @@
 
         $scope.signup = function(){
             $state.go('signup');
-        }
+        };
 
         var handleError = function(result) {
             $scope.auth.failure = true;

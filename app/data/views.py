@@ -239,6 +239,25 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         return Response(counts)
 
     @list_route(methods=['get'])
+    def recent_counts_last_3_years(self, request):
+        """ Return the recent record counts for 3 former years """
+        frist = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE)).date().replace(month=1, day=1)
+        qs = self.get_filtered_queryset(request).filter(occurred_from__lt=frist)
+        
+        labels=['ano0','ano1','ano2']
+        counts = {
+          labels[ano[0]]:{
+            'count':qs.filter(
+              occurred_from__gte=(frist.replace(year=ano[1]-1,month=1, day=1)),
+              occurred_from__lt=(frist.replace(year=ano[1],month=1, day=1)),
+            ).count(),
+            'ano':ano[1]-1} for ano in enumerate(reversed(range(frist.year-2, frist.year+1)))
+        }
+        
+   
+        return Response(counts)
+
+    @list_route(methods=['get'])
     def costs(self, request):
         """Return the costs for a set of records of a certain type
 
@@ -294,7 +313,7 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         output_data = {'prefix': cost_config.cost_prefix, 'suffix': cost_config.cost_suffix}
         if counts_queryset.count() < 1:  # Short-circuit if no events at all
             output_data.update({'total': 0, 'subtotals': {choice: 0 for choice in choices},
-                                'outdated_cost_config': False})
+                                'outdated_cost_config': False, 'puts':True})
             return Response(output_data)
         # Do the summation
         sum_ops = [Sum(key) for key in choice_indices.keys()]
@@ -302,11 +321,17 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         # sum_qs will now look something like this: {'0__sum': 20, '1__sum': 45, ...}
         # so now we need to slot in the corresponding label from `choices` by pulling the
         # corresponding value out of choices_indices.
+        import json
         sums = {}
+        a=0
+        k=""+json.dumps(sum_qs)
         for key, choice_sum in sum_qs.items():
             index = key.split('_')[0]
             choice = choice_indices[index]
             sums[choice] = choice_sum
+            a+=1
+            k+=""+choice
+
         # Multiply sums by per-incident costs to get subtotal costs broken out by type
         subtotals = dict()
         # This is going to be extremely easy for users to break if they update a schema without
@@ -325,7 +350,7 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         total = sum(subtotals.values())
         # Return breakdown costs and sum
         output_data.update({'total': total, 'subtotals': subtotals,
-                            'outdated_cost_config': found_missing_choices})
+                            'outdated_cost_config': found_missing_choices, 'puts':a, 'keys':k})
         return Response(output_data)
 
     @list_route(methods=['get'])

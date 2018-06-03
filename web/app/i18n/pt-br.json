@@ -53,6 +53,7 @@
         "RECENT_EVENTS_PERIOD": "Últimas Duas Semanas",
         "SOCIAL_COSTS_TEXT": "Perda Economica Total e Mal Social",
         "SOCIAL_COSTS_90DAYS": "Últimos 90 dias",
+        "SOCIAL_COSTS_3_YEARS": "3 anos",
         "SOCIAL_COSTS_CONFIG_WARN": "Cálculo de custo pode estar desconfigurado. Por favor notifique seu administrador.",
         "STEPWISE_TITLE": "Contagem Semanal: Últimos 90 Dias",
         "TODDOW_TITLE": "Hora do Dia, Dia da Semana: Últimos 90 Dias",

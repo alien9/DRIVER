@@ -5,7 +5,7 @@
      * @ngInject
      */
     function SignupController ($scope, $state, $stateParams, $translate, $window,
-                             AuthService, SSOClients, WebConfig) {
+                             AuthService ) {
         $scope.alerts = [];
         $scope.addAlert = function(alertObject) {
             $scope.alerts.push(alertObject);
@@ -21,7 +21,7 @@
                     'status':''
                 });
             }
-            if($scope.auth.password!=$scope.auth.password_confirm){
+            if($scope.auth.password!==$scope.auth.passwordConfirm){
                 handleError({
                     'status':'As senhas não coincidem'
                 });

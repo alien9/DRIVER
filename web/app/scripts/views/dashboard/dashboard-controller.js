@@ -48,16 +48,14 @@
          * @return {promise} Promise to load records
          */
         function loadRecords() {
-            // We want to see only the last 90 days worth of records on the dashboard
-            var now = new Date();
-            var duration = moment.duration({ days: 90 });
-            var today = now.toISOString();
-            var threeMonthsBack = new Date(now - duration).toISOString();
+            // We need to see the 3 whole years from the thing
 
+            var y = (new Date()).getFullYear();
+            
             /* jshint camelcase: false */
             var params = {
-              occurred_min: threeMonthsBack,
-              occurred_max: today
+              occurred_min: new Date(y-3, 0, 1).toISOString(),
+              occurred_max: new Date(y-1, 11, 30, 23, 59, 59).toISOString()
             };
             /* jshint camelcase: true */
 
@@ -83,8 +81,8 @@
             // The stepwise widget is only displayed when black spots are not visible
             if (!ctl.showBlackSpots) {
                 RecordAggregates.stepwise(params).then(function(stepwiseData) {
-                    ctl.minDate = threeMonthsBack;
-                    ctl.maxDate = now;
+                    ctl.minDate = occurred_min;
+                    ctl.maxDate = occurred_max;
                     ctl.stepwise = stepwiseData;
                 });
             }
