@@ -148,8 +148,8 @@
         "SEVERITY_SCORE": "!Severity score",
         "STREETS_MDC": "Mapa Oficial",
         "STREETS": "!Streets",
-        "SATELLITE": "!Satellite"
-        "GEOSAMPA":"&copy; <a href='http://geosampa.prefeitura.sp.gov.br/PaginasPublicas/_SBC.aspx'>GeoSampa</a> | Prefeitura de São Paulo"
+        "SATELLITE": "!Satellite",
+        "GEOSAMPA":""
     },
     "MONTH": {
         "JANUARY": "!January",
