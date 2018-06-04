@@ -57,6 +57,7 @@
         "SOCIAL_COSTS_CONFIG_WARN": "Cálculo de custo pode estar desconfigurado. Por favor notifique seu administrador.",
         "STEPWISE_TITLE": "Contagem Semanal: Últimos 90 Dias",
         "TODDOW_TITLE": "Hora do Dia, Dia da Semana: Últimos 90 Dias",
+        "TOD_LAST_YEAR_TITLE": "Hora do Dia, Dia da Semana: ",
         "VIEW_ALL": "Exibir Tudo"
     },
     "DAY": {
@@ -147,7 +148,8 @@
         "SEVERITY_SCORE": "Nota de Severidade",
         "STREETS_MDC": "Mapa Oficial",
         "STREETS": "OSM",
-        "SATELLITE": "Satélite"
+        "SATELLITE": "Satélite",
+        "GEOSAMPA":"&copy; <a href='http://geosampa.prefeitura.sp.gov.br/PaginasPublicas/_SBC.aspx'>GeoSampa</a> | Prefeitura de São Paulo"
     },
     "MONTH": {
         "JANUARY": "Janeiro",

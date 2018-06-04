@@ -21,7 +21,7 @@
             var layer = new L.tileLayer(
                 'https://vidasegura.prefeitura.sp.gov.br/geoserver/gwc/service/wmts?layer=driver%3ABase&style=&tilematrixset=EPSG%3A900913&Service=WMTS&Request=GetTile&Version=1.0.0&Format=image%2Fpng&TileMatrix=EPSG%3A900913%3A{z}&TileCol={x}&TileRow={y}',
                 {
-                    attribution: $translate.instant('MAP.CDB_ATTRIBUTION'),
+                    attribution: $translate.instant('MAP.GEOSAMPA'),
                     detectRetina: false,
                     zIndex: 1
                 }

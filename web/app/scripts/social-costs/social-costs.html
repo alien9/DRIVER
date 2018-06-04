@@ -4,7 +4,7 @@
     </h1>
     <h2 ng-if="ctl.costData.total || ctl.costData.total === 0">
         {{ 'DASHBOARD.SOCIAL_COSTS_TEXT' | translate }}:
-        {{ 'DASHBOARD.SOCIAL_COSTS_3_YEARS' | translate }}
+        <br>{{ 'DASHBOARD.SOCIAL_COSTS_3_YEARS' | translate }}
     </h2>
     <div class="warn" ng-if="ctl.costData.outdated_cost_config || ctl.costData.error">
       <span class="glyphicon glyphicon-warning-sign"></span>
@@ -14,7 +14,7 @@
 <div class="costs subtotal" ng-click="ctl.toggle()" ng-if="ctl.state === 'subtotal'">
     <h2 ng-if="ctl.costData.total || ctl.costData.total === 0">
         {{ 'DASHBOARD.SOCIAL_COSTS_TEXT' | translate }}:
-        {{ 'DASHBOARD.SOCIAL_COSTS_3_YEARS' | translate }}
+        <br>{{ 'DASHBOARD.SOCIAL_COSTS_3_YEARS' | translate }}
     </h2>
     <hr></hr>
     <table>

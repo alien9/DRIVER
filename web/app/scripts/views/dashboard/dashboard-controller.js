@@ -36,10 +36,10 @@
             /* jshint camelcase: false */
             var currentSchemaId = ctl.recordType.current_schema;
             /* jshint camelcase: true */
-
             return RecordSchemaState.get(currentSchemaId)
                 .then(function(recordSchema) {
                     ctl.recordSchema = recordSchema;
+                    ctl.lastYear=(new Date()).getFullYear()-1;
                 });
         }
 
@@ -81,9 +81,12 @@
             // The stepwise widget is only displayed when black spots are not visible
             if (!ctl.showBlackSpots) {
                 RecordAggregates.stepwise(params).then(function(stepwiseData) {
-                    ctl.minDate = occurred_min;
-                    ctl.maxDate = occurred_max;
+                    /* jshint camelcase: false */
+                    ctl.minDate = params.occurred_min;
+                    ctl.maxDate = params.occurred_max;
+                    /* jshint camelcase: true */
                     ctl.stepwise = stepwiseData;
+                    ctl.lastYear=(new Date()).getFullYear()-1;
                 });
             }
         }
@@ -91,7 +94,7 @@
         function onRecordsLoaded() {
             var detailsDefinitions = _.filter(ctl.recordSchema.schema.definitions, 'details');
             ctl.propertiesKey = detailsDefinitions[0].properties;
-            ctl.headerKeys = _.without(_.keys(ctl.propertiesKey), '_localId');
+            ctl.headerKeys = _.without(_.keys(ctl.propertiesKey), '_localId');   
         }
     }
 

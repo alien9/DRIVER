@@ -72,7 +72,8 @@
          */
         function updateLayers(map) {
             var recordsLayerOptions = angular.extend(defaultLayerOptions, {zIndex: 3});
-            var occurredMin = new Date();
+            var occurredMin = new Date((new Date()).getFullYear()-1, 1, 1);
+            var occurredMax = new Date((new Date()).getFullYear()-1, 12, 31);
             occurredMin.setDate(occurredMin.getDate() - recencyCutoffDays);
             RecordState.getSelected().then(function(selected) {
                 // Construct Windshaft URL
@@ -80,7 +81,8 @@
                 /* jshint camelcase: false */
                 var params = {
                     tilekey: true,
-                    occurred_min: occurredMin.toISOString()
+                    occurred_min: occurredMin.toISOString(),
+                    occurred_max: occurredMax.toISOString()
                 };
                 /* jshint camelcase: true */
                 var filterConfig = { doAttrFilters: false,
