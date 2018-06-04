@@ -1,4 +1,6 @@
 ---
+- name: Authenticate to ECR
+  shell: $(aws ecr get-login --no-include-email --region us-east-1)
 - name: Pull editor Docker image
   command: /usr/bin/docker pull {{ docker_repository }}driver-editor:{{ docker_image_tag }}
 
