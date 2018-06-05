@@ -120,7 +120,7 @@ Setting up a Docker registry is beyond the scope of this document; there are var
 Once you have a Docker registry set up, follow these steps to use it when deploying your copy of DRIVER:
 1. Execute `vagrant up && vagrant ssh celery`
 2. Build images for the following 5 containers:
-   - App: `sudo docker build -f opt/app/Dockerfile.base -t "<your-repository>/driver-app" /opt/app`
+   - App: `sudo docker build -f /opt/app/Dockerfile.base -t "<your-repository>/driver-app" /opt/app`
    - Schema Editor: `sudo docker build -f /opt/schema_editor/Dockerfile -t "<your-repository>/driver-editor" /opt/schema_editor`
    - User interface: `sudo docker build -f /opt/web/Dockerfile -t "<your-repository>/driver-web" /opt/web`
    - Gradle: `sudo docker build -f /opt/gradle/Dockerfile -t "<your-repository>/driver-gradle" /opt/gradle`
