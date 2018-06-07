@@ -45,7 +45,7 @@
     name: nginx
     state: started
 
- Copied from old azavea.letsencrypt role
+# Copied from old azavea.letsencrypt role
 - name: Install cronjob for cert renewal
   cron:
     job: "certbot renew"

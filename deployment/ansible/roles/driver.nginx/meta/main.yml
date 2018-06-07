@@ -1,5 +1,5 @@
 ---
 dependencies:
   - { role: "azavea.nginx", nginx_delete_default_site: True }
-  - { role: "driver.letsencrypt", when: staging or production }
+  - { role: "driver.letsencrypt", when: (staging or production) and use_letsencrypt }
   - { role: "driver.monit" }

@@ -258,5 +258,9 @@
         "THUNDERSTORM": "!Thunderstorm",
         "TORNADO": "!Tornado",
         "WIND": "!Wind"
+    },
+    "NUMBER": {
+        "DECIMAL_SEPARATOR": ".",
+        "THOUSAND_SEPARATOR": "."
     }
 }

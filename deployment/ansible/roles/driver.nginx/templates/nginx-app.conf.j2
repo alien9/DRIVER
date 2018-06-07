@@ -3,12 +3,19 @@ server {
 {% if staging or production %}
     ssl on;
     listen 443 default_server ssl;
+    {% if use_letsencrypt %}
     ssl_certificate {{ letsencrypt_cert_root }}/fullchain.pem;
     ssl_certificate_key {{ letsencrypt_cert_root }}/privkey.pem;
     include {{ letsencrypt_options_ssl_nginx_path }};
     ssl_dhparam {{ letsencrypt_dhparams_path }};
+    {% else %}
+    ssl on;
+    listen 443 default_server ssl;
+    ssl_certificate /etc/nginx/ssl/vidasegura.prefeitura.sp.gov.br.crt;
+    ssl_certificate_key /etc/nginx/ssl/vidasegura.prefeitura.sp.gov.br.rsa;
+    {% endif %}
 {% else %}
-   listen 80 default_server;
+    listen 80 default_server;
 {% endif %}
 
     server_name {{ nginx_server_name }};

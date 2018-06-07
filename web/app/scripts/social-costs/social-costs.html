@@ -1,6 +1,6 @@
 <div class="costs total" ng-click="ctl.toggle()" ng-if="ctl.state === 'total'">
     <h1>
-      {{ ctl.costData.prefix }}{{ ctl.costData.total | number }}{{ ctl.costData.suffix }}
+      {{ ctl.costData.prefix }}{{ ctl.costData.total | localNumber }}{{ ctl.costData.suffix }}
     </h1>
     <h2 ng-if="ctl.costData.total || ctl.costData.total === 0">
         {{ 'DASHBOARD.SOCIAL_COSTS_TEXT' | translate }}:
@@ -20,7 +20,7 @@
     <table>
         <tbody>
             <tr ng-repeat="(subkey, subtotal) in ctl.costData.subtotals">
-              <td class="cost-category">{{ subkey }}:</td><td class="subtotal">{{ ctl.costData.prefix }}{{ subtotal | number }}{{ ctl.costData.suffix }}</td>
+              <td class="cost-category">{{ subkey }}:</td><td class="subtotal">{{ ctl.costData.prefix }}{{ subtotal | localNumber }}{{ ctl.costData.suffix }}</td>
             </tr>
         </tbody>
     </table>

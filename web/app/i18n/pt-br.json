@@ -57,17 +57,17 @@
         "SOCIAL_COSTS_CONFIG_WARN": "Cálculo de custo pode estar desconfigurado. Por favor notifique seu administrador.",
         "STEPWISE_TITLE": "Contagem Semanal: Últimos 90 Dias",
         "TODDOW_TITLE": "Hora do Dia, Dia da Semana: Últimos 90 Dias",
-        "TOD_LAST_YEAR_TITLE": "Hora do Dia, Dia da Semana: ",
+        "TOD_LAST_YEAR_TITLE": "Hora do Dia, Dia da Semana",
         "VIEW_ALL": "Exibir Tudo"
     },
     "DAY": {
-        "MON": "Segunda",
-        "TUE": "Terça",
-        "WED": "Quarta",
-        "THU": "Quinta",
-        "FRI": "Sexta",
-        "SAT": "Sábado",
-        "SUN": "Domingo",
+        "MON": "Seg",
+        "TUE": "Ter",
+        "WED": "Qua",
+        "THU": "Qui",
+        "FRI": "Sex",
+        "SAT": "Sáb",
+        "SUN": "Dom",
         "MONDAY": "Segunda-feira",
         "TUESDAY": "Terça-feira",
         "WEDNESDAY": "Quarta-feira",
@@ -258,5 +258,9 @@
         "THUNDERSTORM": "Trovoada",
         "TORNADO": "Tornado",
         "WIND": "Vento"
+    },
+    "NUMBER": {
+        "DECIMAL_SEPARATOR": ",",
+        "THOUSAND_SEPARATOR": "."
     }
 }

@@ -120,7 +120,7 @@ DEFAULT_FILE_STORAGE = 'storages.backends.overwrite.OverwriteStorage'
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
 TIME_ZONE = os.environ.get("DRIVER_LOCAL_TIME_ZONE", 'Asia/Manila')
 

@@ -9,6 +9,9 @@ from data import views as data_views
 from driver_auth import views as auth_views
 from user_filters import views as filt_views
 
+from django.contrib.auth import views as contrib_auth_views
+
+
 router = routers.DefaultRouter()
 router.register('assignments', black_spot_views.EnforcerAssignmentViewSet)
 router.register('audit-log', data_views.DriverRecordAuditLogViewSet)
@@ -33,6 +36,11 @@ router.register(r'groups', auth_views.GroupViewSet)
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^password_reset/$', contrib_auth_views.password_reset, name='password_reset'),
+    url(r'^password_reset/done/$', contrib_auth_views.password_reset_done, name='password_reset_done'),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        contrib_auth_views.password_reset_confirm, name='password_reset_confirm'),
+    url(r'^reset/done/$', contrib_auth_views.password_reset_complete, name='password_reset_complete'),
     url(r'^api/', include(router.urls)),
     url(r'^api/create-user/', auth_views.user_create),
     # get token for given username/password
