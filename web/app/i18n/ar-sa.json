@@ -258,5 +258,9 @@
         "THUNDERSTORM": "عاصفة رعدية",
         "TORNADO": "عاصفة",
         "WIND": "رياح"
+    },
+    "NUMBER": {
+        "DECIMAL_SEPARATOR": ".",
+        "THOUSAND_SEPARATOR": "."
     }
 }
