@@ -8,10 +8,10 @@
             prefix: '!'
         },
         api: {
-            hostname: 'http://localhost:7000'
+            hostname: 'http://localhost:3001'
         },
         windshaft: {
-            hostname: 'http://localhost:7000'
+            hostname: 'http://localhost:3001'
         },
         nominatim: {
             key: 'abc123'

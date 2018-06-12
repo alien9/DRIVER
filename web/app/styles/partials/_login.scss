@@ -13,7 +13,7 @@
         margin: 0 auto 25px;
         position: relative;
         box-shadow: 0 4px 12px rgba(0,0,0,0.35);
-        
+
         > section {
             display: none;
             padding: 20px;
@@ -52,5 +52,8 @@
             width: 25%;
             border-bottom: 10px solid $light-gray;
         }
+    }
+    .act{
+        cursor:pointer;
     }
 }

@@ -51,6 +51,14 @@
             $state.go('signup');
         };
 
+        $scope.forgot = function(){
+
+            $scope.alerts = [{
+                type: 'danger',
+                msg: $translate.instant('LOGIN.INSERT_EMAIL')
+            }];
+            angular.element('#username').trigger('focus');
+        };
         var handleError = function(result) {
             $scope.auth.failure = true;
             var msg = result.error ||

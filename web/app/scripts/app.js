@@ -118,4 +118,5 @@
     .config(LocalStorageConfig)
     .config(TranslationConfig)
     .run(RunConfig);
+
 })();
