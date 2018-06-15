@@ -13,7 +13,9 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     build-essential \
     default-jdk \
-    libfftw3-dev
+    libfftw3-dev \
+    postfix \
+    mailutils
 # install dependencies for generate_training_input script
 RUN apt-get update && apt-get install -y \
     libgeos-dev \

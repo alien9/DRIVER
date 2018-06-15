@@ -52,7 +52,7 @@
         };
 
         $scope.forgot = function(){
-
+            $state.go('reset');
             $scope.alerts = [{
                 type: 'danger',
                 msg: $translate.instant('LOGIN.INSERT_EMAIL')

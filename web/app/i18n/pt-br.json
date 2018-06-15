@@ -122,12 +122,13 @@
         "SIGN_UP": "Inscreva-se",
         "USERNAME": "Nome de Usuário",
         "FORGOT": "Esqueceu a senha?",
-        "INSERT_EMAIL": "Preencha o campo email"
+        "INSERT_EMAIL": "Preencha o campo email",
+        "RESET_PASSWORD": "Redefinir senha"
     },
     "MANAGEMENT": {
         "ACCOUNT_INFORMATION": "Informação da Conta",
         "ADMINISTRATOR?": "Administrador?",
-        "ARCHIVE_NOTE": "O outro registo será retido para o futuro.",
+        "ARCHIVE_NOTE": "O outro registro será retido para o futuro.",
         "AUDIT_LOGS": "Registro de Auditoria Mensal",
         "EMAIL": "E-mail",
         "GROUPS": "Grupos",

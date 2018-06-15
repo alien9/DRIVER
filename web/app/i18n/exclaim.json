@@ -122,7 +122,8 @@
         "SIGN_UP": "Inscreva-se",
         "USERNAME": "!Username",
         "FORGOT": "Forgot Password",
-        "INSERT_EMAIL": "Type email address"
+        "INSERT_EMAIL": "Type email address",
+        "RESET_PASSWORD": "Reset password"
     },
     "MANAGEMENT": {
         "ACCOUNT_INFORMATION": "!Account Information",

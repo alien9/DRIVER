@@ -58,7 +58,14 @@
         $rootScope.$on('$stateChangeStart', function (event, to, toParams, from, fromParams) {
             if (!AuthService.isAuthenticated()) {
                 var nextstate='login';
-                if(to && (to.name==='signup')) {nextstate='signup';}
+                if(to){
+                    if(to.name==='signup') {
+                        nextstate='signup';
+                    }
+                    if(to.name==='reset') {
+                        nextstate='reset';
+                    }
+                }
                 event.preventDefault();
                 // broadcast success to avoid infinite redirect
                 // see issue: https://github.com/angular-ui/ui-router/issues/178
@@ -103,6 +110,7 @@
         'driver.stepwise',
         'driver.views.account',
         'driver.views.signup',
+        'driver.views.reset',
         'driver.views.login',
         'driver.views.dashboard',
         'driver.views.map',

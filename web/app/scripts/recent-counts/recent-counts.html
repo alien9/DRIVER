@@ -1,24 +1,24 @@
 <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="30d">
-        <h1>{{ recent.ano0.count }}</h1>
+    <div role="tabpanel" class="tab-pane" id="30d">
+        <h1>{{ recent.ano2.count }}</h1>
     </div>
     <div role="tabpanel" class="tab-pane" id="90d">
         <h1>{{ recent.ano1.count }}</h1>
     </div>
-    <div role="tabpanel" class="tab-pane" id="365d">
-        <h1>{{ recent.ano2.count }}</h1>
+    <div role="tabpanel" class="tab-pane active" id="365d">
+        <h1>{{ recent.ano0.count }}</h1>
     </div>
 </div>
 <h2>{{ recent.recordTypePlural }}</h2>
 
 <ul class="nav nav-pills" role="tablist">
-    <li role="presentation" class="active"><a href="#30d" role="tab" data-toggle="tab">
-        {{recent.ano0.ano}}
+    <li role="presentation"><a href="#30d" role="tab" data-toggle="tab">
+        {{recent.ano2.ano}}
     </a></li>
     <li role="presentation"><a href="#90d" role="tab" data-toggle="tab">
         {{recent.ano1.ano}}
     </a></li>
-    <li role="presentation"><a href="#365d" role="tab" data-toggle="tab">
-        {{recent.ano2.ano}}
+    <li role="presentation" class="active"><a href="#365d" role="tab" data-toggle="tab">
+        {{recent.ano0.ano}}
     </a></li>
 </ul>
