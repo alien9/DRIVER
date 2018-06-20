@@ -123,7 +123,8 @@
         "USERNAME": "Nome de Usuário",
         "FORGOT": "Esqueceu a senha?",
         "INSERT_EMAIL": "Preencha o campo email",
-        "RESET_PASSWORD": "Redefinir senha"
+        "RESET_PASSWORD": "Redefinir senha",
+        "PASSWORD_RESET_LINK_SENT": "Um link para definição da senha foi enviado para seu email"
     },
     "MANAGEMENT": {
         "ACCOUNT_INFORMATION": "Informação da Conta",

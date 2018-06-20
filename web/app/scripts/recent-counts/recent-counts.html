@@ -12,13 +12,13 @@
 <h2>{{ recent.recordTypePlural }}</h2>
 
 <ul class="nav nav-pills" role="tablist">
-    <li role="presentation"><a href="#30d" role="tab" data-toggle="tab">
+    <li role="presentation"><a href="#30d" role="tab" data-toggle="tab" ng-click="recent.ano(recent.ano2.ano)">
         {{recent.ano2.ano}}
     </a></li>
-    <li role="presentation"><a href="#90d" role="tab" data-toggle="tab">
+    <li role="presentation"><a href="#90d" role="tab" data-toggle="tab" ng-click="recent.ano(recent.ano1.ano)">
         {{recent.ano1.ano}}
     </a></li>
-    <li role="presentation" class="active"><a href="#365d" role="tab" data-toggle="tab">
+    <li role="presentation" class="active"><a href="#365d" role="tab" data-toggle="tab" ng-click="recent.ano(recent.ano0.ano)">
         {{recent.ano0.ano}}
     </a></li>
 </ul>

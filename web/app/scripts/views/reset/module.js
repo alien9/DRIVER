@@ -8,7 +8,7 @@
         $stateProvider.state('reset', {
             url: '/reset',
             templateUrl: 'scripts/views/reset/reset-partial.html',
-            controller: 'resetController',
+            controller: 'ResetController',
             resolve: {
                 SSOClients: function($log, $http, $q, WebConfig) {
                     var dfd = $q.defer();

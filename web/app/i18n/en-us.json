@@ -123,7 +123,8 @@
         "USERNAME": "Username",
         "FORGOT": "Forgot Password",
         "INSERT_EMAIL": "Type email address",
-        "RESET_PASSWORD": "Reset password"
+        "RESET_PASSWORD": "Reset password",
+        "PASSWORD_RESET_LINK_SENT": "A link to reset password was sent to your email address"
     },
     "MANAGEMENT": {
         "ACCOUNT_INFORMATION": "Account Information",

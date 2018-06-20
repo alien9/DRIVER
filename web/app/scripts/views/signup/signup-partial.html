@@ -13,14 +13,14 @@
                     <label for="username" class="text-right-on-rtl">{{ 'LOGIN.EMAIL' | translate }}:</label>
                     <input type="text" id="email" class="form-control" ng-model="auth.email" />
                 </div>
-                <div class="form-group" ng-class="{true: 'login-field-error', false: ''}[auth.failure]">
+                <!--div class="form-group" ng-class="{true: 'login-field-error', false: ''}[auth.failure]">
                     <label for="password" class="text-right-on-rtl">{{ 'LOGIN.PASSWORD' | translate }}:</label>
                     <input type="password" id="password" class="form-control" ng-model="auth.password" />
                 </div>
                 <div class="form-group" ng-class="{true: 'login-field-error', false: ''}[auth.failure]">
                     <label for="password" class="text-right-on-rtl">{{ 'LOGIN.PASSWORD_CONFIRM' | translate }}:</label>
                     <input type="password" id="password_confirm" class="form-control" ng-model="auth.passwordConfirm" />
-                </div>
+                </div-->
                 <button type="submit" class="btn btn-default btn-lg">
                     {{ 'LOGIN.SIGN_UP' | translate }}
                 </button>

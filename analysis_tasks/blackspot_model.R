@@ -197,6 +197,7 @@ for(et in event.types) {
   }
   
   PrintStatus(1, "Building model...")
+  PrintStatus(1, "Building model...MESMO")
   et.trainresult = train(outcome ~ ., var.monotone=data.prepped$var.dir.constraints,
                          data=data.prepped$data,
                          method="gbm", distribution="poisson", metric="PoissonLoss", maximize=FALSE,

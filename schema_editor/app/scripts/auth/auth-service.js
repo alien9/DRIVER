@@ -26,12 +26,14 @@
         };
 
         module.create = function(userdata, needsAdmin){
-            console.debug(userdata);
             var dfd = $q.defer();
             $http.post(ASEConfig.api.hostname + '/api/create-user/', userdata, {headers: {'Content-Type': 'application/json'} })
             .success(function(data, status) {
                 userdata.username=userdata.email;
-                module.authenticate(userdata, false, dfd);
+                dfd.resolve({
+                    isAuthenticated: false,
+                    status: status
+                });
             }).error(function(data, status) {
                 var error = _.values(data).join(' ');
                 var result = {
@@ -43,6 +45,39 @@
             });
             return dfd.promise;
         }
+
+        module.reset = function(userdata){
+            var dfd = $q.defer();
+            var body = new URLSearchParams();
+            for(var k in userdata){
+                body.set(k, userdata[k]);
+            }
+            console.debug(userdata);
+//            $http.post(ASEConfig.api.hostname + '/password_reset/', userdata, {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'} })
+            $http({
+                method: 'POST',
+                url: ASEConfig.api.hostname + '/password_reset/',
+                data: body.toString(),
+                headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'}
+            })
+            .success(function(data, status) {
+                dfd.resolve({
+                    'data': data,
+                    'status': status
+                });
+            }).error(function(data, status) {
+                var error = _.values(data).join(' ');
+                var result = {
+                    isAuthenticated: false,
+                    status: status,
+                    error: error
+                };
+                dfd.resolve(result);
+            });
+            return dfd.promise;
+
+        }
+
 
         module.authenticate = function(auth, needsAdmin, d) {
             var dfd;

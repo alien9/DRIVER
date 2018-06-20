@@ -21,33 +21,30 @@
                     'status':''
                 });
             }
-            if($scope.auth.password!==$scope.auth.passwordConfirm){
+            /*if($scope.auth.password!==$scope.auth.passwordConfirm){
                 handleError({
                     'status':'As senhas não coincidem'
                 });
                 return;
-            }
-            $scope.authenticated = AuthService.create($scope.auth);
-            $scope.authenticated.then(function(result) {
-                if (result.isAuthenticated) {
-                    // Since there's no state that's the parent of all other states, there's no way
-                    // to get $state to actually reload everything. And since various controllers
-                    // check (or assume) authentication on init and don't watch or listen for
-                    // changes, we need to do a full reload on login.
-                    // If there's no 'next' page, we can do that by setting location to '/', but
-                    // if we're redirecting to a target state, we need to use $state.go but reload
-                    // after the state transition.
-                    if ($stateParams.next && $stateParams.next.name !== $state.name &&
-                            !_.contains(['/', '/signup'], $stateParams.next.url)) {
-                        return $state.go($stateParams.next.name, $stateParams.nextParams)
-                            .then(function () { $window.location.reload(); });
-                    } else {
-                        $window.location.href = '/';
-                    }
-                } else {
-                    handleError(result);
+            }*/
+            $scope.created = AuthService.create($scope.auth).then(function(result){
+                switch(result.status){
+                    case 400:
+                        $scope.addAlert({
+                            type: 'danger',
+                            msg: result.error
+                        });
+                        break;
+                    case 201:
+                    case 200:
+                        AuthService.reset($scope.auth).then(function(result){
+                            $scope.alerts.push({
+                                type: 'danger',
+                                msg: $translate.instant('LOGIN.PASSWORD_RESET_LINK_SENT')
+                            });
+                        });
                 }
-            }).catch(handleError);
+            });
         };
 
         var handleError = function(result) {

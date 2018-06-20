@@ -5,6 +5,11 @@
     function RecentCountsController($scope, InitialState, RecordAggregates, RecordState) {
         var ctl = this;
         InitialState.ready().then(init);
+
+        ctl.ano = function(a){
+            $scope.$emit('selectYear', a);
+        };
+
         return ctl;
 
         function init() {
@@ -28,6 +33,8 @@
                 ctl.ano2 = aggregate.ano2;
             });
         }
+
+
     }
 
     angular.module('driver.recentCounts')

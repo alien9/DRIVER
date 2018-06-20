@@ -14,7 +14,7 @@
         <div class="block block-1x2 quick-map">
             <div class="block-inner">
                 <div class="map" leaflet-map recent-events zoom-to-boundary></div>
-                <h3><span>{{ ctl.recordType.plural_label }}: {{ctl.lastYear}}</span>
+                <h3><span>{{ ctl.recordType.plural_label }}: {{ctl.selectedYear}}</span>
                     <a ui-sref="map" class="small pull-right">
                         {{ 'DASHBOARD.VIEW_ALL' | translate }} {{ ctl.recordType.plural_label | lowercase }} »
                     </a>

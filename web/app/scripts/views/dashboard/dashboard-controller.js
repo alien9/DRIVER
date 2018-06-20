@@ -6,6 +6,7 @@
                                  FilterState, InitialState, Records,
                                  RecordSchemaState, RecordState, RecordAggregates, WebConfig) {
         var ctl = this;
+        ctl.selectedYear = null;
         ctl.showBlackSpots = WebConfig.blackSpots.visible;
 
         InitialState.ready().then(init);
@@ -30,6 +31,9 @@
                     FilterState.restoreFilters(selectedFilter);
                 }, 2000);  // this needs to be quite long to avoid race conditions, unfortunately
             });
+            $scope.$on('selectYear', function(event, args) {
+                loadRecords(args);
+            });
         }
 
         function loadRecordSchema() {
@@ -47,11 +51,21 @@
          * Loads records for charts
          * @return {promise} Promise to load records
          */
-        function loadRecords() {
+        function loadRecords(year) {
             // We need to see the 3 whole years from the thing
 
-            var y = (new Date()).getFullYear();
-            
+            var y;
+            if(!year){
+                if(!ctl.selectedYear){
+                    y = (new Date()).getFullYear();
+                }else{
+                    y = ctl.selectedYear + 1;
+                }
+            }else{
+                y = year+1;
+            }
+            ctl.selectedYear = y - 1;
+
             /* jshint camelcase: false */
             var params = {
               occurred_min: new Date(y-3, 0, 1).toISOString(),
@@ -94,7 +108,7 @@
         function onRecordsLoaded() {
             var detailsDefinitions = _.filter(ctl.recordSchema.schema.definitions, 'details');
             ctl.propertiesKey = detailsDefinitions[0].properties;
-            ctl.headerKeys = _.without(_.keys(ctl.propertiesKey), '_localId');   
+            ctl.headerKeys = _.without(_.keys(ctl.propertiesKey), '_localId');
         }
     }
 

@@ -84,13 +84,17 @@ def user_create(request):
     #return JsonResponse({'error': request.POST},status=status.HTTP_400_BAD_REQUEST)
     #if not 'data' in request:
     #    return JsonResponse({'error': 'missing data'}, status=status.HTTP_400_BAD_REQUEST)
-    d=json.loads(request.body)
+    d = json.loads(request.body)
+    from os import urandom
+    chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
     d['groups']=[]
     d['username']=d['email']
-    if len(d['password']) < 6:
-        return JsonResponse({"password": ["Password must have at least 6 characters"]}, status=status.HTTP_400_BAD_REQUEST)
+    d['password'] = "".join(chars[ord(c) % len(chars)] for c in urandom(64))
 
-    serialized = UserSerializer(data=d,context={"request": request})
+    #if len(d['password']) < 6:
+    #    return JsonResponse({"password": ["Password must have at least 6 characters"]}, status=status.HTTP_400_BAD_REQUEST)
+
+    serialized = UserSerializer(data=d, context={"request": request})
     if serialized.is_valid():
         #my_group = Group.objects.get(name='analyst')
         u=serialized.save()
