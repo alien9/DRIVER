@@ -37,7 +37,7 @@
                         break;
                     case 201:
                     case 200:
-                        AuthService.reset($scope.auth).then(function(result){
+                        AuthService.reset($scope.auth).then(function(){
                             $scope.alerts.push({
                                 type: 'danger',
                                 msg: $translate.instant('LOGIN.PASSWORD_RESET_LINK_SENT')

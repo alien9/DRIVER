@@ -6,7 +6,7 @@
                                    TileUrlService, BaseLayersService) {
         var defaultLayerOptions = {attribution: 'PRS', detectRetina: true};
         var recencyCutoffDays = 14;
-
+        var selectedYear = (new Date()).getFullYear()-1;
         var recordLayers = null;
         var layerSwitcher = null;
         var module = {
@@ -44,6 +44,12 @@
                 scope.$on('driver.state.recordstate:selected', function() {
                     leafletController.getMap().then(updateLayers);
                 });
+
+                scope.$on('selectYear', function(event, args) {
+                    selectedYear = args;
+                    leafletController.getMap().then(updateLayers);
+                });
+
             });
         }
         /**
@@ -72,8 +78,11 @@
          */
         function updateLayers(map) {
             var recordsLayerOptions = angular.extend(defaultLayerOptions, {zIndex: 3});
-            var occurredMin = new Date((new Date()).getFullYear()-1, 1, 1);
-            var occurredMax = new Date((new Date()).getFullYear()-1, 12, 31);
+            if(!selectedYear){
+                selectedYear = (new Date()).getFullYear()-1;
+            }
+            var occurredMin = new Date(selectedYear, 0, 1);
+            var occurredMax = new Date(selectedYear, 12, 31);
             occurredMin.setDate(occurredMin.getDate() - recencyCutoffDays);
             RecordState.getSelected().then(function(selected) {
                 // Construct Windshaft URL

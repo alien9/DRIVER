@@ -13,7 +13,7 @@
                 });
             }
             $scope.auth.csrfmiddlewaretoken = $cookies.get('csrftoken');
-            $scope.sent = AuthService.reset($scope.auth).then(function(result){
+            $scope.sent = AuthService.reset($scope.auth).then(function(){
                 $scope.alerts.push({
                     type: 'danger',
                     msg: $translate.instant('LOGIN.PASSWORD_RESET_LINK_SENT')

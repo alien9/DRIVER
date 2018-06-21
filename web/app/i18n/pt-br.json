@@ -184,7 +184,8 @@
         "MY_ACCOUNT": "Minha Conta",
         "RECORD_DETAILS": "Detalhes dos Registros",
         "RECORD_LIST": "Lista de Registros",
-        "ENFORCER_ASSIGNMENTS": "Fizcalização"
+        "ENFORCER_ASSIGNMENTS": "Fizcalização",
+        "GEOGRAPHIC_TITLE": "Região"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "Adicionar \\{\\{0\\}\\}",

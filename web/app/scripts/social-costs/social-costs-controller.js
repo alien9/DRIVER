@@ -8,6 +8,7 @@
         // diverges further, they should probably be split into separate
         // directives.
         var ctl = this;
+        ctl.selectedYear = (new Date()).getFullYear()-1;
         ctl.$onInit = initialize;
 
         function initialize() {
@@ -28,6 +29,9 @@
         $scope.$on('driver.tools.interventions.open', function() { ctl.state = 'total'; });
         $scope.$on('driver.tools.charts.open', function() { ctl.state = 'total'; });
 
+        $scope.$on('selectYear', function(event, args) {
+            ctl.selectedYear = args;
+        });
     }
 
     angular.module('driver.socialCosts')

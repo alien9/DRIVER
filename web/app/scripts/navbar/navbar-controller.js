@@ -23,6 +23,8 @@
         ctl.getBoundaryLabel = getBoundaryLabel;
         ctl.recordTypesVisible = WebConfig.recordType.visible;
         ctl.userEmail = userDropdownDefault;
+        ctl.boundaries = {};
+        ctl.geographies = {};
 
         function init() {
             setLanguageInfo();
@@ -132,11 +134,19 @@
 
         // Handler for when a geography is selected from the dropdown
         function onGeographySelected(geography) {
+            for(var k in ctl.geographies){
+                ctl.geographies[k] = false;
+            }
+            ctl.geographies[geography.uuid] = true;
             GeographyState.setSelected(geography);
         }
 
         // Handler for when a boundary is selected from the dropdown
         function onBoundarySelected(boundary) {
+            for(var k in ctl.boundaries){
+                ctl.boundaries[k] = false;
+            }
+            ctl.boundaries[boundary.uuid] = true;
             BoundaryState.setSelected(boundary);
         }
 

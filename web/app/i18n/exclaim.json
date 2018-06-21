@@ -184,7 +184,8 @@
         "MY_ACCOUNT": "!My Account",
         "RECORD_DETAILS": "!Record Details",
         "RECORD_LIST": "!Record List",
-        "ENFORCER_ASSIGNMENTS": "!Enforcement"
+        "ENFORCER_ASSIGNMENTS": "!Enforcement",
+        "GEOGRAPHIC_TITLE": "!Regions"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "!Add \\{\\{0\\}\\}",

@@ -79,6 +79,10 @@ nav {
                 padding: 10px 20px;
             }
         }
+
+        > li.selected{
+            background:lime;
+        }
     }
 }
 .content-types {

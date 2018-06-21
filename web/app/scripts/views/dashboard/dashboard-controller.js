@@ -52,7 +52,7 @@
          * @return {promise} Promise to load records
          */
         function loadRecords(year) {
-            // We need to see the 3 whole years from the thing
+            // We need to see the whole year from the thing
 
             var y;
             if(!year){
