@@ -31,7 +31,7 @@
                     FilterState.restoreFilters(selectedFilter);
                 }, 2000);  // this needs to be quite long to avoid race conditions, unfortunately
             });
-            $scope.$on('selectYear', function(event, args) {
+            $scope.$on('driver.selectYear', function(event, args) {
                 loadRecords(args);
             });
         }
@@ -54,22 +54,18 @@
         function loadRecords(year) {
             // We need to see the whole year from the thing
 
-            var y;
             if(!year){
                 if(!ctl.selectedYear){
-                    y = (new Date()).getFullYear();
-                }else{
-                    y = ctl.selectedYear + 1;
+                    ctl.selectedYear = (new Date()).getFullYear()-1;
                 }
             }else{
-                y = year+1;
+                ctl.selectedYear = year;
             }
-            ctl.selectedYear = y - 1;
 
             /* jshint camelcase: false */
             var params = {
-              occurred_min: new Date(y-3, 0, 1).toISOString(),
-              occurred_max: new Date(y-1, 11, 30, 23, 59, 59).toISOString()
+              occurred_min: new Date(ctl.selectedYear, 0, 1).toISOString(),
+              occurred_max: new Date(ctl.selectedYear, 11, 30, 23, 59, 59).toISOString()
             };
             /* jshint camelcase: true */
 
@@ -86,6 +82,7 @@
             RecordAggregates.socialCosts(params, filterConfig).then(
                 function(costs) {
                     ctl.socialCosts = costs;
+                    ctl.socialCosts.selectedYear = ctl.selectedYear;
                 },
                 function(error) {
                     ctl.socialCosts = error;

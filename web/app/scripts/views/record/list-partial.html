@@ -6,7 +6,7 @@
                     <tr>
                         <th>{{ 'RECORD.DATE_AND_TIME' | translate }}</th>
 
-                        <th ng-repeat="headerKey in ctl.headerKeys | limitTo : ctl.maxDataColumns">
+                        <th ng-repeat="headerKey in ctl.headerKeys | limitTo : ctl.maxDataColumns"  ng-if="!ctl.hide(headerKey)" >
                             {{ ::headerKey }}
                         </th>
 
@@ -22,7 +22,7 @@
                         <td class="date">
                             {{ ::record.occurred_to | localizeRecordDate: 'numeric':'time' }}
                         </td>
-                        <td class="detail" ng-repeat="headerKey in ctl.headerKeys | limitTo : ctl.maxDataColumns">
+                        <td class="detail" ng-repeat="headerKey in ctl.headerKeys | limitTo : ctl.maxDataColumns" ng-if="!ctl.hide(headerKey)" >
                             <driver-details-field
                                 compact="true"
                                 data="::record.data[ctl.detailsPropertyKey][headerKey]"

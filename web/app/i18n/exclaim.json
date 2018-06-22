@@ -1,4 +1,5 @@
 {
+    "Incidente": "!Accident",
     "LANG": "!English",
     "AGG": {
         "DAY": "!Day",
@@ -216,7 +217,8 @@
         "RECORDS": "!Records",
         "SHOWING_RESULTS": "!Showing results",
         "WEATHER": "!Weather",
-        "WEEK_OF": "!Week of"
+        "WEEK_OF": "!Week of",
+        "DETAILS_OF_ACCIDENT": "Details of the Crash"
     },
     "REPORT": {
         "ACTIVE_FILTERS": "!Active Filters",

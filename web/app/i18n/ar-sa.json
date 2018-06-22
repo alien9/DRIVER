@@ -1,4 +1,5 @@
 {
+    "Incidente": "!Accident",
     "LANG": "العربية",
     "AGG": {
         "DAY": "يوماً",
@@ -184,7 +185,8 @@
         "MY_ACCOUNT": "حسابي",
         "RECORD_DETAILS": "تفاصيل السجل",
         "RECORD_LIST": "كل السجلات",
-        "ENFORCER_ASSIGNMENTS": "!Enforcement"
+        "ENFORCER_ASSIGNMENTS": "!Enforcement",
+        "GEOGRAPHIC_TITLE": "!Regions"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "!Add \\{\\{0\\}\\}",
@@ -215,7 +217,8 @@
         "RECORDS": "السجلات",
         "SHOWING_RESULTS": "عرض النتائج ",
         "WEATHER": "الطقس",
-        "WEEK_OF": "الإسبوع رقم"
+        "WEEK_OF": "الإسبوع رقم",
+        "DETAILS_OF_ACCIDENT": "Details of the Crash"
     },
     "REPORT": {
         "ACTIVE_FILTERS": "التصانيف القائمة",

@@ -1,5 +1,7 @@
 .incident-report {
-
+    .hidden{
+        display:none;
+    }
     &.single {
         margin: 40px 0 20px;
 
@@ -65,7 +67,7 @@
     .edit {
         font-size: 14px;
         font-weight: 700;
-        
+
         .glyphicon { font-size: 12px; margin-right: 3px; }
     }
     .close {
@@ -94,7 +96,7 @@
         }
         h3 small {
             margin-left: 10px;
-            
+
             a {
                 font-weight: 700;
                 text-decoration: underline;

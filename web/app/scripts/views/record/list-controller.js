@@ -24,6 +24,9 @@
             RecordState.getSelected().then(function(selected) { ctl.recordType = selected; })
                 .then(loadRecordSchema)
                 .then(restoreFilters);
+            ctl.hide = function(label){
+                return WebConfig.hiddenFields.indexOf(label) >= 0;
+            };
         }
 
         function loadRecordSchema() {

@@ -7,7 +7,7 @@
         InitialState.ready().then(init);
 
         ctl.ano = function(a){
-            $scope.$emit('selectYear', a);
+            $scope.$emit('driver.selectYear', a);
         };
 
         return ctl;

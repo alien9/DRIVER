@@ -486,7 +486,7 @@
                     zIndex: 7
                 });
 
-            addGridRecordEvent(utfGridRecordsLayer, { label: ctl.recordType.label });
+            addGridRecordEvent(utfGridRecordsLayer, { label: $translate.instant(ctl.recordType.label) });
 
             if (!ctl.primaryLayerGroup) {
                 ctl.primaryLayerGroup = new L.layerGroup(
@@ -714,7 +714,7 @@
             // DateTimes come back from Windshaft without tz information, but they're all UTC
             var occurredStr = localizeRecordDateFilter(moment.utc(record.occurred_from), dateFormat, true);
             var str = '<div id="record-popup" class="record-popup">';
-            str += '<div><h5>' + popupParams.label + ' ' + detailsLabel +
+            str += '<div><h5>' + popupParams.label +
                 '</h5><h3>' + occurredStr + '</h3>';
             /* jshint camelcase: true */
 

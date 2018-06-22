@@ -1,4 +1,4 @@
-<div ng-class="{ 'compact': ctl.compact, 'col-sm-6': !ctl.compact }">
+<div ng-class="{ 'compact': ctl.compact, 'col-sm-6': !ctl.compact, 'hidden': ctl.hide(ctl.property.propertyName) }">
     <label ng-if="!ctl.compact">
         {{ ::ctl.property.propertyName }}
     </label>

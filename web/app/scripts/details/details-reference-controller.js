@@ -2,7 +2,7 @@
     'use strict';
 
     /* ngInject */
-    function DetailsReferenceController($translate) {
+    function DetailsReferenceController($translate, WebConfig) {
         var ctl = this;
 
         var ellipsis = $translate.instant('COMMON.ELLIPSIS');
@@ -19,6 +19,10 @@
             if (references.length) {
                 var reference = references[0];
                 var keys = _.without(_.keys(reference), '_localId', '$$hashKey');
+                keys = keys.filter(function(item){
+                    return WebConfig.hiddenFields.indexOf(item) < 0;
+                });
+
                 var maxKeyLength = 12;
                 ctl.referenceDisplay = _.map(keys.slice(0, 3), function(key) {
                     if (reference[key].length < maxKeyLength) {

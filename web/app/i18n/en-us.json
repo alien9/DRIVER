@@ -1,4 +1,5 @@
 {
+    "Incidente": "Accident",
     "LANG": "English",
     "AGG": {
         "DAY": "Day",
@@ -184,7 +185,8 @@
         "MY_ACCOUNT": "My Account",
         "RECORD_DETAILS": "Record Details",
         "RECORD_LIST": "Record List",
-        "ENFORCER_ASSIGNMENTS": "Enforcement"
+        "ENFORCER_ASSIGNMENTS": "Enforcement",
+        "GEOGRAPHIC_TITLE": "Regions"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "Add \\{\\{0\\}\\}",
@@ -215,7 +217,8 @@
         "RECORDS": "Records",
         "SHOWING_RESULTS": "Showing results",
         "WEATHER": "Weather",
-        "WEEK_OF": "Week of"
+        "WEEK_OF": "Week of",
+        "DETAILS_OF_ACCIDENT": "Details of the Crash"
     },
     "REPORT": {
         "ACTIVE_FILTERS": "Active Filters",

@@ -2,7 +2,7 @@
     'use strict';
 
     /* ngInject */
-    function DetailsTextController($rootScope) {
+    function DetailsTextController($rootScope, WebConfig) {
         var ctl = this;
         ctl.maxLength = 20;
 
@@ -17,6 +17,9 @@
             } else {
                 return 0;
             }
+        };
+        ctl.hide = function(label){
+            return WebConfig.hiddenFields.indexOf(label) >= 0;
         };
     }
 

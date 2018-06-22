@@ -3,7 +3,7 @@
     <div class="table" ng-if="!ctl.definition.pending">
         <div class="table-head">
             <div class="row">
-                <div class="col-sm-3" ng-repeat="property in ctl.properties | limitTo : ctl.maxDataColumns">
+                <div class="col-sm-3" ng-repeat="property in ctl.properties | limitTo : ctl.maxDataColumns" ng-if="!ctl.hide(property.propertyName)" >
                     {{ ::property.propertyName }}
                 </div>
             </div>
@@ -12,7 +12,7 @@
             <div class="table-body-row" ng-repeat="item in ctl.data">
                 <div class="table-body-row-header" ng-click="item.open = !item.open" ng-class="{'open': item.open}">
                     <div class="row">
-                        <div class="col-sm-3" ng-repeat="property in ctl.properties | limitTo : ctl.maxDataColumns">
+                        <div class="col-sm-3" ng-repeat="property in ctl.properties | limitTo : ctl.maxDataColumns" ng-if="!ctl.hide(property.propertyName)">
                              <driver-details-field
                                   compact="true"
                                   data="::item[property.propertyName]"

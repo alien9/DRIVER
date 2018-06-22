@@ -45,6 +45,9 @@ nav {
             color: #000 !important;
         }
     }
+    .navbar-brand img {
+        padding-top: 8px;
+    }
     .dropdown.open .dropdown-toggle {
         background-color: #eee !important;
         color: #333;
@@ -59,7 +62,7 @@ nav {
         }
     }
     .logo{
-        padding:9px;
+        padding:0;
     }
     .dropdown-menu {
         border: none;

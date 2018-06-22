@@ -3,7 +3,7 @@
       {{ ctl.costData.prefix }}{{ ctl.costData.total | localNumber }}{{ ctl.costData.suffix }}
     </h1>
     <h2 ng-if="ctl.costData.total || ctl.costData.total === 0">
-        {{ 'DASHBOARD.SOCIAL_COSTS_TEXT' | translate }}: {{ctl.selectedYear}}
+        {{ 'DASHBOARD.SOCIAL_COSTS_TEXT' | translate }}: {{ctl.costData.selectedYear}}
     </h2>
     <div class="warn" ng-if="ctl.costData.outdated_cost_config || ctl.costData.error">
       <span class="glyphicon glyphicon-warning-sign"></span>
@@ -12,7 +12,7 @@
 </div>
 <div class="costs subtotal" ng-click="ctl.toggle()" ng-if="ctl.state === 'subtotal'">
     <h2 ng-if="ctl.costData.total || ctl.costData.total === 0">
-        {{ 'DASHBOARD.SOCIAL_COSTS_TEXT' | translate }}: {{ctl.selectedYear}}
+        {{ 'DASHBOARD.SOCIAL_COSTS_TEXT' | translate }}: {{ctl.costData.selectedYear}}
     </h2>
     <hr></hr>
     <table>

@@ -2,7 +2,7 @@
     'use strict';
 
     /* ngInject */
-    function DetailsSelectlistController() {
+    function DetailsSelectlistController(WebConfig) {
         var ctl = this;
         init();
 
@@ -10,6 +10,10 @@
             if (Array.isArray(ctl.data)) {
                 ctl.data = ctl.data.join('; ');
             }
+            ctl.hide = function(label){
+                return WebConfig.hiddenFields.indexOf(label) >= 0;
+            };
+
         }
     }
 

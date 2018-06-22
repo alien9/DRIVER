@@ -45,7 +45,7 @@
                     leafletController.getMap().then(updateLayers);
                 });
 
-                scope.$on('selectYear', function(event, args) {
+                scope.$on('driver.selectYear', function(event, args) {
                     selectedYear = args;
                     leafletController.getMap().then(updateLayers);
                 });

@@ -1,4 +1,5 @@
 {
+    "Incidente": "Acidente",
     "LANG": "Português",
     "AGG": {
         "DAY": "Dia",
@@ -172,7 +173,7 @@
     "NAV": {
         "ACCOUNT": "Conta",
         "ADD_A_RECORD": "Adicionar Registro",
-        "ALL": "Todo",
+        "ALL": "Todas",
         "CUSTOM_REPORT": "Relatorio Customizado",
         "DASHBOARD": "Painel",
         "DOWNLOAD_AUDIT_LOGS": "Baixar Registro de Auditorias",
@@ -216,7 +217,8 @@
         "RECORDS": "Registros",
         "SHOWING_RESULTS": "Mostrando resultados",
         "WEATHER": "Clima",
-        "WEEK_OF": "Semana de"
+        "WEEK_OF": "Semana de",
+        "DETAILS_OF_ACCIDENT": "Detalhes do Acidente"
     },
     "REPORT": {
         "ACTIVE_FILTERS": "Filtros Ativos",

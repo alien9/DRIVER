@@ -3,7 +3,7 @@
 
     /* ngInject */
     function RecordDetailsModalController($modalInstance, record, recordType,
-                                          recordSchema, userCanWrite, RecordState) {
+                                          recordSchema, userCanWrite, RecordState, WebConfig) {
         var ctl = this;
         initialize();
 
@@ -15,6 +15,13 @@
 
             ctl.close = function () {
                 $modalInstance.close();
+            };
+
+            ctl.hide = function(label){
+                if(WebConfig.hiddenFields.indexOf(label) >= 0    ){
+                    return true;
+                }
+                return false;
             };
 
             RecordState.getSecondary().then(function (secondaryType) {
