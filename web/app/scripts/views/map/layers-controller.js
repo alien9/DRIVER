@@ -14,7 +14,7 @@
         var blackSpotLabel = $translate.instant('MAP.BLACKSPOT');
         var severityScoreLabel = $translate.instant('MAP.SEVERITY_SCORE');
         var numSevereLabel = $translate.instant('MAP.NUM_SEVERE');
-        var detailsLabel = $translate.instant('RECORD.DETAILS');
+        //var detailsLabel = $translate.instant('RECORD.DETAILS');
         var viewLabel = $translate.instant('COMMON.VIEW');
         var editLabel = $translate.instant('COMMON.EDIT');
 

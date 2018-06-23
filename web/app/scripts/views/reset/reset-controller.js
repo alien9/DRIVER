@@ -5,7 +5,12 @@
      * @ngInject
      */
     function ResetController ($scope, $cookies, $state, $stateParams, $translate, $window, AuthService ) {
+        $scope.pending = false;
         $scope.reset = function() {
+            if($scope.pending){
+                return;
+            }
+            $scope.pending = true;
             $scope.alerts = [];
             $scope.addAlert = function(alertObject) {
                 $scope.alerts.push(alertObject);
@@ -16,20 +21,23 @@
 
             if(!$scope.auth){
                 handleError({
-                    'status':''
+                    'status':'',
+                    'error': $translate.instant('LOGIN.EMAIL_NOT_VALID')
+                });
+            }else{
+                $scope.auth.csrfmiddlewaretoken = $cookies.get('csrftoken');
+                $scope.sent = AuthService.reset($scope.auth).then(function(){
+                    $scope.pending = false;
+                    $scope.alerts.push({
+                        type: 'danger',
+                        msg: $translate.instant('LOGIN.PASSWORD_RESET_LINK_SENT')
+                    });
                 });
             }
-            $scope.auth.csrfmiddlewaretoken = $cookies.get('csrftoken');
-            $scope.sent = AuthService.reset($scope.auth).then(function(){
-                $scope.alerts.push({
-                    type: 'danger',
-                    msg: $translate.instant('LOGIN.PASSWORD_RESET_LINK_SENT')
-                });
-            });
         };
 
         var handleError = function(result) {
-            $scope.auth.failure = true;
+            $scope.pending = false;
             var msg = result.error ||
                     result.status + ': ' + $translate.instant('ERRORS.UNKNOWN_ERROR') + '.';
             $scope.addAlert({

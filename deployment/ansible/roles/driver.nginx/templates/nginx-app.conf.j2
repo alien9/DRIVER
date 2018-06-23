@@ -9,8 +9,6 @@ server {
     include {{ letsencrypt_options_ssl_nginx_path }};
     ssl_dhparam {{ letsencrypt_dhparams_path }};
 {% else %}
-    ssl on;
-    listen 443 default_server ssl;
     ssl_certificate /etc/nginx/ssl/vidasegura.prefeitura.sp.gov.br.crt;
     ssl_certificate_key /etc/nginx/ssl/vidasegura.prefeitura.sp.gov.br.rsa;
 {% endif %}

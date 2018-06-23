@@ -56,3 +56,5 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 )
+
+MEDIA_URL = 'http://localhost:7002/styles/images/'

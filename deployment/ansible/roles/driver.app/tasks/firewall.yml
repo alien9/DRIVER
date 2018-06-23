@@ -2,6 +2,9 @@
 - name: Allow ssh access
   ufw: rule=allow port=22
 
+- name: Allow smtp access
+  ufw: rule=allow port=25
+
 - name: Allow monit access
   ufw: rule=allow port=2812
 

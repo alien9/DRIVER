@@ -5,6 +5,7 @@
      * @ngInject
      */
     function SignupController ($scope, $state, $stateParams, $translate, $window, AuthService ) {
+        $scope.pending = false;
         $scope.alerts = [];
         $scope.addAlert = function(alertObject) {
             $scope.alerts.push(alertObject);
@@ -14,6 +15,10 @@
         };
 
         $scope.create = function() {
+            if($scope.pending){
+                return;
+            }
+            $scope.pending = true;
             $scope.alerts = [];
             if(!$scope.auth){
                 handleError({
@@ -27,6 +32,7 @@
                 return;
             }*/
             $scope.created = AuthService.create($scope.auth).then(function(result){
+                $scope.pending = false;
                 switch(result.status){
                     case 400:
                         $scope.addAlert({
@@ -47,6 +53,7 @@
         };
 
         var handleError = function(result) {
+            $scope.pending = false;
             $scope.auth.failure = true;
             var msg = result.error ||
                     result.status + ': ' + $translate.instant('ERRORS.UNKNOWN_ERROR') + '.';
