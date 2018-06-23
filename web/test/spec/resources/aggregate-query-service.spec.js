@@ -33,7 +33,7 @@ describe('driver.resources: Aggregate Queries', function () {
         var recordTypeUrl = /\/api\/recordtypes\/\?active=True/;
         var boundariesUrl = /api\/boundaries/;
         var boundaryPolygonsUrl = /api\/boundarypolygons/;
-        var recordTypeCountUrl = new RegExp('api/records/recent_counts/' +
+        var recordTypeCountUrl = new RegExp('api/records/recent_counts_last_3_years/' +
                                             '\\?archived=False.*record_type=a-very-weird-uuid');
 
         RecordAggregates.recentCounts();

@@ -57,7 +57,7 @@ def authz_cb(request):
         if user:
             token, created = Token.objects.get_or_create(user=user)
             # set session cookie for frontend
-            response = redirect(request.session['next'])
+            response = redirect(settings.START_PAGE)
             response.set_cookie(USER_ID_COOKIE, token.user_id)
             # set cookie for frontend write access (will be false by default)
             if is_admin_or_writer(user):

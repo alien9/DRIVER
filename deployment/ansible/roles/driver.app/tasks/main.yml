@@ -13,6 +13,10 @@
         mode=0775
         state=directory
 
+- name: Authenticate to ECR
+  shell: $(aws ecr get-login --no-include-email --region us-east-1)
+
+
 - name: Build application Docker image
   command: >
     docker build

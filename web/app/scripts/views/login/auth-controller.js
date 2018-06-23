@@ -35,7 +35,7 @@
                         return $state.go($stateParams.next.name, $stateParams.nextParams)
                             .then(function () { $window.location.reload(); });
                     } else {
-                        $window.location.href = '/';
+                        $window.location.href = WebConfig.startPage;
                     }
                 } else {
                     handleError(result);

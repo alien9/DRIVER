@@ -4,8 +4,7 @@
     /**
      * @ngInject
      */
-    function SignupController ($scope, $state, $stateParams, $translate, $window,
-                             AuthService ) {
+    function SignupController ($scope, $state, $stateParams, $translate, $window, AuthService ) {
         $scope.alerts = [];
         $scope.addAlert = function(alertObject) {
             $scope.alerts.push(alertObject);

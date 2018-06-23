@@ -40,6 +40,7 @@ exec /usr/bin/docker run \
   --env DRIVER_READ_ONLY_GROUP='{{ driver_read_only_group }}' \
   --env DRIVER_READ_WRITE_GROUP='{{ driver_read_write_group }}' \
   --env DRIVER_ADMIN_GROUP='{{ driver_admin_group }}' \
+  --env DRIVER_START_PAGE='{{ start_page }}' \
   --log-driver syslog \
 {% if celery %} --entrypoint '/bin/bash -c' \
 {% endif %}  {{ docker_repository }}driver-app:{{ docker_image_tag }} {% if celery %} \

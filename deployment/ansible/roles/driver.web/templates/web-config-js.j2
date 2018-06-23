@@ -50,7 +50,11 @@
             /*jshint quotmark: double */
             languages: {{ languages | to_json }}
             /*jshint quotmark: single */
-        }
+        },
+        /*jshint quotmark: double */
+        hiddenFields: {{ hidden_fields | to_json }},
+        /*jshint quotmark: single */
+        startPage: '{{ start_page }}'
     };
 
     angular.module('driver.config', [])

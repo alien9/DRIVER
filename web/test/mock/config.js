@@ -8,10 +8,10 @@
             prefix: '!'
         },
         api: {
-            hostname: 'http://localhost:3001'
+            hostname: 'http://localhost:7000'
         },
         windshaft: {
-            hostname: 'http://localhost:3001'
+            hostname: 'http://localhost:7000'
         },
         nominatim: {
             key: 'abc123'
@@ -42,7 +42,8 @@
                 { "id": "ar-sa", "label": "Arabic (Saudi Arabia)", "rtl": true },
                 { "id": "exclaim", "label": "Exclaim (DEV)", "rtl": false }
             ]
-        }
+        },
+        hiddenFields: []
     };
 
     angular.module('driver.config', [])

@@ -4,9 +4,16 @@
     /**
      * @ngInject
      */
-    function ResetController ($scope, $state, $stateParams, $translate, $window, $cookies, AuthService ) {
+    function ResetController ($scope, $cookies, $state, $stateParams, $translate, $window, AuthService ) {
         $scope.reset = function() {
             $scope.alerts = [];
+            $scope.addAlert = function(alertObject) {
+                $scope.alerts.push(alertObject);
+            };
+            $scope.closeAlert = function(index) {
+                $scope.alerts.splice(index, 1);
+            };
+
             if(!$scope.auth){
                 handleError({
                     'status':''

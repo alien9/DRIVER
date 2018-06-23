@@ -28,11 +28,11 @@ describe('driver.details: DetailsConstants', function () {
         $rootScope.$apply();
 
         expect(element.find('.map').length).toEqual(1);
-        expect(element.find('.value.created').length).toEqual(1);
+        //expect(element.find('.value.created').length).toEqual(1);
         expect(element.find('.value.latitude').length).toEqual(1);
         expect(element.find('.value.longitude').length).toEqual(1);
         expect(element.find('.value.occurred').length).toEqual(1);
-        expect(element.find('.value.weather').length).toEqual(1);
-        expect(element.find('.value.light').length).toEqual(1);
+        //expect(element.find('.value.weather').length).toEqual(1);
+        //expect(element.find('.value.light').length).toEqual(1);
     });
 });

@@ -419,14 +419,10 @@ if len(GOOGLE_OAUTH_CLIENT_ID) > 0:
 # These fields will be visible to read-only users
 READ_ONLY_FIELDS_REGEX = r'Details$'
 
-#EMAIL_HOST = '192.168.12.102'
-#EMAIL_HOST_USER = 'no-reply@vidasegura.prefeitura.sp.gov.br'
-#EMAIL_HOST_PASSWORD = '^QEX!.yXKLg;v4e{'
-#EMAIL_PORT = 25
-#EMAIL_USE_TLS = False
+EMAIL_HOST = '192.168.12.102'
+EMAIL_HOST_USER = 'no-reply@vidasegura.prefeitura.sp.gov.br'
+EMAIL_HOST_PASSWORD = '^QEX!.yXKLg;v4e{'
+EMAIL_PORT = 25
+EMAIL_USE_TLS = False
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'noreply.vidasegura@gmail.com'
-EMAIL_HOST_PASSWORD = 'test432pest'
-EMAIL_PORT = 587
+START_PAGE = os.environ.get('DRIVER_START_PAGE', '/')
