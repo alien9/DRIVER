@@ -1,3 +1,4 @@
+<driver-tutorial ng-if="ctl.isTutorial"></driver-tutorial>
 <nav class="navbar navbar-default {{ctl.isFilterPage ? '' : 'drop-shadow' }}">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -80,6 +81,11 @@
                         <li ng-if="ctl.hasWriteAccess">
                             <a ng-click="ctl.navigateToStateName('duplicates')">
                                 {{ 'NAV.MANAGE_DUPLICATE_RECORDS' | translate }}
+                            </a>
+                        </li>
+                        <li>
+                            <a ng-click="ctl.tutorial()">
+                                {{ 'NAV.TUTORIAL' | translate }}
                             </a>
                         </li>
                         <li>

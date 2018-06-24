@@ -104,6 +104,7 @@
         'driver.config',
         'ase.auth',
         'driver.navbar',
+        'driver.tutorial',
         'driver.filterbar',
         'driver.toddow',
         'driver.state',

@@ -5,14 +5,13 @@
     function DirectiveConfig() {
     }
 
-    angular.module('driver.filterbar', [
+    angular.module('driver.tutorial', [
         'ase.auth',
         'debounce',
         'driver.resources',
         'driver.state',
         'driver.localization',
-        'ui.bootstrap',
-        'driver.tutorial'
+        'ui.bootstrap'
     ]).config(DirectiveConfig);
 
 })();

@@ -1,0 +1,119 @@
+<div class="tutorial">
+    <div class="manta" ng-click="ctl.close()"></div>
+    <div class="navigate">
+        <div class="controls-left">
+            <a ng-click="ctl.pageDown()" ng-if="!ctl.isThisPage(0);">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+            </a>
+        </div>
+        <div class="controls-right">
+            <a ng-click="ctl.pageUp()" ng-if="!ctl.isThisPage(5);">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+        </div>
+    </div>
+    <div class="subpage">
+        <div class="page drop-shadow">
+            <div class="main">
+                <div class="controls">
+                    <a class="leaflet-popup-close-button" ng-click="ctl.close()" href="#">×</a>
+                </div>
+                <div class="page-item" ng-if="ctl.isThisPage(0)">
+                    <p>A plataforma VIDA SEGURA &eacute; uma aplica&ccedil;&atilde;o web para visualiza&ccedil;&atilde;o, an&aacute;lise e disponibiliza&ccedil;&atilde;o de dados de acidente de tr&acirc;nsito consolidados anualmente na cidade de S&atilde;o Paulo, com interfaces gr&aacute;ficas, mapa, lista de registros e exporta&ccedil;&atilde;o de conjuntos de dados via arquivo csv.</p>
+                    <h1>PAINEL</h1>
+                    <div>
+                        <p>O Painel &eacute; a interface inicial da Plataforma, com um panorama sobre os dados de acidente de tr&acirc;nsito em 2017, 2016 e 2015 a partir das seguintes janelas:</p>
+                        <div class="pan">
+                            <img src="/styles/images/tutorial/page_0.png">
+                        </div>
+                        <div class="pan text">
+                            <ol class="lista">
+                                <li>Um mapa de pontos cr&iacute;ticos da cidade, calculados a partir dos dados presentes na plataforma</li>
+                                <li>Um mapa de incidentes no &uacute;ltimo ano consolidado pela CET (2017)</li>
+                                <li>O c&aacute;lculo dos custos dos acidentes de tr&acirc;nsito ocorridos no per&iacute;odo, a partir de metodologia do IPEA com atualiza&ccedil;&atilde;o de valores para 2017 pelo IPCA.</li>
+                                <li>O n&uacute;mero total de acidentes ocorrido em cada ano da amostra</li>
+                                <li>Um gr&aacute;fico exibindo a concentra&ccedil;&atilde;o dos acidentes de tr&acirc;nsito em termos de hora do dia e dia da semana para os 3 anos da amostra</li>
+                                <li>Uma lista das filtragens salvas pelo usu&aacute;rio, para organiza&ccedil;&atilde;o das consultas espec&iacute;ficas &agrave; base.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <p class="clear">Sem nenhum filtro acionado, os dados mostrados correspondem ao munic&iacute;pio de S&atilde;o Paulo.</p>
+                </div>
+                <div class="page-item" ng-if="ctl.isThisPage(1)">
+                    <h1>APLICANDO FILTROS NO PAINEL</h1>
+                    <div>
+                        <div class="pan">
+                            <img src="/styles/images/tutorial/page_1.gif">
+                        </div>
+                        <div class="pan text">
+                            <p>As informa&ccedil;&otilde;es exibidas no Painel podem ser filtradas de acordo com Distritos e Prefeituras Regionais; para tanto, basta clicar em &ldquo;Regi&atilde;o&rdquo; na barra superior, para selecionar se a filtragem ser&aacute; feita por Distrito ou Prefeitura Regional. O bot&atilde;o &ldquo;Todo&rdquo; - ao lado de &ldquo;Regi&atilde;o&rdquo; - &eacute; uma lista que permite a sele&ccedil;&atilde;o de uma das &aacute;reas selecionadas da cidade.</p>
+                        </div>
+                    </div>
+                    <p  class="clear"></p>
+                </div>
+                <div class="page-item" ng-if="ctl.isThisPage(2)">
+                    <h1>ACESSANDO OS DADOS</h1>
+                    <div>
+                        <div class="pan">
+                            <img src="/styles/images/tutorial/page_2.gif">
+                        </div>
+                        <div class="pan text">
+                            <p>Do Painel, o usu&aacute;rio pode acessar e trabalhar com os dados utilizando o Mapa ou a Lista de Registros</p>
+                            <p>O Mapa permite que o usu&aacute;rio visualize os dados de acidente de tr&acirc;nsito, filtre a partir das categorias no menu superior, selecione &aacute;reas espec&iacute;ficas a partir de ferramentas de desenho no canto superior esquerdo, e mais. A Lista de Registros permite os mesmos tipos de filtragem do mapa.</p>
+                        </div>
+                    </div>
+                    <p  class="clear"></p>
+                    <div>
+                        <div class="pan">
+                            <img src="/styles/images/tutorial/page_3.gif">
+                        </div>
+                        <div class="pan text">
+                            <p>Tanto o Mapa quanto a Lista de Registros podem ser acessados pelo bot&atilde;o Painel, que abre uma lista com as outras op&ccedil;&otilde;es de visualiza&ccedil;&atilde;o.</p>
+                        </div>
+                    </div>
+                    <p  class="clear"></p>
+                </div>
+                <div class="page-item" ng-if="ctl.isThisPage(3)">
+                    <h1>MAPA</h1>
+                    <div>
+                        <div class="pan">
+                            <img src="/styles/images/tutorial/page_4.gif">
+                        </div>
+                        <div class="pan text">
+                            <p>Ap&oacute;s acessar o mapa, &eacute; poss&iacute;vel visualizar os detalhes do acidente clicando no respectivo ponto azul, e a seguir clicando em &ldquo;Exibir&rdquo; no pop-up que aparece na tela.
+                            </p>
+                        </div>
+                    </div>
+                    <p  class="clear"></p>
+                </div>
+                <div class="page-item" ng-if="ctl.isThisPage(4)">
+                    <div class="clear">
+                        <div class="pan">
+                            <img src="/styles/images/tutorial/page_5.gif">
+                        </div>
+                        <div class="pan text">
+                            <p>Tamb&eacute;m &eacute; poss&iacute;vel adicionar layers ao mapa clicando no bot&atilde;o localizado no canto superior direito; como pontos cr&iacute;ticos e um mapa de calor.</p>
+                        </div>
+                    </div>
+                    <p  class="clear"></p>
+                </div>
+                <div class="page-item" ng-if="ctl.isThisPage(5)">
+                    <div>
+                        <div class="pan">
+                            <img src="/styles/images/tutorial/page_6.gif">
+                        </div>
+                        <div class="pan text">
+                            <p>Na Interface de Mapa, tamb&eacute;m &eacute; poss&iacute;vel exportar os dados em formato .csv.</p>
+                            <p> Ferramentas de desenho para uma sele&ccedil;&atilde;o de &aacute;rea espec&iacute;fica est&atilde;o dispon&iacute;veis abaixo dos bot&otilde;es de zoom do mapa, no canto superior esquerdo; &eacute; poss&iacute;vel desenhar um ret&acirc;ngulo ou outro pol&iacute;gono. Em ambos os casos, o mapa utilizar&aacute; o pol&iacute;gono desenhado como &aacute;rea de sele&ccedil;&atilde;o para os acidentes de tr&acirc;nsito, e basta clicar novamente no &iacute;cone do respectivo pol&iacute;gono para apagar o desenho.</p>
+                        </div>
+                        <p  class="clear"></p>
+                        <h1>GR&Aacute;FICOS</h1>
+                        <p>No canto inferior esquerdo, &eacute; poss&iacute;vel acessar alguns gr&aacute;ficos sobre a amostra exibida; um deles &eacute; a concentra&ccedil;&atilde;o de acidentes por hora do dia e dia da semana, e o outro &eacute; o n&uacute;mero de acidentes agregado por semana do ano.</p>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

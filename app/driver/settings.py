@@ -145,7 +145,7 @@ STATIC_ROOT = os.environ['DJANGO_STATIC_ROOT']
 # https://docs.djangoproject.com/en/1.8/topics/files/
 
 MEDIA_ROOT = os.environ['DJANGO_MEDIA_ROOT']
-MEDIA_URL = '/media/'
+MEDIA_URL = '/styles/images/'
 
 # use cookie-based sessions
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
@@ -420,18 +420,10 @@ if len(GOOGLE_OAUTH_CLIENT_ID) > 0:
 # These fields will be visible to read-only users
 READ_ONLY_FIELDS_REGEX = r'Details$'
 
-#EMAIL_HOST = '172.17.0.1.'
-#EMAIL_HOST_USER = 'no-reply@vidasegura.prefeitura.sp.gov.br'
-#EMAIL_HOST_PASSWORD = '^QEX!.yXKLg;v4e{'
-#EMAIL_PORT = 25
-#EMAIL_USE_TLS = False
-
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'noreply.vidasegura@gmail.com'
-EMAIL_HOST_PASSWORD = 'test432pest'
-EMAIL_PORT = 587
-
-
+EMAIL_HOST = '172.17.0.1'
+EMAIL_HOST_USER = 'no-reply@vidasegura.prefeitura.sp.gov.br'
+EMAIL_PORT = 25
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = 'no-reply@vidasegura.prefeitura.sp.gov.br'
 START_PAGE = os.environ.get('DRIVER_START_PAGE', '/')
 

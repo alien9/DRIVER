@@ -41,7 +41,7 @@
         "OF": "de",
         "PREVIOUS": "Anterior",
         "SAVE": "Salvar",
-        "TO": "para",
+        "TO": "até",
         "TOTAL": "Total",
         "VIEW": "Exibir",
         "YES": "Sim"
@@ -58,7 +58,7 @@
         "SOCIAL_COSTS_CONFIG_WARN": "Cálculo de custo pode estar desconfigurado. Por favor notifique seu administrador.",
         "STEPWISE_TITLE": "Contagem Semanal: Últimos 90 Dias",
         "TODDOW_TITLE": "Hora do Dia, Dia da Semana: Últimos 90 Dias",
-        "TOD_LAST_YEAR_TITLE": "Hora do Dia, Dia da Semana",
+        "TOD_LAST_YEAR_TITLE": "Concentração de Acidentes por Hora do Dia e Dia da Semana",
         "VIEW_ALL": "Exibir Tudo"
     },
     "DAY": {
@@ -120,7 +120,7 @@
         "PASSWORD": "Senha",
         "PASSWORD_CONFIRM": "Confirmar senha",
         "SIGN_IN": "Entrar",
-        "SIGN_UP": "Inscreva-se",
+        "SIGN_UP": "Primeiro Acesso? Inscreva-se!",
         "USERNAME": "Nome de Usuário",
         "FORGOT": "Esqueceu a senha?",
         "INSERT_EMAIL": "Preencha o campo email",
@@ -186,7 +186,8 @@
         "RECORD_DETAILS": "Detalhes dos Registros",
         "RECORD_LIST": "Lista de Registros",
         "ENFORCER_ASSIGNMENTS": "Fizcalização",
-        "GEOGRAPHIC_TITLE": "Região"
+        "GEOGRAPHIC_TITLE": "Região",
+        "TUTORIAL": "Tutorial"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "Adicionar \\{\\{0\\}\\}",

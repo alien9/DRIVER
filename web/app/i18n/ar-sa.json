@@ -186,7 +186,8 @@
         "RECORD_DETAILS": "تفاصيل السجل",
         "RECORD_LIST": "كل السجلات",
         "ENFORCER_ASSIGNMENTS": "!Enforcement",
-        "GEOGRAPHIC_TITLE": "!Regions"
+        "GEOGRAPHIC_TITLE": "!Regions",
+        "TUTORIAL": "!Tutorial"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "!Add \\{\\{0\\}\\}",

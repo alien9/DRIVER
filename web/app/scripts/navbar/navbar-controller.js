@@ -31,7 +31,7 @@
             setUserInfo();
             setFilters($state.current);
             setStates();
-
+            ctl.isTutorial = false;
             initialized = true;
         }
 
@@ -198,6 +198,12 @@
                 backdrop: 'static'
             });
         }
+        ctl.tutorial = function(){
+            ctl.isTutorial = !ctl.isTutorial;
+        };
+        $scope.$on('driver.exitTutorial', function() {
+            ctl.isTutorial = false;
+        });
     }
 
     angular.module('driver.navbar')

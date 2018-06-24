@@ -1,0 +1,92 @@
+.tutorial{
+    z-index:10000;
+    position:absolute;
+    top:0;
+    bottom:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    .manta{
+        position:absolute;
+        top:0;
+        bottom:0;
+        width:100%;
+        height:100%;
+        background-color:#000;
+        opacity:0.5;
+    }
+    .page{
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom:0;
+        right:0;
+        background: white;
+        margin: 45px;
+        border: 1px solid #666;
+        overflow-y: scroll;
+    }
+    .subpage{
+        position:relative;
+        top:0;
+        left:0;
+        bottom:0;
+        margin:0;
+        padding:0;
+    }
+    .leaflet-popup-close-button{
+        float:right;
+        font-size:32px;
+    }
+    .controls{
+        position: absolute;
+        right:0;
+    }
+    .page-item{
+        padding:2em;
+    }
+    div.pan{
+        float:left;
+        vertical-align:top;
+        background:white;
+        font-size: 18px;
+    }
+    div.text{
+        max-width:45%;
+        padding:0 18px;
+    }
+    ol.lista{
+        line-height:2em;
+    }
+    div.pan>p{
+        line-height:2em;
+    }
+    p.clear, div.clear {
+        clear: both;
+    }
+    .controls{
+        float:right;
+    }
+    .controls-left{
+       top: 0; left: 0; bottom: 0;
+       position:absolute;
+       margin:auto;
+    }
+    .controls-right{
+       position:absolute;
+       right:0; top: 0; bottom: 0;
+       margin:auto;
+    }
+    .controls-right, .controls-left{
+        padding:12px;
+        font-size: 38px;
+        height:100px;
+    }
+    .navigate{
+        position:relative;
+        position:relative;
+        width:100%;height:100%;
+
+
+    }
+}

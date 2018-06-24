@@ -1,0 +1,22 @@
+
+body{
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+div.pan{
+    float:left;
+    width:45%;
+    vertical-align:top;
+    background:white;
+}
+ol.lista{
+    line-height:2em;
+}
+div.pan>p{
+    line-height:2em;
+}
+p.clear, div.clear {
+    clear: both;
+}
+.controls{
+    float:right;
+}
