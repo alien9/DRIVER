@@ -104,7 +104,6 @@
         'driver.config',
         'ase.auth',
         'driver.navbar',
-        'driver.tutorial',
         'driver.filterbar',
         'driver.toddow',
         'driver.state',
@@ -119,7 +118,8 @@
         'driver.views.duplicates',
         'ui.router',
         'LocalStorageModule',
-        'pascalprecht.translate'
+        'pascalprecht.translate',
+        'driver.tutorial'
     ])
     .config(DefaultRoutingConfig)
     .config(LogConfig)

@@ -9,6 +9,15 @@
                     <label for="username" class="text-right-on-rtl">{{ 'LOGIN.EMAIL' | translate }}:</label>
                     <input type="text" id="email" class="form-control" ng-model="auth.email" />
                 </div>
+                <div class="form-group">
+                    <label for="username" class="text-right-on-rtl">{{ 'LOGIN.CAPTCHA' | translate }}:</label>
+                    <p>
+                    <img ng-src="{{captchaSrc}}" alt="captcha" class="captcha">
+                    <input style="display:none" id="id_captcha_0" name="captcha_0" type="text" ng-value="captchaCode" ng-model="auth.captcha_0">
+                    <input autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" id="id_captcha_1" name="captcha_1" type="text" ng-model="auth.captcha_1">
+                    </p>
+                </div>
+
                 <button type="submit" class="btn btn-default btn-lg">
                     {{ 'LOGIN.SIGN_UP' | translate }}
                 </button>

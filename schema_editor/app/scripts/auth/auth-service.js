@@ -25,9 +25,22 @@
             return !!(module.getToken() && module.getUserId() >= 0);
         };
 
+        module.captcha = function(){
+            var dfd = $q.defer();
+            $http.get(ASEConfig.api.hostname + '/signup').success(function(r){
+                var cid = r.match(/\/captcha\/image\/(.*?)\//);
+                dfd.resolve({
+                    captchaUrl: ASEConfig.api.hostname + cid[0],
+                    value: cid[1]
+                });
+            });
+            return dfd.promise;
+        }
+
         module.create = function(userdata, needsAdmin){
             var dfd = $q.defer();
-            $http.post(ASEConfig.api.hostname + '/api/create-user/', userdata, {headers: {'Content-Type': 'application/json'} })
+            $http.post(ASEConfig.api.hostname + '/api/create-user/', userdata)
+            //$http({url: ASEConfig.api.hostname + '/api/create-user/', method: 'POST', data: userdata})
             .success(function(data, status) {
                 userdata.username=userdata.email;
                 dfd.resolve({

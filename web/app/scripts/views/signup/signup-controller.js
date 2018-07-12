@@ -25,20 +25,19 @@
                     'status':''
                 });
             }
-            /*if($scope.auth.password!==$scope.auth.passwordConfirm){
-                handleError({
-                    'status':'As senhas não coincidem'
-                });
-                return;
-            }*/
+            /*jshint camelcase: false */
+            $scope.auth.captcha_0 = $scope.captchaCode;
+            /*jshint camelcase: true */
             $scope.created = AuthService.create($scope.auth).then(function(result){
-                $scope.pending = false;
                 switch(result.status){
                     case 400:
                         $scope.addAlert({
                             type: 'danger',
                             msg: result.error
                         });
+                        resetCaptcha();
+                        $scope.pending = false;
+
                         break;
                     case 201:
                     case 200:
@@ -47,6 +46,8 @@
                                 type: 'danger',
                                 msg: $translate.instant('LOGIN.PASSWORD_RESET_LINK_SENT')
                             });
+                            resetCaptcha();
+                            $scope.pending = false;
                         });
                 }
             });
@@ -54,15 +55,34 @@
 
         var handleError = function(result) {
             $scope.pending = false;
+            if(!$scope.auth){
+                $scope.auth = {};
+            }
             $scope.auth.failure = true;
-            var msg = result.error ||
-                    result.status + ': ' + $translate.instant('ERRORS.UNKNOWN_ERROR') + '.';
+            var msg;
+            if(!result.error){
+                msg = result.status + ': ' + $translate.instant('ERRORS.UNKNOWN_ERROR') + '.';
+            }else{
+                msg = $translate.instant(result.error);
+            }
+
             $scope.addAlert({
                 type: 'danger',
                 msg: msg
             });
         };
-
+        var resetCaptcha = function(){
+            AuthService.captcha().then(function(k){
+                $scope.captchaSrc = k.captchaUrl;
+                $scope.captchaCode = k.value;
+                if($scope.auth){
+                    /*jshint camelcase: false */
+                    $scope.auth.captcha_1 = '';
+                    /*jshint camelcase: true */
+                }
+            });
+        };
+        resetCaptcha();
     }
     angular.module('driver.views.signup').controller('SignupController', SignupController);
 })();

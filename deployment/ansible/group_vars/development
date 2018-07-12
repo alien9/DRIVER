@@ -36,3 +36,6 @@ driver_app_hostname: "{{ web_js_api_hostname }}"
 
 editor_js_api_hostname: "http://localhost:7000"
 google_analytics_id: "GTM-5B5G65"
+
+## page where to land after login
+start_page: "/"

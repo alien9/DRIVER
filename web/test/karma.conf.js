@@ -280,6 +280,8 @@ module.exports = function(config) {
       'app/scripts/nominatim/*.js',
       'app/scripts/filterbar/module.js',
       'app/scripts/filterbar/**.js',
+      'app/scripts/tutorial/module.js',
+      'app/scripts/tutorial/**.js',
       'app/scripts/toddow/module.js',
       'app/scripts/toddow/**.js',
       'app/scripts/stepwise/module.js',

@@ -28,7 +28,12 @@ from driver_auth.permissions import (IsAdminOrReadSelfOnly, IsAdminOrReadOnly, i
                                      is_admin)
 from django.views.decorators.csrf import csrf_exempt
 import json
-
+from django import forms
+from captcha.fields import CaptchaField
+from captcha.models import CaptchaStore
+from django.http import HttpResponse
+from django.shortcuts import render
+from django.utils import  timezone
 # match what auth-service.js looks for
 USER_ID_COOKIE = 'AuthService.userId'
 TOKEN_COOKIE = 'AuthService.token'
@@ -84,15 +89,22 @@ def user_create(request):
     #return JsonResponse({'error': request.POST},status=status.HTTP_400_BAD_REQUEST)
     #if not 'data' in request:
     #    return JsonResponse({'error': 'missing data'}, status=status.HTTP_400_BAD_REQUEST)
+
     d = json.loads(request.body)
+    if not 'email' in d:
+        return JsonResponse({'username': 'LOGIN.EMAIL_NEEDED'}, status=status.HTTP_400_BAD_REQUEST)
+    if not 'captcha_0' in d or not 'captcha_1' in d:
+        return JsonResponse({'captcha_1': 'LOGIN.CAPTCHA_MISSING'}, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        CaptchaStore.objects.get(response=d['captcha_1'].lower(), hashkey=d['captcha_0'], expiration__gt=timezone.now()).delete()
+    except CaptchaStore.DoesNotExist:
+        return JsonResponse({'captcha_1': 'LOGIN.CAPTCHA_ERROR'}, status=status.HTTP_400_BAD_REQUEST)
+
     from os import urandom
     chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
     d['groups']=[]
     d['username']=d['email']
     d['password'] = "".join(chars[ord(c) % len(chars)] for c in urandom(64))
-
-    #if len(d['password']) < 6:
-    #    return JsonResponse({"password": ["Password must have at least 6 characters"]}, status=status.HTTP_400_BAD_REQUEST)
 
     serialized = UserSerializer(data=d, context={"request": request})
     if serialized.is_valid():
@@ -102,6 +114,18 @@ def user_create(request):
         return JsonResponse(serialized.data, status=status.HTTP_201_CREATED)
     else:
         return JsonResponse(serialized.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@csrf_exempt
+def signup(request):
+    if request.POST:
+        nop
+    else:
+        form = CaptchaSignupForm()
+        return HttpResponse(form.as_p())
+
+class CaptchaSignupForm(forms.Form):
+    email = forms.CharField()
+    captcha = CaptchaField()
 
 class DriverSsoAuthToken(APIView):
     parser_classes = (JSONParser,)

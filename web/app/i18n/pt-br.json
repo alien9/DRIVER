@@ -125,7 +125,11 @@
         "FORGOT": "Esqueceu a senha?",
         "INSERT_EMAIL": "Preencha o campo email",
         "RESET_PASSWORD": "Redefinir senha",
-        "PASSWORD_RESET_LINK_SENT": "Um link para definição da senha foi enviado para seu email"
+        "PASSWORD_RESET_LINK_SENT": "Um link para definição da senha foi enviado para seu email",
+        "CAPTCHA": "Texto na imagem:",
+        "CAPTCHA_ERROR": "A resposta não confere.",
+        "LOGIN.CAPTCHA_MISSING": "Responda",
+        "EMAIL_NEEDED": "Email necessário"
     },
     "MANAGEMENT": {
         "ACCOUNT_INFORMATION": "Informação da Conta",

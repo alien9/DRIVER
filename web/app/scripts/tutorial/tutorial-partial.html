@@ -7,7 +7,7 @@
             </a>
         </div>
         <div class="controls-right">
-            <a ng-click="ctl.pageUp()" ng-if="!ctl.isThisPage(5);">
+            <a ng-click="ctl.pageUp()" ng-if="!ctl.isThisPage(6);">
                 <span class="glyphicon glyphicon-chevron-right"></span>
             </a>
         </div>
@@ -19,10 +19,10 @@
                     <a class="leaflet-popup-close-button" ng-click="ctl.close()" href="#">×</a>
                 </div>
                 <div class="page-item" ng-if="ctl.isThisPage(0)">
-                    <p>A plataforma VIDA SEGURA &eacute; uma aplica&ccedil;&atilde;o web para visualiza&ccedil;&atilde;o, an&aacute;lise e disponibiliza&ccedil;&atilde;o de dados de acidente de tr&acirc;nsito consolidados anualmente na cidade de S&atilde;o Paulo, com interfaces gr&aacute;ficas, mapa, lista de registros e exporta&ccedil;&atilde;o de conjuntos de dados via arquivo csv.</p>
+                    <p class="usual">A plataforma VIDA SEGURA &eacute; uma aplica&ccedil;&atilde;o web para visualiza&ccedil;&atilde;o, an&aacute;lise e disponibiliza&ccedil;&atilde;o de dados de acidente de tr&acirc;nsito consolidados anualmente na cidade de S&atilde;o Paulo, com interfaces gr&aacute;ficas, mapa, lista de registros e exporta&ccedil;&atilde;o de conjuntos de dados via arquivo csv.</p>
                     <h1>PAINEL</h1>
                     <div>
-                        <p>O Painel &eacute; a interface inicial da Plataforma, com um panorama sobre os dados de acidente de tr&acirc;nsito em 2017, 2016 e 2015 a partir das seguintes janelas:</p>
+                        <p class="usual">O Painel &eacute; a interface inicial da Plataforma, com um panorama sobre os dados de acidente de tr&acirc;nsito em 2017, 2016 e 2015 a partir das seguintes janelas:</p>
                         <div class="pan">
                             <img src="/styles/images/tutorial/page_0.png">
                         </div>
@@ -37,16 +37,17 @@
                             </ol>
                         </div>
                     </div>
-                    <p class="clear">Sem nenhum filtro acionado, os dados mostrados correspondem ao munic&iacute;pio de S&atilde;o Paulo.</p>
+                    <p class="clear usual">Sem nenhum filtro acionado, os dados mostrados correspondem ao munic&iacute;pio de S&atilde;o Paulo.</p>
                 </div>
                 <div class="page-item" ng-if="ctl.isThisPage(1)">
                     <h1>APLICANDO FILTROS NO PAINEL</h1>
                     <div>
                         <div class="pan">
-                            <img src="/styles/images/tutorial/page_1.gif">
+                            <img src="/tutorial/images/page_1.gif">
                         </div>
                         <div class="pan text">
-                            <p>As informa&ccedil;&otilde;es exibidas no Painel podem ser filtradas de acordo com Distritos e Prefeituras Regionais; para tanto, basta clicar em &ldquo;Regi&atilde;o&rdquo; na barra superior, para selecionar se a filtragem ser&aacute; feita por Distrito ou Prefeitura Regional. O bot&atilde;o &ldquo;Todo&rdquo; - ao lado de &ldquo;Regi&atilde;o&rdquo; - &eacute; uma lista que permite a sele&ccedil;&atilde;o de uma das &aacute;reas selecionadas da cidade.</p>
+                            <p>As informa&ccedil;&otilde;es exibidas no Painel podem ser filtradas de acordo com Distritos e Prefeituras Regionais; para tanto, basta clicar em &ldquo;Regi&atilde;o&rdquo; na barra superior, para selecionar se a filtragem ser&aacute; feita por Distrito ou Prefeitura Regional. </p>
+                            <p>O bot&atilde;o &ldquo;Toda&rdquo; - ao lado de &ldquo;Regi&atilde;o&rdquo; - &eacute; uma lista que permite a sele&ccedil;&atilde;o de uma das &aacute;reas selecionadas da cidade.</p>
                         </div>
                     </div>
                     <p  class="clear"></p>
@@ -55,7 +56,7 @@
                     <h1>ACESSANDO OS DADOS</h1>
                     <div>
                         <div class="pan">
-                            <img src="/styles/images/tutorial/page_2.gif">
+                            <img src="/tutorial/images/page_2.gif">
                         </div>
                         <div class="pan text">
                             <p>Do Painel, o usu&aacute;rio pode acessar e trabalhar com os dados utilizando o Mapa ou a Lista de Registros</p>
@@ -63,9 +64,11 @@
                         </div>
                     </div>
                     <p  class="clear"></p>
+                </div>
+                <div class="page-item" ng-if="ctl.isThisPage(3)">
                     <div>
                         <div class="pan">
-                            <img src="/styles/images/tutorial/page_3.gif">
+                            <img src="/tutorial/images/page_3.gif">
                         </div>
                         <div class="pan text">
                             <p>Tanto o Mapa quanto a Lista de Registros podem ser acessados pelo bot&atilde;o Painel, que abre uma lista com as outras op&ccedil;&otilde;es de visualiza&ccedil;&atilde;o.</p>
@@ -73,11 +76,11 @@
                     </div>
                     <p  class="clear"></p>
                 </div>
-                <div class="page-item" ng-if="ctl.isThisPage(3)">
+                <div class="page-item" ng-if="ctl.isThisPage(4)">
                     <h1>MAPA</h1>
                     <div>
                         <div class="pan">
-                            <img src="/styles/images/tutorial/page_4.gif">
+                            <img src="/tutorial/images/page_4.gif">
                         </div>
                         <div class="pan text">
                             <p>Ap&oacute;s acessar o mapa, &eacute; poss&iacute;vel visualizar os detalhes do acidente clicando no respectivo ponto azul, e a seguir clicando em &ldquo;Exibir&rdquo; no pop-up que aparece na tela.
@@ -86,10 +89,10 @@
                     </div>
                     <p  class="clear"></p>
                 </div>
-                <div class="page-item" ng-if="ctl.isThisPage(4)">
+                <div class="page-item" ng-if="ctl.isThisPage(5)">
                     <div class="clear">
                         <div class="pan">
-                            <img src="/styles/images/tutorial/page_5.gif">
+                            <img src="/tutorial/images/page_5.gif">
                         </div>
                         <div class="pan text">
                             <p>Tamb&eacute;m &eacute; poss&iacute;vel adicionar layers ao mapa clicando no bot&atilde;o localizado no canto superior direito; como pontos cr&iacute;ticos e um mapa de calor.</p>
@@ -97,10 +100,10 @@
                     </div>
                     <p  class="clear"></p>
                 </div>
-                <div class="page-item" ng-if="ctl.isThisPage(5)">
+                <div class="page-item" ng-if="ctl.isThisPage(6)">
                     <div>
                         <div class="pan">
-                            <img src="/styles/images/tutorial/page_6.gif">
+                            <img src="/tutorial/images/page_6.gif">
                         </div>
                         <div class="pan text">
                             <p>Na Interface de Mapa, tamb&eacute;m &eacute; poss&iacute;vel exportar os dados em formato .csv.</p>
@@ -108,10 +111,8 @@
                         </div>
                         <p  class="clear"></p>
                         <h1>GR&Aacute;FICOS</h1>
-                        <p>No canto inferior esquerdo, &eacute; poss&iacute;vel acessar alguns gr&aacute;ficos sobre a amostra exibida; um deles &eacute; a concentra&ccedil;&atilde;o de acidentes por hora do dia e dia da semana, e o outro &eacute; o n&uacute;mero de acidentes agregado por semana do ano.</p>
-
+                        <p class="usual">No canto inferior esquerdo, &eacute; poss&iacute;vel acessar alguns gr&aacute;ficos sobre a amostra exibida; um deles &eacute; a concentra&ccedil;&atilde;o de acidentes por hora do dia e dia da semana, e o outro &eacute; o n&uacute;mero de acidentes agregado por semana do ano.</pTodo>
                     </div>
-
                 </div>
             </div>
         </div>

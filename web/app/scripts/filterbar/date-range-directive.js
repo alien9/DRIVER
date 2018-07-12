@@ -106,7 +106,7 @@
                     var year = (new Date()).getFullYear();
                     var defaultMax = new Date(year, 0, 1);
 
-                    var defaultMin = new Date(year-1, 0, 1);//moment(defaultMax) - moment.duration({days:90}));
+                    var defaultMin = new Date(year-1, 0, 1);
                     $('#dtMaxField')
                         .calendarsPicker(scope.calendarOptions)
                         .calendarsPicker('setDate', calendar.fromJSDate(defaultMax))

@@ -125,7 +125,11 @@
         "FORGOT": "Forgot Password",
         "INSERT_EMAIL": "Type email address",
         "RESET_PASSWORD": "Reset password",
-        "PASSWORD_RESET_LINK_SENT": "A link to reset password was sent to your email address"
+        "PASSWORD_RESET_LINK_SENT": "A link to reset password was sent to your email address",
+        "CAPTCHA": "Captcha",
+        "LOGIN.CAPTCHA_ERROR": "Captcha error",
+        "LOGIN.CAPTCHA_MISSING": "Captcha missing",
+        "EMAIL_NEEDED": "Email needed"
     },
     "MANAGEMENT": {
         "ACCOUNT_INFORMATION": "Account Information",

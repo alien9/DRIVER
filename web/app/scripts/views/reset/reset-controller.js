@@ -45,7 +45,6 @@
                 msg: msg
             });
         };
-
     }
     angular.module('driver.views.reset').controller('ResetController', ResetController);
 })();
