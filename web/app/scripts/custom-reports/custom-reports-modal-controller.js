@@ -124,8 +124,10 @@
                     return value;
                 }
             });
+            var u = $window.location.pathname + $state.href('report', urlParams, {absolute: false});
 
-            $window.open($state.href('report', urlParams, {absolute: true}), '_blank');
+
+            $window.open(u, '_blank');
         }
 
         return ctl;
