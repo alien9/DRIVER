@@ -13,9 +13,27 @@
         mode=0775
         state=directory
 
-- name: Authenticate to ECR
-  shell: $(aws ecr get-login --no-include-email --region us-east-1)
+- name: Install pexpect
+  command: pip install pexpect
+  when: aws_access_key_id is defined
 
+- name: Install awscli
+  command: pip install awscli
+  when: aws_access_key_id is defined
+
+- name: Create aws credentials
+  expect:
+    command: aws configure
+    responses:
+      (?i)aws\saccess: "{{aws_access_key_id}}"
+      (?i)aws\ssecret: "{{aws_secret_access_key}}"
+      (?i)region\sname: "{{aws_region_name}}"
+      (?i)output\sformat: "{{aws_output_format}}"
+  when: aws_access_key_id is defined
+
+- name: Authenticate to ECR
+  shell: $(aws ecr get-login --region us-east-1)
+  when: aws_access_key_id is defined
 
 - name: Build application Docker image
   command: >
