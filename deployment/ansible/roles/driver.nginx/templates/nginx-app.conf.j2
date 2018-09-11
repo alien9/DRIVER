@@ -204,9 +204,9 @@ server {
         proxy_set_header   X-Real-IP        $remote_addr;
         proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
     }
-
+{% if geoserver %}
     location /geoserver/ {
-        proxy_pass http://localhost:8080;
+        proxy_pass http://{{ geoserver }}:8080;
         proxy_read_timeout 40s;
         proxy_redirect     off;
         proxy_set_header   Host $http_host;
@@ -216,6 +216,7 @@ server {
         proxy_set_header   X-Forwarded-For  $proxy_add_x_forwarded_for;
         client_max_body_size 20M;
     }
+{% endif %}
 }
 
 {% if staging or production %}

@@ -12,6 +12,11 @@
                 label="key"
                 data="value"
                 class="dropdown"></li>
+            <li ng-if="value.fieldType === 'number'"
+                numeric-range-field
+                label="key"
+                data="value"
+                class="dropdown"></li>
             <li ng-if="value.fieldType === 'selectlist'"
                 options-field
                 label="key"

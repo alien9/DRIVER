@@ -427,6 +427,7 @@ READ_ONLY_FIELDS_REGEX = r'Details$'
 #EMAIL_HOST_PASSWORD = 'test432pest'
 #EMAIL_PORT = 587
 
+#EMAIL_HOST = '10.10.67.34'
 EMAIL_HOST = '172.17.0.1'
 #EMAIL_HOST_USER = 'noreply@vidasegura.prefeitura.sp.gov.br'
 EMAIL_PORT = 25

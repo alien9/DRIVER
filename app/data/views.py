@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from collections import defaultdict
 import json
 import logging
@@ -155,6 +158,7 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
             response = Response(dict())
             query_sql = self.generate_query_sql(request)
             tile_token = uuid.uuid4()
+            print(query_sql)
             self._cache_tile_sql(tile_token, query_sql.encode('utf-8'))
             response.data['tilekey'] = tile_token
         else:
@@ -169,7 +173,10 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         # since the stored sql will be parsed by Windshaft / Postgres, we need
         # to store the data exactly as it is.
         redis_conn = get_redis_connection('default')
-        redis_conn.set(token, sql.encode('utf-8'))
+        try:
+            redis_conn.set(token, sql.encode('utf-8'))
+        except:
+            redis_conn.set(token, sql)
 
     @list_route(methods=['get'])
     def stepwise(self, request):
