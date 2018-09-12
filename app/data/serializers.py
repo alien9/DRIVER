@@ -82,6 +82,7 @@ class RecordDuplicateSerializer(ModelSerializer):
 
     class Meta:
         model = RecordDuplicate
+        fields = '__all__'
 
 
 class RecordCostConfigSerializer(ModelSerializer):
