@@ -173,10 +173,7 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         # since the stored sql will be parsed by Windshaft / Postgres, we need
         # to store the data exactly as it is.
         redis_conn = get_redis_connection('default')
-        try:
-            redis_conn.set(token, sql.encode('utf-8'))
-        except:
-            redis_conn.set(token, sql)
+        redis_conn.set(token, sql.encode('utf-8'))
 
     @list_route(methods=['get'])
     def stepwise(self, request):
