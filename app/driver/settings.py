@@ -433,12 +433,12 @@ READ_ONLY_FIELDS_REGEX = r'Details$'
 #EMAIL_HOST_PASSWORD = 'test432pest'
 #EMAIL_PORT = 587
 
-#EMAIL_HOST = '10.10.67.34'
-EMAIL_HOST = '172.17.0.1'
+EMAIL_HOST = '10.10.67.34'
+#EMAIL_HOST = '172.17.0.1'
 #EMAIL_HOST_USER = 'noreply@vidasegura.prefeitura.sp.gov.br'
 EMAIL_PORT = 25
 EMAIL_USE_TLS = False
-DEFAULT_FROM_EMAIL = 'vidasegura@prefeitura.sp.gov.br'
+#DEFAULT_FROM_EMAIL = 'vidasegura@prefeitura.sp.gov.br'
 
 START_PAGE = os.environ.get('DRIVER_START_PAGE', '/')
 
