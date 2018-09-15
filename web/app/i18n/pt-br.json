@@ -127,7 +127,7 @@
         "RESET_PASSWORD": "Redefinir senha",
         "PASSWORD_RESET_LINK_SENT": "Um link para definição da senha foi enviado para seu email",
         "CAPTCHA": "Texto na imagem:",
-        "CAPTCHA_ERROR": "A resposta não confere.",
+        "CAPTCHA_ERROR": "A resposta do captcha não confere.",
         "LOGIN.CAPTCHA_MISSING": "Responda",
         "EMAIL_NEEDED": "Email necessário"
     },

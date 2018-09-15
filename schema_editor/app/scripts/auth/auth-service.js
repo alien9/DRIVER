@@ -91,6 +91,12 @@
 
         }
 
+        module.getCsrf = function() {
+            $http.get(ASEConfig.api.hostname + '/password_reset/').success(function(data,status){
+                $cookies.set('csrftoken', data.match(/csrfmiddlewaretoken' value='(.*?)'/).pop());
+            });
+        }
+
 
         module.authenticate = function(auth, needsAdmin, d) {
             var dfd;
@@ -264,6 +270,8 @@
             userId = !isNaN(userId) && userId >= 0 ? userId : -1;
             $cookies.putObject(userIdCookieString, userId, {path: '/'});
         }
+
+
     }
 
     angular.module('ase.auth').factory('AuthService', AuthService);

@@ -438,7 +438,7 @@ EMAIL_HOST = '10.10.67.34'
 #EMAIL_HOST_USER = 'noreply@vidasegura.prefeitura.sp.gov.br'
 EMAIL_PORT = 25
 EMAIL_USE_TLS = False
-#DEFAULT_FROM_EMAIL = 'vidasegura@prefeitura.sp.gov.br'
+DEFAULT_FROM_EMAIL = 'webmaster@vidasegura.prefeitura.sp.gov.br'
 
 START_PAGE = os.environ.get('DRIVER_START_PAGE', '/')
 

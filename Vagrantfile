@@ -58,7 +58,6 @@ Vagrant.configure("2") do |config|
     database.hostmanager.aliases = %w(database.service.driver.internal redis.service.driver.internal)
     database.vm.network "private_network", ip: "192.168.12.101"
 
-
     # For PGAdmin access, uncomment and `vagrant reload`
     database.vm.network "forwarded_port", guest: 5432, host: Integer(ENV.fetch("DRIVER_DATABASE_PORT_5432", 15432))
 

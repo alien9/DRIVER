@@ -45,6 +45,7 @@
                 msg: msg
             });
         };
+        AuthService.getCsrf();
     }
     angular.module('driver.views.reset').controller('ResetController', ResetController);
 })();
