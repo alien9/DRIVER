@@ -191,7 +191,8 @@
         "RECORD_LIST": "!Record List",
         "ENFORCER_ASSIGNMENTS": "!Enforcement",
         "GEOGRAPHIC_TITLE": "!Regions",
-        "TUTORIAL": "!Tutorial"
+        "TUTORIAL": "!Tutorial",
+        "METADATA": "!Metadata"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "!Add \\{\\{0\\}\\}",

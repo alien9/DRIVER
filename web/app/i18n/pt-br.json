@@ -191,7 +191,8 @@
         "RECORD_LIST": "Lista de Registros",
         "ENFORCER_ASSIGNMENTS": "Fizcalização",
         "GEOGRAPHIC_TITLE": "Região",
-        "TUTORIAL": "Tutorial"
+        "TUTORIAL": "Tutorial",
+        "METADATA": "Metadados"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "Adicionar \\{\\{0\\}\\}",

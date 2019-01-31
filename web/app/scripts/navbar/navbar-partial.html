@@ -61,7 +61,11 @@
                         </li>
                     </ul>
                 </li>
-
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" ng-click="ctl.tutorial()" ng-keypress="ctl.keypress">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                </li>
             </ul>
 
             <ul ng-if="ctl.authenticated" class="nav navbar-nav navbar-right">
@@ -83,9 +87,14 @@
                                 {{ 'NAV.MANAGE_DUPLICATE_RECORDS' | translate }}
                             </a>
                         </li>
-                        <li>
+                        <!--li>
                             <a ng-click="ctl.tutorial()">
                                 {{ 'NAV.TUTORIAL' | translate }}
+                            </a>
+                        </li-->
+                        <li>
+                            <a href="/download/vidasegura_metadados.csv">
+                                {{ 'NAV.METADATA' | translate }}
                             </a>
                         </li>
                         <li>

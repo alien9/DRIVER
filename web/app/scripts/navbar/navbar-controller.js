@@ -2,7 +2,7 @@
     'use strict';
 
     /* ngInject */
-    function NavbarController($rootScope, $scope, $state, $modal, $translate, $window,
+    function NavbarController($rootScope, $scope, $state, $modal, $translate, $window, $document,
                               AuthService, BoundaryState, GeographyState, InitialState,
                               LanguageState, MapState, RecordState, UserService, WebConfig) {
         var ctl = this;
@@ -33,6 +33,15 @@
             setStates();
             ctl.isTutorial = false;
             initialized = true;
+            $scope.$on('driver.exitTutorial', function() {
+                ctl.isTutorial = false;
+            });
+            var control=ctl;
+            $document.bind('keyup', function (e) {
+                if(e.keyCode===27){
+                    control.isTutorial = false;
+                }
+            });
         }
 
         $rootScope.$on('$stateChangeSuccess', function (event, toState) {
@@ -201,9 +210,6 @@
         ctl.tutorial = function(){
             ctl.isTutorial = !ctl.isTutorial;
         };
-        $scope.$on('driver.exitTutorial', function() {
-            ctl.isTutorial = false;
-        });
     }
 
     angular.module('driver.navbar')
