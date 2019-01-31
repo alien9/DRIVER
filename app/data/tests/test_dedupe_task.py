@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import pytz
 
-from ashlar.models import RecordSchema, RecordType, Record
+from grout.models import RecordSchema, RecordType, Record
 from data.models import DedupeJob, RecordDuplicate
 from data.tasks import find_duplicates as task
 

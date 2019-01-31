@@ -6,7 +6,7 @@ import re
 
 from celery import shared_task
 
-from ashlar.models import Record
+from grout.models import Record
 from black_spots.models import BlackSpotRecordsFile
 
 

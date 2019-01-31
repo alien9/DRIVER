@@ -53,7 +53,7 @@ INSTALLED_APPS = (
     'django_filters',
     'rest_framework_gis',
 
-    'ashlar',
+    'grout',
 
     'driver',
     'driver_auth',
@@ -180,7 +180,7 @@ LOGGING = {
             'propagate': True,
             'level': 'INFO',
         },
-        'ashlar': {
+        'grout': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
@@ -324,12 +324,13 @@ DEDUPE_TIME_RANGE_HOURS = 12
 # .001 ~= 110m
 DEDUPE_DISTANCE_DEGREES = 0.0008
 
-ASHLAR = {
+GROUT = {
     # It is suggested to change this if you know that your data will be limited to
     # a certain part of the world, for example to a UTM Grid projection or a state
     # plane.
     'SRID': 4326,
 }
+
 
 ## django-oidc settings
 HOST_URL = os.environ.get('DRIVER_APP_HOST', os.environ.get('HOSTNAME'))

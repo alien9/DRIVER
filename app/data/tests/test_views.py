@@ -13,7 +13,7 @@ from rest_framework import status
 from django.contrib.auth.models import User, Group
 from django.conf import settings
 
-from ashlar.models import RecordSchema, RecordType, Record
+from grout.models import RecordSchema, RecordType, Record
 
 from data.filters import RecordAuditLogFilter
 from data.models import RecordAuditLogEntry, DedupeJob, RecordDuplicate

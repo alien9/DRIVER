@@ -2,7 +2,7 @@ from django.contrib.gis.geos import GEOSGeometry
 from rest_framework.exceptions import ParseError, NotFound
 from rest_framework.serializers import ModelSerializer
 
-from ashlar.models import BoundaryPolygon
+from grout.models import BoundaryPolygon
 from black_spots.models import (BlackSpot, BlackSpotSet, BlackSpotConfig)
 from black_spots.filters import parse_and_validate_dt
 

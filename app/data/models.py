@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.postgres.fields import HStoreField
 from django.contrib.auth.models import User
 
-from ashlar.models import AshlarModel, Record, RecordType
+from grout.models import GroutModel, Record, RecordType
 
 
 class RecordAuditLogEntry(models.Model):
@@ -70,7 +70,7 @@ class DedupeJob(models.Model):
         get_latest_by = 'datetime'
 
 
-class RecordDuplicate(AshlarModel):
+class RecordDuplicate(GroutModel):
     """ Store information about a possible duplicate record pair
     Duplicates are found using a time-distance heuristic
     """
@@ -81,7 +81,7 @@ class RecordDuplicate(AshlarModel):
     job = models.ForeignKey(DedupeJob)
 
 
-class RecordCostConfig(AshlarModel):
+class RecordCostConfig(GroutModel):
     """Store a configuration for calculating costs of incidents.
 
     This takes the form of a reference to an enum field on a RecordType, along with user-

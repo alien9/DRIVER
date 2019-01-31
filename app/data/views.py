@@ -38,14 +38,14 @@ from rest_framework import renderers, status
 
 from rest_framework_csv import renderers as csv_renderer
 
-from ashlar.models import RecordSchema, RecordType, BoundaryPolygon, Boundary
-from ashlar.views import (BoundaryPolygonViewSet,
+from grout.models import RecordSchema, RecordType, BoundaryPolygon, Boundary
+from grout.views import (BoundaryPolygonViewSet,
                           RecordViewSet,
                           RecordTypeViewSet,
                           RecordSchemaViewSet,
                           BoundaryViewSet)
 
-from ashlar.serializers import RecordSchemaSerializer
+from grout.serializers import RecordSchemaSerializer
 
 from driver_auth.permissions import (IsAdminOrReadOnly,
                                      ReadersReadWritersWrite,
@@ -93,7 +93,7 @@ def build_toddow(queryset):
 
 
 class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
-    """Override base RecordViewSet from ashlar to provide aggregation and tiler integration
+    """Override base RecordViewSet from grout to provide aggregation and tiler integration
     """
     permission_classes = (ReadersReadWritersWrite,)
 
@@ -1185,7 +1185,7 @@ def start_jar_build(schema_uuid):
     return True
 
 
-# override ashlar views to set permissions and trigger model jar builds
+# override grout views to set permissions and trigger model jar builds
 class DriverBoundaryPolygonViewSet(BoundaryPolygonViewSet):
     permission_classes = (IsAdminOrReadOnly,)
 
