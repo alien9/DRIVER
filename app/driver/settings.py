@@ -428,15 +428,9 @@ if len(GOOGLE_OAUTH_CLIENT_ID) > 0:
 # These fields will be visible to read-only users
 READ_ONLY_FIELDS_REGEX = r'Details$'
 
-#EMAIL_USE_TLS = True
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_HOST_USER = 'vidasegura@gmail.com'
-#EMAIL_HOST_PASSWORD = 'test432pest'
-#EMAIL_PORT = 587
+
 
 EMAIL_HOST = '10.10.67.34'
-#EMAIL_HOST = '172.17.0.1'
-#EMAIL_HOST_USER = 'noreply@vidasegura.prefeitura.sp.gov.br'
 EMAIL_PORT = 25
 EMAIL_USE_TLS = False
 DEFAULT_FROM_EMAIL = 'webmaster@vidasegura.prefeitura.sp.gov.br'

@@ -1260,7 +1260,6 @@ class DriverRecordCostConfigViewSet(viewsets.ModelViewSet):
     serializer_class = RecordCostConfigSerializer
     filter_fields = ('record_type', )
 
-
 class RecordCsvExportViewSet(viewsets.ViewSet):
     """A view for interacting with CSV export jobs
 

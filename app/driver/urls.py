@@ -57,3 +57,4 @@ urlpatterns = [
 
 # Allow login to the browseable API
 urlpatterns.append(url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')))
+

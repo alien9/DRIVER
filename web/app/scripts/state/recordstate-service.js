@@ -23,6 +23,7 @@
         svc.setSelected = setSelected;
         svc.getSelected = getSelected;
         svc.getSecondary = getSecondary;
+        svc.getTertiary = getTertiary;
         init();
 
         /**
@@ -146,6 +147,13 @@
                 return $q.resolve(secondaryType);
             } else {
                 return getSelected().then(function () { return secondaryType; });
+            }
+        }
+        function getTertiary() {
+            if (initialized) {
+                return $q.resolve(tertiaryType);
+            } else {
+                return getSelected().then(function () { return tertaryType; });
             }
         }
 

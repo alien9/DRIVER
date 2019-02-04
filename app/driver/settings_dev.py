@@ -26,7 +26,8 @@ DATABASES = {
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'noreply.vidasegura@gmail.com'
-EMAIL_HOST_PASSWORD = 'test432pest'
+EMAIL_HOST_PASSWORD = 'lxxqymslftgffkdw'
+#EMAIL_HOST_PASSWORD = 'test432pest'
 EMAIL_PORT = 587
 
 

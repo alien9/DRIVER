@@ -11,6 +11,10 @@
             ng-if="ctl.userCanWrite && ctl.showInterventions" params="ctl.recordQueryParams">
         </driver-interventions>
 
+        <driver-requests
+            ng-if="ctl.showRequests" params="ctl.recordQueryParams">
+        </driver-requests>
+
         <driver-export params="ctl.recordQueryParams"></driver-export>
         <enforcers-tool params="ctl.recordQueryParams" ng-if="ctl.showBlackSpots" style="display:none"></enforcers-tool>
         <driver-social-costs cost-data="ctl.socialCosts" as-tool="true"></driver-social-costs>

@@ -93,7 +93,7 @@
 
         module.getCsrf = function() {
             $http.get(ASEConfig.api.hostname + '/password_reset/').success(function(data,status){
-                $cookies.set('csrftoken', data.match(/csrfmiddlewaretoken' value='(.*?)'/).pop());
+                $cookies.put('csrftoken', data.match(/csrfmiddlewaretoken' value='(.*?)'/).pop());
             });
         }
 
