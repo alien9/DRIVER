@@ -51,7 +51,7 @@ ENV PATH $PATH:${ANDROID_HOME}/tools/bin
 
 # Install Android SDK components (dx.jar is in build tools)
 ENV ANDROID_SDK_COMPONENTS build-tools-${ANDROID_BUILD_TOOLS_VERSION}
-#RUN echo y | sdkmanager  "build-tools;${ANDROID_BUILD_TOOLS_VERSION}"
+RUN echo y | sdkmanager  "build-tools;${ANDROID_BUILD_TOOLS_VERSION}"
 
 # get dx.jar
 #RUN mv /usr/local/sdk-tools-linux/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/lib/dx.jar /opt/app/

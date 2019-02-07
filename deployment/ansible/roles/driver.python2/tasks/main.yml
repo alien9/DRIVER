@@ -1,0 +1,12 @@
+---
+- name: adding deadsnakes gpg key
+  command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 5BB92C09DB82666C
+
+- name: adding the repo
+  command: add-apt-repository ppa:fkrull/deadsnakes-python2.7 -y
+
+- name: Update apt to get Python from deadsnakes
+  command: apt-get update
+
+- name: Upgrade Python version so we can have SSL
+  command: apt-get install -y --only-upgrade python

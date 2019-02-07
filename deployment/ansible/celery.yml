@@ -21,6 +21,7 @@
       apt: update_cache=yes
 
   roles:
+    - { role: "driver.python2" }
     - { role: "driver.celery" }
     - { role: "driver-celery.nginx" }
     - { role: "driver.r-docker" }

@@ -2,7 +2,7 @@ FROM driver-app:latest
 
 RUN apt-get install -y default-jdk libfftw3-dev
 
-RUN pip install --no-cache-dir --process-dependency-links djsonb -r dev-requirements.txt --src /opt
+RUN pip install --no-cache-dir djsonb -r dev-requirements.txt --src /opt
 
 EXPOSE 8000
 
