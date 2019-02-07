@@ -26,11 +26,12 @@
             ctl.nominatimLookup = nominatimLookup;
             ctl.nominatimSelect = nominatimSelect;
 
-            ctl.userCanWrite = AuthService.hasWriteAccess();
-
             // This state attribute will be true when adding secondary records. When editing,
             // this will be set when the record type is loaded.
             ctl.isSecondary = $state.current.secondary;
+            ctl.isTertiary = $state.current.tertiary;
+
+            ctl.userCanWrite = AuthService.hasWriteAccess() || ctl.isTertiary;
 
             // Only location text is currently being displayed in the UI. The other nominatim
             // values are only being stored. The variables have been placed on the controller
@@ -232,6 +233,8 @@
                     });
             } else if (ctl.isSecondary) {
                 typePromise = RecordState.getSecondary();
+            } else if (ctl.isTertiary) {
+                typePromise = RecordState.getTertiary();
             } else {
                 typePromise = RecordState.getSelected();
             }
@@ -509,12 +512,19 @@
                 ctl.record.light = ctl.light;
                 ctl.record.occurred_from = ctl.occurredFrom;
                 ctl.record.occurred_to = ctl.occurredTo;
-
-                saveMethod = 'update';
+                if(ctl.isTertiary){
+                    saveMethod = 'update-request';
+                }else{
+                    saveMethod = 'update';
+                }
                 dataToSave = ctl.record;
                 dataToSave.data = editorData;
             } else {
-                saveMethod = 'create';
+                if(ctl.isTertiary){
+                    saveMethod = 'create-request';
+                }else{
+                    saveMethod = 'create';
+                }
                 dataToSave = {
                     data: editorData,
                     schema: ctl.recordSchema.uuid,
@@ -540,6 +550,8 @@
             Records[saveMethod](dataToSave, function (record) {
                 $log.debug('Saved record with uuid: ', record.uuid);
                 if (ctl.isSecondary) {
+                    $state.go('map');
+                } else if (ctl.isTertiary) {
                     $state.go('map');
                 } else {
                     $state.go('record.list');

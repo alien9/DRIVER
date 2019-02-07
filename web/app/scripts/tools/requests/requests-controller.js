@@ -30,13 +30,14 @@
         function toggle() {
             ctl.isOpen = !ctl.isOpen;
             if (ctl.isOpen) {
-                $rootScope.$broadcast('driver.tools.interventions.open');
+                $rootScope.$broadcast('driver.tools.requests.open');
             }
         }
 
         $scope.$on('driver.tools.charts.open', function () { ctl.isOpen = false; });
         $scope.$on('driver.tools.export.open', function () { ctl.isOpen = false; });
         $scope.$on('driver.tools.costs.open', function () { ctl.isOpen = false; });
+        $scope.$on('driver.tools.interventions.open', function () { ctl.isOpen = false; });
 
         function exportCSV() {
             RecordExports.cancelPolling();

@@ -21,6 +21,13 @@
             showInNavbar: false,
             secondary: true
         });
+        $stateProvider.state('record.addTertiary', {
+            url: '/addtertiary',
+            template: '<driver-record-add-edit></driver-record-add-edit>',
+            label: 'NAV.ADD_A_RECORD',
+            showInNavbar: false,
+            tertiary: true
+        });
         $stateProvider.state('record.list', {
             url: '/list',
             template: '<driver-record-list></driver-record-list>',

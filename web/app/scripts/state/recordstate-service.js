@@ -11,6 +11,7 @@
         var defaultParams,
             selected,
             secondaryType,
+            tertiaryType,
             options,
             gettingSelected,
             selectedPromise,
@@ -119,6 +120,10 @@
                 return d.label === WebConfig.recordType.secondaryLabel;
             });
             localStorageService.set('secondaryrecordtype.selected', secondaryType);
+            tertiaryType = _.find(options, function(d) {
+                return d.label === WebConfig.recordType.tertiaryLabel;
+            });
+            localStorageService.set('tertiaryrecordtype.selected', tertiaryType);
         }
 
         function getSelected() {
@@ -153,7 +158,7 @@
             if (initialized) {
                 return $q.resolve(tertiaryType);
             } else {
-                return getSelected().then(function () { return tertaryType; });
+                return getSelected().then(function () { return tertiaryType; });
             }
         }
 

@@ -25,7 +25,8 @@
 
             // bboxArray can sometimes be null, which was causing a null ref error
             if (bboxArray) {
-                params.viewBox = bboxArray.join(',');
+                params.viewbox = bboxArray.join(',');
+                params.bounded = 1;
             }
 
             return $http.get(PICKPOINT_NOMINATIM_URL + 'forward', {

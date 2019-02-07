@@ -106,6 +106,7 @@ class ReadersReadWritersWrite(permissions.BasePermission):
     Allow read-only access to readers group, and full access to writers or admins.
     """
     def has_permission(self, request, view):
+
         if not request.user or not request.user.is_authenticated():
             return False
 
@@ -117,6 +118,9 @@ class ReadersReadWritersWrite(permissions.BasePermission):
 
         return False
 
+class Everybody(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return True
 
 class IsOwnerOrAdmin(permissions.BasePermission):
     """Allow access only to the user who created the object, and admins"""

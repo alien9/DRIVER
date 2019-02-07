@@ -2,10 +2,10 @@
     'use strict';
 
     /* ngInject */
-    function Interventions() {
+    function Requests() {
         var module = {
             restrict: 'AE',
-            templateUrl: 'scripts/tools/Requests/requests-partial.html',
+            templateUrl: 'scripts/tools/requests/requests-partial.html',
             controller: 'RequestsController',
             controllerAs: 'ctl',
             bindToController: true,

@@ -11,6 +11,10 @@
             create: {
                 method: 'POST'
             },
+            'create-request': {
+                method: 'POST',
+                url: WebConfig.api.hostname + '/api/requestrecords/'
+            },
             get: {
                 method: 'GET'
             },
@@ -21,6 +25,10 @@
             },
             update: {
                 method: 'PATCH'
+            },
+            'update-request': {
+                method: 'PATCH',
+                url: WebConfig.api.hostname + '/api/requestrecords/'
             },
             toddow: {
                 url: baseUrl + 'toddow/',

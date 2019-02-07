@@ -11,7 +11,7 @@
         ctl.showBlackSpots = WebConfig.blackSpots.visible;
         ctl.showRequests = function(){
             return true;
-        }
+        };
 
         /** This is one half of some fairly ugly code which serves to wire up a click
          *  handling event on top of some dynamically generated HTML. The other half is in

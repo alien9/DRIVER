@@ -37,6 +37,7 @@
         $scope.$on('driver.tools.charts.open', function () { ctl.isOpen = false; });
         $scope.$on('driver.tools.export.open', function () { ctl.isOpen = false; });
         $scope.$on('driver.tools.costs.open', function () { ctl.isOpen = false; });
+        $scope.$on('driver.tools.requests.open', function () { ctl.isOpen = false; });
 
         function exportCSV() {
             RecordExports.cancelPolling();

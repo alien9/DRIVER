@@ -47,7 +47,8 @@ from grout.views import (BoundaryPolygonViewSet,
 
 from grout.serializers import RecordSchemaSerializer
 
-from driver_auth.permissions import (IsAdminOrReadOnly,
+from driver_auth.permissions import (Everybody,
+                                     IsAdminOrReadOnly,
                                      ReadersReadWritersWrite,
                                      IsAdminAndReadOnly,
                                      is_admin_or_writer)
@@ -91,7 +92,6 @@ def build_toddow(queryset):
             .order_by('tod', 'dow')
             .annotate(count=Count('tod')))
 
-
 class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
     """Override base RecordViewSet from grout to provide aggregation and tiler integration
     """
@@ -99,12 +99,13 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
 
     # Filter out everything except details for read-only users
     def get_serializer_class(self):
+        print "get serializer class"
+        print self.request.data
         # check if parameter details_only is set to true, and if so, use details-only serializer
         requested_details_only = False
         details_only_param = self.request.query_params.get('details_only', None)
         if details_only_param == 'True' or details_only_param == 'true':
             requested_details_only = True
-
         #if is_admin_or_writer(self.request.user) and not requested_details_only:
         return DriverRecordSerializer
         #return DetailsReadOnlyRecordSerializer
@@ -136,6 +137,7 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
 
     @transaction.atomic
     def perform_create(self, serializer):
+        print "will create now"
         instance = serializer.save()
         self.add_to_audit_log(self.request, instance, RecordAuditLogEntry.ActionTypes.CREATE)
 
@@ -1136,6 +1138,8 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
             filter_rule = tmp
         return filter_rule
 
+class DriverRequestRecordViewSet(DriverRecordViewSet, mixins.GenerateViewsetQuery):
+    permission_classes = (Everybody,)
 
 class DriverRecordAuditLogViewSet(viewsets.ModelViewSet):
     """Viewset for accessing audit logs; will output CSVs if Accept text/csv is specified"""
