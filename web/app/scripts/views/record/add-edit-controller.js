@@ -325,7 +325,7 @@
                     disable_array_delete_all_rows: true,
                     disable_array_delete_last_row: true,
                     disable_array_reorder: true,
-                    collapsed: true,
+                    collapsed: false,
                     theme: 'bootstrap3',
                     iconlib: 'bootstrap3',
                     show_errors: 'change',
@@ -576,6 +576,17 @@
                 header: $translate.instant('ERRORS.RECORD_NOT_SAVED'),
                 html: message
             });
+        }
+
+        function hasTitle(){
+            if(ctl.isTertiary()){
+                return true;
+            }
+            return false;
+        }
+
+        function datePicker(){
+            return (ctl.isTertiary()?"display:none;":"");
         }
 
     }
