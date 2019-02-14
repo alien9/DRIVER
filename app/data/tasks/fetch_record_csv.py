@@ -84,9 +84,11 @@ def export_records(occurred_min, occurred_max, record_type_id):
         for field in RECORD_FIELDS:
             if field in transforms:
                 ft = transforms[field]
-                row[field] = to_utf8(ft.transform(getattr(record, ft.field)))
+                if hasattr(record, ft.field):
+                    row[field] = to_utf8(ft.transform(getattr(record, ft.field)))
             else:
-                row[field] = to_utf8(getattr(record, field))
+                if hasattr(record, field):
+                    row[field] = to_utf8(getattr(record, field))
         for field in record_detail_fields:
             if field in transforms:
                 ft = transforms[field]

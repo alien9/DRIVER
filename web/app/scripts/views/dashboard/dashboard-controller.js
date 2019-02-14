@@ -56,7 +56,11 @@
 
             if(!year){
                 if(!ctl.selectedYear){
-                    ctl.selectedYear = (new Date()).getFullYear()-1;
+                    RecordAggregates.lastYear().then(function(data){
+                        ctl.selectedYear = data.year-1;
+                        loadRecords();
+                     });
+                    return;
                 }
             }else{
                 ctl.selectedYear = year;

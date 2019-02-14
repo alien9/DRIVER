@@ -35,6 +35,11 @@
                 method: 'GET',
                 isArray: true
             },
+            lastYear: {
+                url: baseUrl + 'last_year/',
+                method: 'GET',
+                isArray: false
+            },
             stepwise: {
                 url: baseUrl + 'stepwise/',
                 method: 'GET',

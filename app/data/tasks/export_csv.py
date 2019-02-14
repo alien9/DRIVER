@@ -52,8 +52,10 @@ def export_csv(query_key, user_id):
                       Windshaft tiles so that the CSV will correspond to the filters applied in
                       the UI.
     """
+    print "getting records"
     # Get Records
     records = get_queryset_by_key(query_key)
+    print "got records"
     # Get the most recent Schema for the Records' RecordType
     # This assumes that all of the Records have the same RecordType.
     try:
@@ -184,11 +186,13 @@ class DriverRecordExporter(object):
         for related_name, writer in self.writers.viewitems():
             if related_name in rec.data:
                 if writer.is_multiple:
-                    for item in rec.data[related_name]:
-                        writer.write_related(rec.pk, item, self.outfiles[related_name])
+                    if related_name in rec.data:
+                        for item in rec.data[related_name]:
+                            writer.write_related(rec.pk, item, self.outfiles[related_name])
                 else:
-                    writer.write_related(rec.pk, rec.data[related_name],
-                                         self.outfiles[related_name])
+                    if related_name in rec.data:
+                        writer.write_related(rec.pk, rec.data[related_name],
+                                             self.outfiles[related_name])
 
     def make_constants_csv_writer(self):
         """Generate a Record Writer capable of writing out the non-json fields of a Record"""
@@ -298,7 +302,8 @@ class ModelAndDetailsWriter(BaseRecordWriter):
         """Pull data from a record, send to appropriate writers, and then combine output"""
         output = StringIO.StringIO()
         self.model_writer.write_record(record, output)
-        self.details_writer.write_related(record.pk, record.data[self.details_key], output)
+        if hasattr(record.data, self.details_key):
+            self.details_writer.write_related(record.pk, record.data[self.details_key], output)
         csv_file.write(self.merge_lines(output.getvalue()))
 
 
@@ -325,9 +330,14 @@ class RecordModelWriter(BaseRecordWriter):
         """Pull field data from record object, transform, write to csv_file"""
         output_data = dict()
         for column in self.csv_columns:
-            model_value = self.get_model_value_for_column(record, column)
-            csv_val = self.transform_model_value(model_value, column)
-            output_data[column] = _utf8(csv_val)
+            print column
+            if hasattr(record, column):
+                model_value = self.get_model_value_for_column(record, column)
+                csv_val = self.transform_model_value(model_value, column)
+                output_data[column] = _utf8(csv_val)
+            else:
+                output_data[column] = ''
+            print output_data
         writer = csv.DictWriter(csv_file, fieldnames=self.csv_columns)
         writer.writerow(output_data)
 

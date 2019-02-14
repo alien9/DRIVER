@@ -3,10 +3,10 @@
 
     /* ngInject */
     function recentEventsMapLayers($q, BoundaryState, InitialState, RecordState, QueryBuilder,
-                                   TileUrlService, BaseLayersService) {
+                                   TileUrlService, BaseLayersService, RecordAggregates) {
         var defaultLayerOptions = {attribution: 'PRS', detectRetina: true};
         var recencyCutoffDays = 14;
-        var selectedYear = (new Date()).getFullYear()-1;
+        var selectedYear = null;
         var recordLayers = null;
         var layerSwitcher = null;
         var module = {
@@ -79,7 +79,11 @@
         function updateLayers(map) {
             var recordsLayerOptions = angular.extend(defaultLayerOptions, {zIndex: 3});
             if(!selectedYear){
-                selectedYear = (new Date()).getFullYear()-1;
+                RecordAggregates.lastYear().then(function(data){
+                        selectedYear = data.year-1;
+                        updateLayers(map);
+                 });
+                 return;
             }
             var occurredMin = new Date(selectedYear, 0, 1);
             var occurredMax = new Date(selectedYear, 12, 31);

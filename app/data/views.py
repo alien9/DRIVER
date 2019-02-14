@@ -241,11 +241,21 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         return Response(counts)
 
     @list_route(methods=['get'])
+    def last_year(self, request):
+        """ Return the most recent year where we had crashes"""
+        qs = self.get_filtered_queryset(request).order_by('-occurred_from').first()
+        print qs.occurred_from
+        return Response({'year':qs.occurred_from.year})
+
+    @list_route(methods=['get'])
     def recent_counts_last_3_years(self, request):
         """ Return the recent record counts for 3 former years """
-        frist = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE)).date().replace(month=1, day=1)
+        qs = self.get_filtered_queryset(request).order_by('-occurred_from').first()
+        a = qs.occurred_from.year
+        frist = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE)).date().replace(year=a, month=1, day=1)
+
         qs = self.get_filtered_queryset(request).filter(occurred_from__lt=frist)
-        
+
         labels=['ano0','ano1','ano2']
         counts = {
           labels[ano[0]]:{
@@ -255,8 +265,6 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
             ).count(),
             'ano':ano[1]-1} for ano in enumerate(reversed(range(frist.year-2, frist.year+1)))
         }
-        
-   
         return Response(counts)
 
     @list_route(methods=['get'])
@@ -1308,7 +1316,9 @@ class RecordCsvExportViewSet(viewsets.ViewSet):
         if not filter_key:
             return Response({'errors': {'tilekey': 'This parameter is required'}},
                             status=status.HTTP_400_BAD_REQUEST)
-
+        print filter_key
+        print request.user.pk
+        print "START"
         task = export_csv.delay(filter_key, request.user.pk)
 
         return Response({'success': True, 'taskid': task.id}, status=status.HTTP_201_CREATED)

@@ -58,7 +58,7 @@ var secondaryRules = [
     'marker-line-opacity: 1;',
     'marker-placement: point;',
     'marker-type: ellipse;',
-    'marker-width: 4;',
+    'marker-width: 8;',
     'marker-allow-overlap: true;',
 ];
 var secondaryStyle = constructCartoStyle('#grout_record', secondaryRules);
@@ -67,11 +67,11 @@ var tertiaryRules = [
     'marker-fill-opacity: 0.5;',
     'marker-fill: #ff0000;',
     'marker-line-color: #FFF;',
-    'marker-line-width: 0;',
+    'marker-line-width: 1;',
     'marker-line-opacity: 1;',
     'marker-placement: point;',
     'marker-type: ellipse;',
-    'marker-width: 4;',
+    'marker-width: 10;',
     'marker-allow-overlap: true;',
 ];
 var tertiaryStyle = constructCartoStyle('#grout_record', tertiaryRules);
