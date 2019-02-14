@@ -94,6 +94,9 @@
                     RecordState.getSecondary().then(function (secondaryType) {
                         ctl.secondaryType = secondaryType;
                     });
+                    RecordState.getTertiary().then(function (tertiaryType) {
+                        ctl.tertiaryType = tertiaryType;
+                    });
                 } else {
                     ctl.recordSchemaFilterables = [];
                     ctl.recordType = {
@@ -103,6 +106,7 @@
                     };
                     /* jshint camelcase: true */
                     ctl.secondaryType = null;
+                    ctl.tertiaryType = null;
                 }
             }).then(function() {
                 return BoundaryState.getSelected().then(function(selected) {
@@ -219,6 +223,13 @@
                     MapState.setBaseLayerSlugLabel(baseLayer.slugLabel);
                 });
 
+                ctl.map.on('overlayadd', function(e){
+                    MapState.setOverlayState(e.name, true);
+                });
+
+                ctl.map.on('overlayremove', function(e){
+                    MapState.setOverlayState(e.name, false);
+                });
                 // TODO: Find a better way to ensure this doesn't happen until filterbar ready
                 // (without timeout, filterbar components aren't ready to listen yet)
                 // add filtered overlays
@@ -350,7 +361,9 @@
                 blackspotsUtfGridUrl: '',
                 blackspotTileKey:     false,
                 secondaryRecordsUrl:  '',
-                secondaryUtfGridUrl:  ''
+                secondaryUtfGridUrl:  '',
+                tertiaryRecordsUrl:  '',
+                tertiaryUtfGridUrl:  ''
             };
             if (response && response[0] && response[0].tilekey) {
                 var data = response[0];
@@ -367,6 +380,10 @@
             if (ctl.secondaryType) {
                 urls.secondaryRecordsUrl = TileUrlService.secondaryTilesUrl(ctl.secondaryType.uuid);
                 urls.secondaryUtfGridUrl = TileUrlService.recUtfGridTilesUrl(ctl.secondaryType.uuid);
+            }
+            if (ctl.tertiaryType) {
+                urls.tertiaryRecordsUrl = TileUrlService.tertiaryTilesUrl(ctl.tertiaryType.uuid);
+                urls.tertiaryUtfGridUrl = TileUrlService.recUtfGridTilesUrl(ctl.tertiaryType.uuid);
             }
 
             return urls;
@@ -386,6 +403,7 @@
                 updateBlackspotLayer(urls.blackspotsUrl, urls.blackspotsUtfGridUrl,
                                      urls.blackspotTileKey);
             }
+            updateTertiaryLayer(urls.tertiaryRecordsUrl, urls.tertiaryUtfGridUrl);
             updateSecondaryLayer(urls.secondaryRecordsUrl, urls.secondaryUtfGridUrl);
             updatePrimaryLayer(urls.primaryRecordsUrl, urls.primaryUtfGridUrl);
             if (WebConfig.heatmap.visible) {
@@ -437,6 +455,9 @@
             if (ctl.secondaryType) {
                 recordLayers.push([ctl.secondaryType.plural_label, ctl.secondaryLayerGroup]);
             }
+            if (ctl.tertiaryType) {
+                recordLayers.push([ctl.tertiaryType.plural_label, ctl.tertiaryLayerGroup]);
+            }
             /* jshint camelcase: true */
 
             if (WebConfig.heatmap.visible) {
@@ -445,6 +466,17 @@
             if (WebConfig.blackSpots.visible) {
                 recordLayers.push([$translate.instant('MAP.BLACKSPOTS'), ctl.blackspotLayerGroup]);
             }
+            var overlayOrder = {};
+            var i = 0;
+            while(i < recordLayers.length){
+                overlayOrder[recordLayers[i][0]] = i;
+                i++;
+            }
+            for(var k in ctl.boundariesLayerGroup){
+                overlayOrder[k] = i;
+                i++;
+            }
+
             var overlays = angular.extend(_.zipObject(recordLayers), ctl.boundariesLayerGroup);
 
             ctl.bMaps.then(
@@ -455,11 +487,15 @@
                             _.zipObject(_.map(baseMaps, 'label'), _.map(baseMaps, 'layer')),
                             overlays,
                             {
-                                autoZIndex: false
+                                autoZIndex:false
                             }
-                        );
+                        ).addTo(ctl.map);
+                        for(var k in overlays){
+                            if(MapState.getOverlayState(k)){
+                                ctl.map.addLayer(overlays[k]);
+                            }
+                        }
 
-                        ctl.layerSwitcher.addTo(ctl.map);
                     }
                 }
             );
@@ -491,7 +527,11 @@
             if (!ctl.primaryLayerGroup) {
                 ctl.primaryLayerGroup = new L.layerGroup(
                     [recordsLayer, utfGridRecordsLayer]);
-                ctl.map.addLayer(ctl.primaryLayerGroup);
+                //this layer is always on by default:
+                /* jshint camelcase: false */
+                MapState.setOverlayState(ctl.recordType.plural_label, true);
+                /* jshint camelcase: true */
+                //ctl.map.addLayer(ctl.primaryLayerGroup);
             } else {
                 _.forEach(ctl.primaryLayerGroup._layers,function(layer) {
                     if (typeof layer.off === 'function') {
@@ -551,6 +591,61 @@
                 ctl.secondaryLayerGroup.addLayer(utfGridRecordsLayer);
             }
         }
+
+        /**
+         * Updates the tertiary layer group (requests)
+         * The tertiary layer group is composed of the records layer for the records
+         * created by the user, displayed as editable within the popup for the creator.
+         * Admin roles can see every record
+         * on the map, and the utfGridRecords layer which is for the
+         * click events and popup
+         */
+        function updateTertiaryLayer(recordsUrl, utfGridUrl){
+            if (!ctl.tertiaryType) {
+                ctl.tertiaryLayerGroup = null;
+                return;
+            }
+
+            var recordsLayerOptions = angular.extend(defaultLayerOptions, {
+                zIndex: 10
+            });
+
+            var recordsLayer = new L.tileLayer(
+                ctl.getFilterQuery(recordsUrl, ctl.tertiaryTilekey),
+                recordsLayerOptions);
+
+            var utfGridRecordsLayer = new L.UtfGrid(
+                ctl.getFilterQuery(utfGridUrl, ctl.tertiaryTilekey), {
+                    useJsonP: false,
+                    zIndex: 12
+                });
+
+            var tertiaryParams = {};
+            if (ctl.tertiaryType) {
+                tertiaryParams = { label: ctl.tertiaryType.label };
+            }
+
+            addGridRecordEvent(utfGridRecordsLayer, tertiaryParams);
+
+            if (!ctl.tertiaryLayerGroup) {
+                ctl.tertiaryLayerGroup = new L.layerGroup(
+                    [recordsLayer, utfGridRecordsLayer]);
+            } else {
+                _.forEach(ctl.tertiaryLayerGroup._layers,function(layer) {
+                    if (typeof layer.off === 'function') {
+                        layer.off('click');
+                    }
+                    ctl.tertiaryLayerGroup.removeLayer(layer);
+                });
+                ctl.tertiaryLayerGroup.addLayer(recordsLayer);
+                ctl.tertiaryLayerGroup.addLayer(utfGridRecordsLayer);
+            }
+        }
+
+
+
+
+
 
         /**
          * Adds the onClick event to the specified utfGridRecordsLayer
@@ -800,6 +895,7 @@
                 function(records) { ctl.tilekey = records.tilekey; }
             );
             var secondary = $q.resolve('');
+            var tertiary = $q.resolve('');
             if (ctl.secondaryType) {
                 var params = getAdditionalParams();
                 /* jshint camelcase: false */
@@ -807,6 +903,15 @@
                 /* jshint camelcase: true */
                 secondary = QueryBuilder.djangoQuery(0, params, {doJsonFilters: false}, false).then(
                     function(records) { ctl.secondaryTilekey = records.tilekey; }
+                );
+            }
+            if (ctl.tertiaryType) {
+                var p = getAdditionalParams();
+                /* jshint camelcase: false */
+                p.record_type = ctl.tertiaryType.uuid;
+                /* jshint camelcase: true */
+                tertiary = QueryBuilder.djangoQuery(0, p, {doJsonFilters: false, doAttrFilters:false}, false).then(
+                    function(records) { ctl.tertiaryTilekey = records.tilekey; }
                 );
             }
             return $q.all([primary, secondary]);

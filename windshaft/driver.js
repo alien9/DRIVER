@@ -52,7 +52,7 @@ var eventsStyle = constructCartoStyle('#grout_record', eventsRules);
 
 var secondaryRules = [
     'marker-fill-opacity: 0.5;',
-    'marker-fill: #00ee40;',
+    'marker-fill: #006620;',
     'marker-line-color: #FFF;',
     'marker-line-width: 0;',
     'marker-line-opacity: 1;',
@@ -62,6 +62,19 @@ var secondaryRules = [
     'marker-allow-overlap: true;',
 ];
 var secondaryStyle = constructCartoStyle('#grout_record', secondaryRules);
+
+var tertiaryRules = [
+    'marker-fill-opacity: 0.5;',
+    'marker-fill: #ff0000;',
+    'marker-line-color: #FFF;',
+    'marker-line-width: 0;',
+    'marker-line-opacity: 1;',
+    'marker-placement: point;',
+    'marker-type: ellipse;',
+    'marker-width: 4;',
+    'marker-allow-overlap: true;',
+];
+var tertiaryStyle = constructCartoStyle('#grout_record', tertiaryRules);
 
 var boundaryRules = [
     'line-width: 2;',
@@ -88,7 +101,6 @@ function constructCartoStyle(layer, rules) {
 
 // takes the Windshaft request, sets the filter params, and calls the callback
 function setRequestParameters(request, callback, redisClient) {
-
     var params = request.params;
     var tilekey = request.query.tilekey;
 
@@ -109,8 +121,11 @@ function setRequestParameters(request, callback, redisClient) {
     params.table = params.tablename;
 
     if (params.tablename === 'grout_record') {
-
-        params.interactivity = 'uuid,occurred_from';
+        if (request.query.tertiary) {
+            params.interactivity = 'uuid';
+        }else{
+            params.interactivity = 'uuid,occurred_from';
+        }
         params.style = eventsStyle;
 
         if (request.query.heatmap) {
@@ -119,12 +134,17 @@ function setRequestParameters(request, callback, redisClient) {
         } else if (request.query.secondary) {
             params.style = secondaryStyle;
         }
+        else if (request.query.tertiary) {
+            params.style = tertiaryStyle;
+        }
 
         // retrieve stored query for record points
         if (!tilekey) {
             throw('Parameter: `tilekey` must be specified');
         } else {
+            console.log('Creating redis client');
             redisClient.get(tilekey, function(err, sql) {
+                console.log(sql);
                 if (!sql) {
                     callback('Error getting tilekey', null);
                     return;
@@ -145,6 +165,7 @@ function setRequestParameters(request, callback, redisClient) {
                 }).join(', ');
 
                 params.sql = '(' + castSelect + theRest + ') as grout_record' ;
+                console.log(params.sql);
                 callback(null, request);
             });
         }

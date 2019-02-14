@@ -41,6 +41,12 @@
                 <p ng-show="rtForm.description.$error.minlength" class="help-block">Description too short</p>
                 <p ng-show="rtForm.description.$error.maxlength" class="help-block">Description too long</p>
             </div>
+            <div class="form-group col-sm-12">
+                <label for="temporal">Temporal</label>
+                <input type="checkbox" name="temporal"
+                       ng-model="rt.recordType.temporal" id="temporal">
+                </input>
+            </div>
 
             <div class="save-area">
                 <button type="submit" class="btn btn-default" ng-disabled="rtForm.$invalid">

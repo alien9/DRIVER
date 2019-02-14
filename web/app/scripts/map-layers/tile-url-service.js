@@ -8,6 +8,7 @@
         var allRecordsUrl = (WebConfig.windshaft.hostname +
             '/tiles/table/grout_record/id/ALL/{z}/{x}/{y}.png');
         var secondaryRecordsUrl = allRecordsUrl + '?secondary=true';
+        var requestsRecordsUrl = allRecordsUrl + '?tertiary=true';
         var allRecordsUtfGridUrl = (WebConfig.windshaft.hostname +
             '/tiles/table/grout_record/id/ALL/{z}/{x}/{y}.grid.json');
         var allBoundariesUrl = (WebConfig.windshaft.hostname +
@@ -21,6 +22,7 @@
         var module = {
             recTilesUrl: recordsTilesUrlForType,
             secondaryTilesUrl: secondaryTilesUrlForType,
+            tertiaryTilesUrl: requestsTilesUrlForType,
             recUtfGridTilesUrl: recordsUtfGridTilesUrlForType,
             recHeatmapUrl: recordsHeatmapTilesUrl,
             boundaryTilesUrl: boundaryTilesUrl,
@@ -48,6 +50,10 @@
 
         function secondaryTilesUrlForType(typeUuid) {
             return _insertIdAtALL(secondaryRecordsUrl, typeUuid);
+        }
+
+        function requestsTilesUrlForType(typeUuid) {
+            return _insertIdAtALL(requestsRecordsUrl, typeUuid);
         }
 
         function recordsUtfGridTilesUrlForType(typeUuid) {

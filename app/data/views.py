@@ -62,7 +62,7 @@ from data.localization.date_utils import (
 
 import filters
 from models import RecordAuditLogEntry, RecordDuplicate, RecordCostConfig
-from serializers import (DriverRecordSerializer, DetailsReadOnlyRecordSerializer,
+from serializers import (DriverRecordSerializer, DriverRequestRecordSerializer, DetailsReadOnlyRecordSerializer,
                          DetailsReadOnlyRecordSchemaSerializer, RecordAuditLogEntrySerializer,
                          RecordDuplicateSerializer, RecordCostConfigSerializer)
 import transformers
@@ -99,8 +99,6 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
 
     # Filter out everything except details for read-only users
     def get_serializer_class(self):
-        print "get serializer class"
-        print self.request.data
         # check if parameter details_only is set to true, and if so, use details-only serializer
         requested_details_only = False
         details_only_param = self.request.query_params.get('details_only', None)
@@ -137,7 +135,6 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
 
     @transaction.atomic
     def perform_create(self, serializer):
-        print "will create now"
         instance = serializer.save()
         self.add_to_audit_log(self.request, instance, RecordAuditLogEntry.ActionTypes.CREATE)
 
@@ -160,7 +157,6 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
             response = Response(dict())
             query_sql = self.generate_query_sql(request)
             tile_token = uuid.uuid4()
-            print(query_sql)
             self._cache_tile_sql(tile_token, query_sql.encode('utf-8'))
             response.data['tilekey'] = tile_token
         else:
@@ -1140,6 +1136,14 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
 
 class DriverRequestRecordViewSet(DriverRecordViewSet, mixins.GenerateViewsetQuery):
     permission_classes = (Everybody,)
+    # Filter out everything except details for read-only users
+    def get_serializer_class(self):
+        return DriverRequestRecordSerializer
+    def get_queryset(self):
+        print "gerando a query corretamente"
+        """Override default model ordering"""
+        qs = super(DriverRecordViewSet, self).get_queryset()
+        return qs.order_by('-occurred_from')
 
 class DriverRecordAuditLogViewSet(viewsets.ModelViewSet):
     """Viewset for accessing audit logs; will output CSVs if Accept text/csv is specified"""

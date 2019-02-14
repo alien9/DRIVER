@@ -14,7 +14,7 @@
                         <json-editor ng-if="ctl.isTertiary" editor-id="{{ ctl.editor.id }}"
                              options="ctl.editor.options"
                              on-data-change="ctl.onDataChange"
-                             class="form-area-body">
+                             class="form-area-expanded">
                         </json-editor>
                         <div class="row">
                             <div class="col-md-12">
@@ -54,7 +54,7 @@
                             </div>
                         </div>
 
-                        <div class="row" ng-style="{ 'display' : (ctl.isTertiary) ? 'none' : '' }">
+                        <div ng-if="!ctl.isTertiary" class="row">
                             <div class="col-md-6">
                                 <div class="form-group date-picker"
                                     ng-class="ctl.constantFieldErrors.occurred ? 'has-error' : ''">

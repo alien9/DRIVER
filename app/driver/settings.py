@@ -437,3 +437,5 @@ DEFAULT_FROM_EMAIL = 'webmaster@vidasegura.prefeitura.sp.gov.br'
 
 START_PAGE = os.environ.get('DRIVER_START_PAGE', '/')
 
+TERTIARY_LABEL = os.environ.get('DRIVER_TERTIARY_LABEL', None)
+

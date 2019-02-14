@@ -229,6 +229,11 @@
                                 ctl.isSecondary = true;
                             }
                         });
+                        RecordState.getTertiary().then(function (tertiaryType) {
+                            if (!!tertiaryType && tertiaryType.uuid === recordType.uuid) {
+                                ctl.isTertiary = true;
+                            }
+                        });
                         return recordType;
                     });
             } else if (ctl.isSecondary) {
@@ -314,6 +319,7 @@
                                               $translate.instant('RECORD.BUTTON_DELETE_ROW_TITLE'));
             JsonEditorDefaults.addTranslation('button_expand',
                                               $translate.instant('RECORD.BUTTON_EXPAND'));
+            JSONEditor.defaults.editors.object.options.collapsed = false;
 
             /* jshint camelcase: false */
             ctl.editor = {
@@ -325,6 +331,7 @@
                     disable_array_delete_all_rows: true,
                     disable_array_delete_last_row: true,
                     disable_array_reorder: true,
+                    disable_collapse:true,
                     collapsed: false,
                     theme: 'bootstrap3',
                     iconlib: 'bootstrap3',
@@ -510,8 +517,10 @@
                 ctl.record.state = ctl.nominatimState;
                 ctl.record.weather = ctl.weather;
                 ctl.record.light = ctl.light;
-                ctl.record.occurred_from = ctl.occurredFrom;
-                ctl.record.occurred_to = ctl.occurredTo;
+                if(ctl.recordType.temporal){
+                    ctl.record.occurred_from = ctl.occurredFrom;
+                    ctl.record.occurred_to = ctl.occurredTo;
+                }
                 if(ctl.isTertiary){
                     saveMethod = 'update-request';
                 }else{
@@ -539,11 +548,12 @@
                     road: ctl.nominatimRoad,
                     state: ctl.nominatimState,
                     weather: ctl.weather,
-                    light: ctl.light,
-
-                    occurred_from: ctl.occurredFrom,
-                    occurred_to: ctl.occurredTo
+                    light: ctl.light
                 };
+                if(ctl.recordType.temporal){
+                    dataToSave.occurred_from = ctl.occurredFrom;
+                    dataToSave.occurred_to = ctl.occurredTo;
+                }
             }
             /* jshint camelcase: true */
 
@@ -577,18 +587,6 @@
                 html: message
             });
         }
-
-        function hasTitle(){
-            if(ctl.isTertiary()){
-                return true;
-            }
-            return false;
-        }
-
-        function datePicker(){
-            return (ctl.isTertiary()?"display:none;":"");
-        }
-
     }
 
     angular.module('driver.views.record')

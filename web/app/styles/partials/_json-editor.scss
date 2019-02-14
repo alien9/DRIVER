@@ -110,3 +110,12 @@
     }
 
 }
+.form-area-expanded{
+    background:lime;
+    h3{
+        display:none;
+    }
+    .col-md-12{
+        border-width:0 !important;
+    }
+}

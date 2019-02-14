@@ -31,11 +31,25 @@
                         // TODO: refactor things off the object and onto the schema so that we
                         // don't have to change behavior based on record type.
                         ctl.record.isSecondary = ctl.isSecondary;
-                        /* jshint camelcase: false */
-                        return RecordSchemaState.get(ctl.recordType.current_schema)
-                        /* jshint camelcase: true */
-                            .then(function(recordSchema) { ctl.recordSchema = recordSchema; });
+                        RecordState.getTertiary().then(function (tertiaryType) {
+                            if (!!tertiaryType && tertiaryType.uuid === ctl.recordType.uuid) {
+                                ctl.isTertiary = true;
+                            }else{
+                                ctl.isTertiary = false;
+                            }
+                            // TODO: refactor things because this is ugly
+                            // don't have to change behavior based on record type.
+                            ctl.record.isTertiary = ctl.isTertiary;
+                            /* jshint camelcase: false */
+                            return RecordSchemaState.get(ctl.recordType.current_schema)
+                            /* jshint camelcase: true */
+                                .then(function(recordSchema) { ctl.recordSchema = recordSchema; });
+
+                        });
                     });
+
+
+
                 });
         }
     }

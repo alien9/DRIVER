@@ -45,6 +45,20 @@ class DriverRecordSerializer(BaseDriverRecordSerializer):
             return latest_audit_entry.username
         return None
 
+class DriverRequestRecordSerializer(DriverRecordSerializer):
+    def validate(self, data):
+        """
+        Check that the data is of the allowed format, the third data type.
+
+        """
+        from grout.models import GroutModel, Record, RecordType
+        print "schema:" + str(data['schema'].uuid)
+        if settings.TERTIARY_LABEL:
+            data_types = RecordType.objects.filter(active=True, label=settings.TERTIARY_LABEL)
+            if len(data_types)>0:
+                if data['schema'].uuid == data_types[0].get_current_schema().uuid:
+                    return data
+        raise ValidationError("Permission denied")
 
 class DetailsReadOnlyRecordSerializer(BaseDriverRecordSerializer):
     """Serialize records with only read-only fields included"""

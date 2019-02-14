@@ -6,6 +6,7 @@ from rest_framework import serializers
 
 
 
+
 class GroupStringRelatedField(serializers.StringRelatedField):
     """
     StringRelatedField in DRF is read-only.

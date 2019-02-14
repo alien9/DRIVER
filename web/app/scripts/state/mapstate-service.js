@@ -18,7 +18,9 @@
             setLocation: setLocation,
             getLocation: getLocation,
             setBaseLayerSlugLabel: setBaseLayerSlugLabel,
-            getBaseLayerSlugLabel: getBaseLayerSlugLabel
+            getBaseLayerSlugLabel: getBaseLayerSlugLabel,
+            setOverlayState: setOverlayState,
+            getOverlayState: getOverlayState
         };
 
         return svc;
@@ -85,6 +87,22 @@
                 baseLayer = localStorageService.get(baseLayerStorageName);
             }
             return baseLayer || baseLayers[0];
+        }
+
+        function setOverlayState(label, state){
+            var overlays = localStorageService.get('overlays');
+             if(!overlays){
+                overlays = {};
+             }
+             overlays[label] = state;
+             localStorageService.set('overlays',  overlays);
+        }
+
+        function getOverlayState(label){
+            var overlays = localStorageService.get('overlays');
+             if(overlays){
+                return overlays[label];
+            }
         }
     }
 
