@@ -12,7 +12,7 @@ from rest_framework.serializers import (
 from grout import serializers
 from grout import serializer_fields
 
-from models import DriverRecord, RecordAuditLogEntry, RecordDuplicate, RecordCostConfig
+from models import DriverPublicRecord, DriverRecord, RecordAuditLogEntry, RecordDuplicate, RecordCostConfig
 
 from django.conf import settings
 
@@ -59,6 +59,21 @@ class DriverRequestRecordSerializer(DriverRecordSerializer):
                 if data['schema'].uuid == data_types[0].get_current_schema().uuid:
                     return data
         raise ValidationError("Permission denied")
+
+class DriverPublicRecordSerializer(DriverRecordSerializer):
+    class Meta:
+        model = DriverPublicRecord
+        fields = '__all__'
+        read_only_fields = ('uuid',)
+
+    def validate(self, data):
+        """
+        Check that the data is of the allowed format, it MUST have either lights or speed option values.
+
+        """
+        if not data.lights and not data.speed:
+            raise ValidationError("Speed or Lights required")
+        return data
 
 class DetailsReadOnlyRecordSerializer(BaseDriverRecordSerializer):
     """Serialize records with only read-only fields included"""

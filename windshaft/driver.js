@@ -121,7 +121,7 @@ function setRequestParameters(request, callback, redisClient) {
     params.table = params.tablename;
 
     if (params.tablename === 'grout_record') {
-        if (request.query.tertiary) {
+        if (request.query.tertiary||request.query.public) {
             params.interactivity = 'uuid';
         }else{
             params.interactivity = 'uuid,occurred_from';

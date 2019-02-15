@@ -4,7 +4,7 @@
     /* ngInject */
     function NavbarController($rootScope, $scope, $state, $modal, $translate, $window, $document,
                               AuthService, BoundaryState, GeographyState, InitialState,
-                              LanguageState, MapState, RecordState, UserService, WebConfig) {
+                              LanguageState, MapState, RecordState, RecordSchemaState, UserService, WebConfig) {
         var ctl = this;
         var initialized = false;
 
@@ -41,6 +41,9 @@
                 if(e.keyCode===27){
                     control.isTutorial = false;
                 }
+            });
+            RecordState.getPublic().then(function (p) {
+                ctl.recordType = p;
             });
         }
 
@@ -209,6 +212,32 @@
         }
         ctl.tutorial = function(){
             ctl.isTutorial = !ctl.isTutorial;
+        };
+
+        ctl.createPublicRecord = function(){
+        /* jshint camelcase: false */
+            RecordSchemaState.get(ctl.recordType.current_schema).then(function(recordSchema) {
+        /* jshint camelcase: true */
+                $modal.open({
+                    templateUrl: 'scripts/views/record/public-modal-partial.html',
+                    controller: 'RecordPublicModalController as modal',
+                    size: 'lg',
+                    resolve: {
+                        record: function() {
+                             return null;
+                        },
+                        recordType: function() {
+                            return ctl.recordType;
+                        },
+                        recordSchema: function() {
+                            return recordSchema;
+                        },
+                        userCanWrite: function() {
+                            return true;
+                        }
+                    }
+                });
+             });
         };
     }
 

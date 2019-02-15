@@ -24,6 +24,7 @@ router.register('csv-export', data_views.RecordCsvExportViewSet, base_name='csv-
 router.register('duplicates', data_views.DriverRecordDuplicateViewSet)
 router.register('jars', data_views.AndroidSchemaModelsViewSet, base_name='jars')
 router.register('records', data_views.DriverRecordViewSet, base_name='records')
+router.register('publicrecords', data_views.DriverPublicRecordViewSet, base_name='publicrecords')
 router.register('requestrecords', data_views.DriverRequestRecordViewSet)
 router.register('recordschemas', data_views.DriverRecordSchemaViewSet)
 router.register('recordtypes', data_views.DriverRecordTypeViewSet)

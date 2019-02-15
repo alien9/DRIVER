@@ -15,6 +15,10 @@
                 method: 'POST',
                 url: WebConfig.api.hostname + '/api/requestrecords/'
             },
+            'create-public': {
+                method: 'POST',
+                url: WebConfig.api.hostname + '/api/requestrecords/'
+            },
             get: {
                 method: 'GET'
             },
@@ -26,7 +30,7 @@
             update: {
                 method: 'PATCH'
             },
-            'update-request': {
+            'update-public': {
                 method: 'PATCH',
                 url: WebConfig.api.hostname + '/api/requestrecords/'
             },

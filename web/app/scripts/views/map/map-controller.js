@@ -104,7 +104,12 @@
                         ctl.maxDate = FilterState.filters.__dateRange.max;
                     }
                 }
-                ctl.stepwise = stepwiseData;
+                ctl.stepwise = [];
+                for(var i = 0; i<stepwiseData.length; i++){
+                    if(stepwiseData[i].year!==null){
+                        ctl.stepwise.push(stepwiseData[i]);
+                    }
+                }
             });
 
             RecordAggregates.toddow(params).then(function(toddowData) {

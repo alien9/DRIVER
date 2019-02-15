@@ -91,6 +91,9 @@
                 }
             }
         }
+        .borderless{
+            background-color:lime;
+        }
     }
     
     .well {
@@ -107,6 +110,15 @@
         &:after {
             content: ' *';
         }
+    }
+    .borderless{
+        background-color:lime;
+        >div>h3, >div>p{
+            display:none;
+        }
+    }
+    .col-md-12{
+        padding:0;
     }
 
 }

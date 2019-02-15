@@ -46,7 +46,7 @@ from grout.views import (BoundaryPolygonViewSet,
                           BoundaryViewSet)
 
 from grout.serializers import RecordSchemaSerializer
-
+from grout.filters import RecordFilter, FILTER_OVERRIDES
 from driver_auth.permissions import (Everybody,
                                      IsAdminOrReadOnly,
                                      ReadersReadWritersWrite,
@@ -61,8 +61,9 @@ from data.localization.date_utils import (
 )
 
 import filters
-from models import RecordAuditLogEntry, RecordDuplicate, RecordCostConfig
-from serializers import (DriverRecordSerializer, DriverRequestRecordSerializer, DetailsReadOnlyRecordSerializer,
+from models import RecordAuditLogEntry, RecordDuplicate, RecordCostConfig, DriverPublicRecord
+from serializers import (DriverRecordSerializer, DriverRequestRecordSerializer, DriverPublicRecordSerializer,
+                         DetailsReadOnlyRecordSerializer,
                          DetailsReadOnlyRecordSchemaSerializer, RecordAuditLogEntrySerializer,
                          RecordDuplicateSerializer, RecordCostConfigSerializer)
 import transformers
@@ -150,6 +151,7 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
 
     # Views
     def list(self, request, *args, **kwargs):
+        print "listing"
         # Don't generate a tile key unless the user specifically requests it, to avoid
         # filling up the Redis cache with queries that will never be viewed as tiles
         if ('tilekey' in request.query_params and
@@ -244,7 +246,6 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
     def last_year(self, request):
         """ Return the most recent year where we had crashes"""
         qs = self.get_filtered_queryset(request).order_by('-occurred_from').first()
-        print qs.occurred_from
         return Response({'year':qs.occurred_from.year})
 
     @list_route(methods=['get'])
@@ -1153,6 +1154,45 @@ class DriverRequestRecordViewSet(DriverRecordViewSet, mixins.GenerateViewsetQuer
         qs = super(DriverRecordViewSet, self).get_queryset()
         return qs.order_by('-occurred_from')
 
+
+class PublicRecordFilter(RecordFilter):
+    class Meta:
+        model = DriverPublicRecord
+        fields = ['archived']
+        filter_overrides = FILTER_OVERRIDES
+
+
+class DriverPublicRecordViewSet(DriverRecordViewSet, mixins.GenerateViewsetQuery):
+    queryset = DriverPublicRecord.objects.all()
+    serializer_class = DriverPublicRecordSerializer
+    filter_class = PublicRecordFilter
+    permission_classes = (Everybody,)
+
+    def get_serializer_class(self):
+        return DriverPublicRecordSerializer
+
+    def get_queryset(self):
+        print "gerando a query corretamente mesmo?"
+        """Override default model ordering"""
+        qs = DriverPublicRecord.objects.all()
+        return qs.order_by('-occurred_from')
+
+    # Views
+    def list(self, request, *args, **kwargs):
+        print "listing ok"
+        # Don't generate a tile key unless the user specifically requests it, to avoid
+        # filling up the Redis cache with queries that will never be viewed as tiles
+        if ('tilekey' in request.query_params and
+                request.query_params['tilekey'] in ['True', 'true']):
+            response = Response(dict())
+            query_sql = self.generate_query_sql(request)
+            tile_token = uuid.uuid4()
+            self._cache_tile_sql(tile_token, query_sql.encode('utf-8'))
+            response.data['tilekey'] = tile_token
+        else:
+            response = super(DriverRecordViewSet, self).list(self, request, *args, **kwargs)
+        return response
+
 class DriverRecordAuditLogViewSet(viewsets.ModelViewSet):
     """Viewset for accessing audit logs; will output CSVs if Accept text/csv is specified"""
     queryset = RecordAuditLogEntry.objects.all()
@@ -1316,9 +1356,6 @@ class RecordCsvExportViewSet(viewsets.ViewSet):
         if not filter_key:
             return Response({'errors': {'tilekey': 'This parameter is required'}},
                             status=status.HTTP_400_BAD_REQUEST)
-        print filter_key
-        print request.user.pk
-        print "START"
         task = export_csv.delay(filter_key, request.user.pk)
 
         return Response({'success': True, 'taskid': task.id}, status=status.HTTP_201_CREATED)
