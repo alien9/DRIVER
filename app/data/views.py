@@ -68,6 +68,8 @@ from serializers import (DriverRecordSerializer, DriverRequestRecordSerializer, 
                          RecordDuplicateSerializer, RecordCostConfigSerializer)
 import transformers
 from driver import mixins
+from django.http import JsonResponse
+from constance import config as cc
 
 logger = logging.getLogger(__name__)
 
@@ -151,7 +153,6 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
 
     # Views
     def list(self, request, *args, **kwargs):
-        print "listing"
         # Don't generate a tile key unless the user specifically requests it, to avoid
         # filling up the Redis cache with queries that will never be viewed as tiles
         if ('tilekey' in request.query_params and
@@ -174,6 +175,16 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         # to store the data exactly as it is.
         redis_conn = get_redis_connection('default')
         redis_conn.set(token, sql.encode('utf-8'))
+
+    @list_route(methods=['get'])
+    def constants(self, request):
+        c = {
+            'lastYear': cc.LAST_YEAR,
+            'maxPointsPerUser': cc.MAX_POINTS_PER_USER,
+            'userInput': cc.USER_INPUT,
+        }
+        return JsonResponse(c)
+
 
     @list_route(methods=['get'])
     def stepwise(self, request):
@@ -251,12 +262,13 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
     @list_route(methods=['get'])
     def recent_counts_last_3_years(self, request):
         """ Return the recent record counts for 3 former years """
-        qs = self.get_filtered_queryset(request).order_by('-occurred_from').first()
-        a = qs.occurred_from.year
-        frist = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE)).date().replace(year=a, month=1, day=1)
-
+        if cc.LAST_YEAR:
+            a = cc.LAST_YEAR
+        else:
+            qs = self.get_filtered_queryset(request).order_by('-occurred_from').first()
+            a = qs.occurred_from.year
+        frist = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE)).date().replace(year=a+1, month=1, day=1)
         qs = self.get_filtered_queryset(request).filter(occurred_from__lt=frist)
-
         labels=['ano0','ano1','ano2']
         counts = {
           labels[ano[0]]:{
@@ -1149,7 +1161,6 @@ class DriverRequestRecordViewSet(DriverRecordViewSet, mixins.GenerateViewsetQuer
     def get_serializer_class(self):
         return DriverRequestRecordSerializer
     def get_queryset(self):
-        print "gerando a query corretamente"
         """Override default model ordering"""
         qs = super(DriverRecordViewSet, self).get_queryset()
         return qs.order_by('-occurred_from')
@@ -1161,7 +1172,6 @@ class PublicRecordFilter(RecordFilter):
         fields = ['archived']
         filter_overrides = FILTER_OVERRIDES
 
-
 class DriverPublicRecordViewSet(DriverRecordViewSet, mixins.GenerateViewsetQuery):
     queryset = DriverPublicRecord.objects.all()
     serializer_class = DriverPublicRecordSerializer
@@ -1172,14 +1182,28 @@ class DriverPublicRecordViewSet(DriverRecordViewSet, mixins.GenerateViewsetQuery
         return DriverPublicRecordSerializer
 
     def get_queryset(self):
-        print "gerando a query corretamente mesmo?"
         """Override default model ordering"""
         qs = DriverPublicRecord.objects.all()
         return qs.order_by('-occurred_from')
 
+    @list_route(methods=['get'])
+    def count(self, request):
+        c = DriverPublicRecord.objects.filter(recordauditlogentry__user=request.user, archived=False).order_by('uuid').distinct('uuid').count()
+        result = {
+            'count': c,
+            'max': cc.MAX_POINTS_PER_USER,
+        }
+        if c >= cc.MAX_POINTS_PER_USER:
+            frist = DriverPublicRecord.objects.filter(recordauditlogentry__user=request.user, archived=False).order_by(
+                'created').first()
+            result['last'] =  {
+                'locationText': frist.location_text,
+                'uuid': frist.uuid,
+            }
+        return JsonResponse(result)
+
     # Views
     def list(self, request, *args, **kwargs):
-        print "listing ok"
         # Don't generate a tile key unless the user specifically requests it, to avoid
         # filling up the Redis cache with queries that will never be viewed as tiles
         if ('tilekey' in request.query_params and

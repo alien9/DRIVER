@@ -52,7 +52,6 @@ class DriverRequestRecordSerializer(DriverRecordSerializer):
 
         """
         from grout.models import GroutModel, Record, RecordType
-        print "schema:" + str(data['schema'].uuid)
         if settings.TERTIARY_LABEL:
             data_types = RecordType.objects.filter(active=True, label=settings.TERTIARY_LABEL)
             if len(data_types)>0:
@@ -65,15 +64,23 @@ class DriverPublicRecordSerializer(DriverRecordSerializer):
         model = DriverPublicRecord
         fields = '__all__'
         read_only_fields = ('uuid',)
+    modified_by = SerializerMethodField(method_name='get_latest_change_uuid')
+
+    def validate_occurred_from(self, value):
+        return value
 
     def validate(self, data):
-        """
-        Check that the data is of the allowed format, it MUST have either lights or speed option values.
-
-        """
-        if not data.lights and not data.speed:
-            raise ValidationError("Speed or Lights required")
         return data
+
+    def get_latest_change_uuid(self, record):
+        """Returns the uuid of the user who has most recently modified this Record"""
+        latest_audit_entry = (RecordAuditLogEntry.objects
+                              .filter(record=record)
+                              .order_by('-date')
+                              .first())
+        if latest_audit_entry:
+            return latest_audit_entry.user_id
+        return None
 
 class DetailsReadOnlyRecordSerializer(BaseDriverRecordSerializer):
     """Serialize records with only read-only fields included"""

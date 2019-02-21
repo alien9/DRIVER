@@ -2,8 +2,8 @@
     'use strict';
 
     /* ngInject */
-    function MapController($rootScope, $scope, $modal, AuthService, BoundaryState,
-                           WebConfig, InitialState, FilterState, Records, RecordTypes,
+    function MapController($rootScope, $scope, $modal, $timeout, AuthService, BoundaryState,
+                           WebConfig, InitialState, FilterState, Records, PublicRecords, RecordTypes,
                            RecordState, RecordSchemaState, MapState, RecordAggregates) {
         var ctl = this;
         ctl.userCanWrite = false;
@@ -56,6 +56,47 @@
                 });
         };
 
+        $scope.showPublicModal = function showPublicModal(recordUUID) {
+            $scope.$emit('map.closepopup');
+            var uid = AuthService.getUserId();
+            RecordTypes.query({ record: recordUUID }).$promise
+                .then(function (result) {
+                    var recordType = result[0];
+                    /* jshint camelcase: false */
+                    RecordSchemaState.get(recordType.current_schema)
+                    /* jshint camelcase: true */
+                        .then(function(recordSchema) {
+                            $modal.open({
+                                templateUrl: 'scripts/views/record/public-modal-partial.html',
+                                controller: 'RecordPublicModalController as modal',
+                                size: 'lg',
+                                resolve: {
+                                    /* jshint camelcase: false */
+                                    record: function() {
+                                        return PublicRecords.get({
+                                            id: recordUUID,
+                                            details_only: 'False'
+                                        }).$promise;
+                                    },
+                                    /* jshint camelcase: true */
+                                    recordType: function () {
+                                        return recordType;
+                                    },
+                                    recordSchema: function () {
+                                        return recordSchema;
+                                    },
+                                    userCanWrite: function() {
+                                        return ctl.userCanWrite;
+                                    },
+                                    ownerId: uid
+
+                                }
+                            });
+
+                        });
+                });
+        };
+
         InitialState.ready().then(init);
 
         function init() {
@@ -78,6 +119,12 @@
             $scope.$on('driver.state.boundarystate:selected', function() {
                 loadRecords();
             });
+
+            ctl.legend = true;
+            $timeout(function(){
+                $('.leaflet-control-layers').on('mouseover', function(){$('.legend').hide();});
+                $('.leaflet-control-layers').on('mouseout', function(){$('.legend').show();});
+            }, 5000);
         }
 
         function loadRecords() {

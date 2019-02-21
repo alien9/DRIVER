@@ -11,6 +11,7 @@
         var userIdCookieString = 'AuthService.userId';
         var tokenCookieString = 'AuthService.token';
         var isAdminCookieString = 'AuthService.isAdmin';
+        var emailCookieString = 'AuthService.email';
         var cookieTimeout = null;
         var cookieTimeoutMillis = 24 * 60 * 60 * 1000;      // 24 hours
 
@@ -113,10 +114,6 @@
                 };
 
                 if (data && data.user && data.token) {
-                    $log.debug('sending user service user:');
-                    $log.debug(data.user);
-                    $log.debug('and token');
-                    $log.debug(data.token);
                 } else {
                     result.isAuthenticated = false;
                     result.error = 'Error obtaining user information.';
@@ -270,6 +267,7 @@
             userId = !isNaN(userId) && userId >= 0 ? userId : -1;
             $cookies.putObject(userIdCookieString, userId, {path: '/'});
         }
+
 
 
     }

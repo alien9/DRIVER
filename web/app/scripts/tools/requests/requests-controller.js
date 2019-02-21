@@ -22,8 +22,8 @@
             ctl.toggle = toggle;
             ctl.exportCSV = exportCSV;
 
-            RecordState.getTertiary().then(function (tertiaryType) {
-                ctl.recordType = tertiaryType;
+            RecordState.getPublic().then(function (type) {
+                ctl.recordType = type;
             });
         }
 

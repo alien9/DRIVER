@@ -3,7 +3,7 @@
 
     /* ngInject */
     function NavbarController($rootScope, $scope, $state, $modal, $translate, $window, $document,
-                              AuthService, BoundaryState, GeographyState, InitialState,
+                              AuthService, BoundaryState, GeographyState, InitialState, ConstantsState,
                               LanguageState, MapState, RecordState, RecordSchemaState, UserService, WebConfig) {
         var ctl = this;
         var initialized = false;
@@ -45,6 +45,20 @@
             RecordState.getPublic().then(function (p) {
                 ctl.recordType = p;
             });
+            if(WebConfig.constants.userInput){
+                switch(parseInt(WebConfig.constants.userInput)){
+                    case 0:
+                        ctl.hasInput = false;
+                        break;
+                    case 2:
+                        ctl.hasInput = true;
+                        ctl.pop();
+                        break;
+                    case 1:
+                        ctl.hasInput = true;
+                }
+
+            }
         }
 
         $rootScope.$on('$stateChangeSuccess', function (event, toState) {
@@ -82,6 +96,7 @@
             updateState();
             MapState.setLocation(null);
             MapState.setZoom(null);
+            MapState.setBbox(selected.bbox);
         });
 
         // Geography selections
@@ -214,7 +229,22 @@
             ctl.isTutorial = !ctl.isTutorial;
         };
 
+        ctl.pop = function(){
+            $modal.open({
+                templateUrl: 'scripts/pop/pop-partial.html',
+                    controller: 'PopController as modal',
+                    size: 'sm',
+                    resolve: {
+                        create: function(){
+                            return ctl.createPublicRecord;
+                        }
+                    }
+            });
+        };
+
         ctl.createPublicRecord = function(){
+            navigateToStateName('map');
+            var uid = AuthService.getUserId();
         /* jshint camelcase: false */
             RecordSchemaState.get(ctl.recordType.current_schema).then(function(recordSchema) {
         /* jshint camelcase: true */
@@ -234,7 +264,8 @@
                         },
                         userCanWrite: function() {
                             return true;
-                        }
+                        },
+                        ownerId: uid
                     }
                 });
              });

@@ -39,6 +39,7 @@ USER_ID_COOKIE = 'AuthService.userId'
 TOKEN_COOKIE = 'AuthService.token'
 CAN_WRITE_COOKIE = 'AuthService.canWrite'
 ADMIN_COOKIE = 'AuthService.isAdmin'
+EMAIL_COOKIE = 'AuthService.Email'
 
 logger = logging.getLogger(__name__)
 
@@ -64,6 +65,9 @@ def authz_cb(request):
             # set session cookie for frontend
             response = redirect(settings.START_PAGE)
             response.set_cookie(USER_ID_COOKIE, token.user_id)
+            response.set_cookie(EMAIL_COOKIE, user.email)
+            print user
+
             # set cookie for frontend write access (will be false by default)
             if is_admin_or_writer(user):
                 response.set_cookie(CAN_WRITE_COOKIE, 'true')

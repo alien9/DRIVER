@@ -6,7 +6,7 @@
 
     /* ngInject */
     function MapState(BaseLayersService, localStorageService) {
-        var filterGeoJSON, zoom, location, baseLayer;
+        var filterGeoJSON, zoom, location, baseLayer, bbox;
         var baseLayers = _.map(BaseLayersService.baseLayers(), 'slugLabel');
         var baseLayerStorageName = 'map.baseLayerSlugLabel';
 
@@ -20,7 +20,9 @@
             setBaseLayerSlugLabel: setBaseLayerSlugLabel,
             getBaseLayerSlugLabel: getBaseLayerSlugLabel,
             setOverlayState: setOverlayState,
-            getOverlayState: getOverlayState
+            getOverlayState: getOverlayState,
+            setBbox: setBbox,
+            getBbox: getBbox
         };
 
         return svc;
@@ -45,6 +47,7 @@
          * @param {number} mapZoom The zoom level of the leaflet map
          */
         function setZoom(mapZoom) {
+            console.log('setting map zoom to '+ mapZoom);
             zoom = mapZoom;
         }
 
@@ -52,7 +55,21 @@
          * Get zoomlevel - default to 5
          */
         function getZoom() {
-            return zoom || 5;
+            return zoom || 11;
+        }
+
+        /**
+         * Get bounding box
+         */
+        function getBbox() {
+            return bbox;
+        }
+
+        /**
+         * Get bounding box
+         */
+        function setBbox(b) {
+            bbox = b;
         }
 
         /**

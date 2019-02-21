@@ -39,6 +39,7 @@
             options = [];
             defaultParams = {'active': 'True'};
             svc.updateOptions();
+
         }
 
         /**
@@ -173,8 +174,6 @@
                 return getSelected().then(function () { return publicType; });
             }
         }
-
-
         return svc;
     }
 

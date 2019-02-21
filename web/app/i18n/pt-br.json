@@ -44,7 +44,8 @@
         "TO": "até",
         "TOTAL": "Total",
         "VIEW": "Exibir",
-        "YES": "Sim"
+        "YES": "Sim",
+        "CONTRIBUTE": "Contribua"
     },
     "DASHBOARD": {
         "ANALYZE_AND_FILTER": "Analise & Filtro",
@@ -111,7 +112,8 @@
         "SAVING_FILTER_ERROR": "Error Salvando Filtro",
         "UNKNOWN_ERROR": "Erro Desconhecido",
         "UNKNOWN_RULE_TYPE": "Tipo de Regra Desconhecido",
-        "VALUE_REQUIRED": "Valor Necessário"
+        "VALUE_REQUIRED": "Valor Necessário",
+        "LIMIT_RECORDS_EXCEEDED": "Você excedeu o número permitido de registros. Deseja apagar"
     },
     "LOGIN": {
         "LOG_IN_TO": "Entrar para",
@@ -224,7 +226,8 @@
         "SHOWING_RESULTS": "Mostrando resultados",
         "WEATHER": "Clima",
         "WEEK_OF": "Semana de",
-        "DETAILS_OF_ACCIDENT": "Detalhes do Acidente"
+        "DETAILS_OF_ACCIDENT": "Detalhes do Acidente",
+        "SET_LOCATION_TITLE": "Localização"
     },
     "REPORT": {
         "ACTIVE_FILTERS": "Filtros Ativos",

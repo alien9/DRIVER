@@ -27,3 +27,4 @@ Rtree==0.8.2
 Shapely==1.5.13
 umalqurra==0.2
 django-simple-captcha
+django-constance

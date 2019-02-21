@@ -45,7 +45,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" role="button">
+                    <a class="dropdown-toggle abbreviated" data-toggle="dropdown" role="button">
                         {{ ctl.getBoundaryLabel(ctl.boundarySelected) }}
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -66,10 +66,8 @@
                         <span class="glyphicon glyphicon-info-sign"></span>
                     </a>
                 </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" ng-click="ctl.createPublicRecord()">
-                        <span class="glyphicon glyphicon-flag"></span>
-                    </a>
+                <li class="dropdown" ng-if="ctl.hasInput" style="margin-top:0">
+                    <a class="creator" routerLink="" ng-click="ctl.createPublicRecord()">{{ 'COMMON.CONTRIBUTE' | translate }}!</a>
                 </li>
             </ul>
 

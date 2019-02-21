@@ -19,10 +19,7 @@ class DriverRecord(Record):
     state = models.CharField(max_length=50, null=True, blank=True)
 
 class DriverPublicRecord(Record):
-    speed = models.BooleanField()
-    lights = models.BooleanField()
-    direction = models.CharField(max_length=20, choices=(('centerbound', 'center'), ('outerbound', 'outer')))
-    comments = models.CharField(max_length=400, null=True)
+    pass
 
 class RecordAuditLogEntry(models.Model):
     """Records an occurrence of a Record being altered, who did it, and when.

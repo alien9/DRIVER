@@ -38,6 +38,7 @@
         ctl.userCanWrite = false;
         ctl.primaryLayerGroup = null;
         ctl.secondaryLayerGroup = null;
+        ctl.publicLayerGroup = null;
         ctl.heatmapLayerGroup = null;
         ctl.blackspotLayerGroup = null;
         ctl.boundariesLayerGroup = null;
@@ -81,7 +82,6 @@
             ctl.userCanWrite = AuthService.hasWriteAccess();
             var bmapDefer = $q.defer();
             ctl.bMaps = bmapDefer.promise;
-
             // get the current record type selection for filtering
             RecordState.getSelected().then(function(selected) {
                 if (selected && selected.uuid) {
@@ -94,9 +94,11 @@
                     RecordState.getSecondary().then(function (secondaryType) {
                         ctl.secondaryType = secondaryType;
                     });
-                    RecordState.getTertiary().then(function (tertiaryType) {
-                        ctl.tertiaryType = tertiaryType;
-                    });
+                    if(WebConfig.constants.userInput && (parseInt(WebConfig.constants.userInput)>0)){
+                        RecordState.getPublic().then(function (publicType) {
+                            ctl.publicType = publicType;
+                        });
+                    }
                 } else {
                     ctl.recordSchemaFilterables = [];
                     ctl.recordType = {
@@ -106,7 +108,7 @@
                     };
                     /* jshint camelcase: true */
                     ctl.secondaryType = null;
-                    ctl.tertiaryType = null;
+                    ctl.publicType = null;
                 }
             }).then(function() {
                 return BoundaryState.getSelected().then(function(selected) {
@@ -225,10 +227,14 @@
 
                 ctl.map.on('overlayadd', function(e){
                     MapState.setOverlayState(e.name, true);
+                    $timeout($rootScope.$broadcast('driver.map.overlay:change', null), 5000);
+                    ctl.map.legend = false;
                 });
 
                 ctl.map.on('overlayremove', function(e){
                     MapState.setOverlayState(e.name, false);
+                    $timeout($rootScope.$broadcast('driver.map.overlay:change', null),5000);
+                    ctl.map.legend = true;
                 });
                 // TODO: Find a better way to ensure this doesn't happen until filterbar ready
                 // (without timeout, filterbar components aren't ready to listen yet)
@@ -273,6 +279,18 @@
                         ctl.setRecordLayers();
                     });
                 }
+            });
+
+            $scope.$on('map.closepopup', function(){
+                ctl.map.closePopup();
+            });
+
+            $rootScope.$on('driver.publicrecord:change', function(){
+                ctl.map.addLayer(ctl.publicLayerGroup);
+                $rootScope.$broadcast('driver.views.map:filterdrawn');
+                _.forEach(ctl.publicLayerGroup._layers,function(layer) {
+                    layer.redraw();
+                });
             });
         };
 
@@ -362,8 +380,8 @@
                 blackspotTileKey:     false,
                 secondaryRecordsUrl:  '',
                 secondaryUtfGridUrl:  '',
-                tertiaryRecordsUrl:  '',
-                tertiaryUtfGridUrl:  ''
+                publicRecordsUrl:  '',
+                publicUtfGridUrl:  ''
             };
             if (response && response[0] && response[0].tilekey) {
                 var data = response[0];
@@ -381,9 +399,9 @@
                 urls.secondaryRecordsUrl = TileUrlService.secondaryTilesUrl(ctl.secondaryType.uuid);
                 urls.secondaryUtfGridUrl = TileUrlService.recUtfGridTilesUrl(ctl.secondaryType.uuid);
             }
-            if (ctl.tertiaryType) {
-                urls.tertiaryRecordsUrl = TileUrlService.tertiaryTilesUrl(ctl.tertiaryType.uuid);
-                urls.tertiaryUtfGridUrl = TileUrlService.recUtfGridTilesUrl(ctl.tertiaryType.uuid);
+            if (ctl.publicType) {
+                urls.publicRecordsUrl = TileUrlService.publicTilesUrl(ctl.publicType.uuid);
+                urls.publicUtfGridUrl = TileUrlService.publicRecUtfGridTilesUrl(ctl.publicType.uuid);
             }
 
             return urls;
@@ -403,7 +421,9 @@
                 updateBlackspotLayer(urls.blackspotsUrl, urls.blackspotsUtfGridUrl,
                                      urls.blackspotTileKey);
             }
-            updateTertiaryLayer(urls.tertiaryRecordsUrl, urls.tertiaryUtfGridUrl);
+            if(WebConfig.constants.userInput && parseInt(WebConfig.constants.userInput)>0){
+                updatePublicLayer(urls.publicRecordsUrl, urls.publicUtfGridUrl);
+            }
             updateSecondaryLayer(urls.secondaryRecordsUrl, urls.secondaryUtfGridUrl);
             updatePrimaryLayer(urls.primaryRecordsUrl, urls.primaryUtfGridUrl);
             if (WebConfig.heatmap.visible) {
@@ -451,12 +471,17 @@
          */
         function addLayerSwitcher() {
             /* jshint camelcase: false */
+            var labels = {
+                primary: ctl.recordType.plural_label
+            };
             var recordLayers = [[ctl.recordType.plural_label, ctl.primaryLayerGroup]];
             if (ctl.secondaryType) {
+                labels.secondary = ctl.secondaryType.plural_label;
                 recordLayers.push([ctl.secondaryType.plural_label, ctl.secondaryLayerGroup]);
             }
-            if (ctl.tertiaryType) {
-                recordLayers.push([ctl.tertiaryType.plural_label, ctl.tertiaryLayerGroup]);
+            if (ctl.publicType) {
+                labels.public =  ctl.publicType.plural_label;
+                recordLayers.push([ctl.publicType.plural_label, ctl.publicLayerGroup]);
             }
             /* jshint camelcase: true */
 
@@ -466,6 +491,7 @@
             if (WebConfig.blackSpots.visible) {
                 recordLayers.push([$translate.instant('MAP.BLACKSPOTS'), ctl.blackspotLayerGroup]);
             }
+            $rootScope.$broadcast('driver-map-layers:prepare', labels);
             var overlayOrder = {};
             var i = 0;
             while(i < recordLayers.length){
@@ -592,17 +618,18 @@
             }
         }
 
+
         /**
-         * Updates the tertiary layer group (requests)
-         * The tertiary layer group is composed of the records layer for the records
+         * Updates the public layer group (requests)
+         * The public layer group is composed of the public records layer for the records
          * created by the user, displayed as editable within the popup for the creator.
          * Admin roles can see every record
          * on the map, and the utfGridRecords layer which is for the
          * click events and popup
          */
-        function updateTertiaryLayer(recordsUrl, utfGridUrl){
-            if (!ctl.tertiaryType) {
-                ctl.tertiaryLayerGroup = null;
+        function updatePublicLayer(publicRecordsUrl, utfGridUrl){
+            if (!ctl.publicType) {
+                ctl.publicLayerGroup = null;
                 return;
             }
 
@@ -611,34 +638,34 @@
             });
 
             var recordsLayer = new L.tileLayer(
-                ctl.getFilterQuery(recordsUrl, ctl.tertiaryTilekey),
+                ctl.getFilterQuery(publicRecordsUrl, ctl.publicTilekey),
                 recordsLayerOptions);
 
             var utfGridRecordsLayer = new L.UtfGrid(
-                ctl.getFilterQuery(utfGridUrl, ctl.tertiaryTilekey), {
+                ctl.getFilterQuery(utfGridUrl, ctl.publicTilekey), {
                     useJsonP: false,
                     zIndex: 12
                 });
 
-            var tertiaryParams = {};
-            if (ctl.tertiaryType) {
-                tertiaryParams = { label: ctl.tertiaryType.label };
+            var publicParams = {};
+            if (ctl.publicType) {
+                publicParams = { label: ctl.publicType.label };
             }
 
-            addGridRecordEvent(utfGridRecordsLayer, tertiaryParams);
+            addGridRecordEvent(utfGridRecordsLayer, publicParams, ctl.buildPublicRecordPopup);
 
-            if (!ctl.tertiaryLayerGroup) {
-                ctl.tertiaryLayerGroup = new L.layerGroup(
+            if (!ctl.publicLayerGroup) {
+                ctl.publicLayerGroup = new L.layerGroup(
                     [recordsLayer, utfGridRecordsLayer]);
             } else {
-                _.forEach(ctl.tertiaryLayerGroup._layers,function(layer) {
+                _.forEach(ctl.publicLayerGroup._layers,function(layer) {
                     if (typeof layer.off === 'function') {
                         layer.off('click');
                     }
-                    ctl.tertiaryLayerGroup.removeLayer(layer);
+                    ctl.publicLayerGroup.removeLayer(layer);
                 });
-                ctl.tertiaryLayerGroup.addLayer(recordsLayer);
-                ctl.tertiaryLayerGroup.addLayer(utfGridRecordsLayer);
+                ctl.publicLayerGroup.addLayer(recordsLayer);
+                ctl.publicLayerGroup.addLayer(utfGridRecordsLayer);
             }
         }
 
@@ -651,7 +678,10 @@
          * Adds the onClick event to the specified utfGridRecordsLayer
          * in order to create the info popups
          */
-        function addGridRecordEvent(utfGridRecordsLayer, popupParams) {
+        function addGridRecordEvent(utfGridRecordsLayer, popupParams, builder) {
+            if(!builder){
+                builder = ctl.buildRecordPopup;
+            }
             utfGridRecordsLayer.on('click', function(e) {
                 // ignore clicks where there is no event record
                 if (!e.data) {
@@ -668,7 +698,7 @@
 
                 new L.popup(popupOptions)
                     .setLatLng(e.latlng)
-                    .setContent(ctl.buildRecordPopup(e.data, popupParams))
+                    .setContent(builder(e.data, popupParams))
                     .openOn(ctl.map);
 
                 $compile($('#record-popup'))($scope);
@@ -808,7 +838,7 @@
             /* jshint camelcase: false */
             // DateTimes come back from Windshaft without tz information, but they're all UTC
             var occurredStr = localizeRecordDateFilter(moment.utc(record.occurred_from), dateFormat, true);
-            var str = '<div id="record-popup" class="record-popup">';
+            var str = '<div id="record-popup" class="record-popuppy">';
             str += '<div><h5>' + popupParams.label +
                 '</h5><h3>' + occurredStr + '</h3>';
             /* jshint camelcase: true */
@@ -822,6 +852,30 @@
                 str += '<span class="glyphicon glyphicon-pencil"></span> ';
                 str += editLabel + '</a>';
             }
+            str += '</div></div>';
+            return str;
+        };
+
+        /**
+         * Build popup content from public record data.
+         *
+         * @param {Object} UTFGrid interactivity data from interaction event object
+         * @returns {String} HTML snippet for a Leaflet popup.
+         */
+        ctl.buildPublicRecordPopup = function(record, popupParams) {
+            if(!popupParams){
+                popupParams={};
+            }
+            // add header with record date constant field
+            /* jshint camelcase: false */
+            var str = '<div id="record-popup" class="record-popup">';
+            str += '<div><h2>' + WebConfig.recordType.publicLabel + '</h2><h4>' + record.location_text +
+                '</h4>';
+            /* jshint camelcase: true */
+
+            // The ng-click here refers to a function which sits on the map-controller's scope
+            str += '<a ng-click="showPublicModal(\'' + record.uuid + '\')">';
+            str += '<span class="glyphicon glyphicon-log-in"></span> ' + viewLabel + '</a>';
             str += '</div></div>';
             return str;
         };
@@ -895,7 +949,7 @@
                 function(records) { ctl.tilekey = records.tilekey; }
             );
             var secondary = $q.resolve('');
-            var tertiary = $q.resolve('');
+            var publicLayer = $q.resolve('');
             if (ctl.secondaryType) {
                 var params = getAdditionalParams();
                 /* jshint camelcase: false */
@@ -905,13 +959,13 @@
                     function(records) { ctl.secondaryTilekey = records.tilekey; }
                 );
             }
-            if (ctl.tertiaryType) {
+            if (ctl.publicType) {
                 var p = getAdditionalParams();
                 /* jshint camelcase: false */
-                p.record_type = ctl.tertiaryType.uuid;
+                p.record_type = ctl.publicType.uuid;
                 /* jshint camelcase: true */
-                tertiary = QueryBuilder.djangoQuery(0, p, {doJsonFilters: false, doAttrFilters:false}, false).then(
-                    function(records) { ctl.tertiaryTilekey = records.tilekey; }
+                publicLayer = QueryBuilder.djangoQuery(0, p, {doJsonFilters: false, doAttrFilters:false}, false).then(
+                    function(records) { ctl.publicTilekey = records.tilekey; }
                 );
             }
             return $q.all([primary, secondary]);

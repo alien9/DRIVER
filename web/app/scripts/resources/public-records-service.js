@@ -21,6 +21,10 @@
             },
             update: {
                 method: 'PATCH'
+            },
+            limits: {
+                url: baseUrl + 'count/',
+                method: 'GET'
             }
         });
     }

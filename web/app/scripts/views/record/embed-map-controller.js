@@ -6,7 +6,7 @@
 
     /* ngInject */
     function EmbedMapController($log, $timeout, $scope, $rootScope, TileUrlService,
-                                BaseLayersService, MapState) {
+                                BaseLayersService, MapState, WebConfig) {
         var dblClickTimeout = null;
         var ctl = this;
 
@@ -23,6 +23,8 @@
          */
         ctl.setUpMap = function(leafletMap, isEditable, lat, lng) {
             ctl.map = leafletMap;
+            ctl.bounds = null;
+
             ctl.isEditable = !!isEditable;
 
             var baseMaps = BaseLayersService.baseLayers();
@@ -49,13 +51,19 @@
                     broadcastBBox(e.target.getBounds());
                 });
             }
-
             // If a location was passed in, center and zoom to that. Otherwise load from MapState
             // but zoom out one level to adjust for the smaller field of view.
             if (lat && lng) {
                 setMarker(L.latLng(lat, lng));
             } else if (MapState.getLocation() && MapState.getZoom()) {
                 ctl.map.setView(MapState.getLocation(), MapState.getZoom() - 1);
+            } else if (MapState.getBbox() && (MapState.getBbox().length>0)){
+                ctl.bounds = MapState.getBbox().map(function(c){return [c.lat,c.lon];});
+                ctl.map.setView(WebConfig.localization.centerLatLon, MapState.getZoom());
+                $timeout(function(){
+                    //SORRY, this is ugly but I cannot put onload to work properly
+                     ctl.map.fitBounds(ctl.bounds);
+                }, 500);
             }
         };
 

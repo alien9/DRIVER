@@ -3,7 +3,7 @@
         <div class="close" ng-click="modal.close()">
             &times;
         </div>
-        <div class="report-header" ng-if="!modal.record.isTertiary">
+        <div class="report-header">
             <h3 class="modal-title">
                 <small ng-if="modal.userCanWrite" class="pull-right">
                     <a ui-sref="record.edit({ recorduuid: modal.record.uuid })" target="_blank">
@@ -15,7 +15,7 @@
                         <span class="glyphicon glyphicon-share"></span> {{ 'COMMON.VIEW' | translate }}
                     </a>
                 </small>
-                <span ng-if="ctl.isSecondary">{{ 'RECORD.DETAILS_OF_ACCIDENT' | translate }}</span>
+                <span>{{ modal.recordType.label }}</span>
             </h3>
         </div>
         <driver-details-tabs

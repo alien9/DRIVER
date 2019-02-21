@@ -9,4 +9,4 @@
   command: apt-get update
 
 - name: Upgrade Python version so we can have SSL
-  command: apt-get install -y --only-upgrade python
+  command: apt-get install -y --only-upgrade python2.7

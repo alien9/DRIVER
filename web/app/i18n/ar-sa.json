@@ -44,7 +44,8 @@
         "TO": "إلى",
         "TOTAL": "جميع",
         "VIEW": "عرض",
-        "YES": "نعم"
+        "YES": "نعم",
+        "CONTRIBUTE": "!Contribute"
     },
     "DASHBOARD": {
         "ANALYZE_AND_FILTER": "تحليل وتصنيف",
@@ -111,7 +112,8 @@
         "SAVING_FILTER_ERROR": "خطأ في حفظ السجل",
         "UNKNOWN_ERROR": "خطأ غير معروف",
         "UNKNOWN_RULE_TYPE": "!Unknown rule type",
-        "VALUE_REQUIRED": "القيمة مطلوبة"
+        "VALUE_REQUIRED": "القيمة مطلوبة",
+        "LIMIT_RECORDS_EXCEEDED": "!Registers maximum exceeded. Would you like to erase"
     },
     "LOGIN": {
         "LOG_IN_TO": "تسجيل الدخول إلى",
@@ -224,7 +226,8 @@
         "SHOWING_RESULTS": "عرض النتائج ",
         "WEATHER": "الطقس",
         "WEEK_OF": "الإسبوع رقم",
-        "DETAILS_OF_ACCIDENT": "Details of the Crash"
+        "DETAILS_OF_ACCIDENT": "Details of the Crash",
+        "SET_LOCATION_TITLE": "!Choose a Location"
     },
     "REPORT": {
         "ACTIVE_FILTERS": "التصانيف القائمة",

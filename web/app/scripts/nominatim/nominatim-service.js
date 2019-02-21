@@ -14,7 +14,7 @@
 
         return module;
 
-        function forward(text, bboxArray) {
+        function forward(text, bboxArray, mapper, filter) {
             var params = {
                 key: WebConfig.nominatim.key,
                 q: text,
@@ -32,7 +32,14 @@
             return $http.get(PICKPOINT_NOMINATIM_URL + 'forward', {
                 params: params
             }).then(function (result) {
-                return result.data;
+                if(filter){
+                    result.data = result.data.filter(filter);
+                }
+                if(mapper){
+                    return result.data.map(mapper);
+                }else{
+                    return result.data;
+                }
             });
         }
 

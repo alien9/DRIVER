@@ -3,9 +3,8 @@
 
     /* ngInject */
     function recentEventsMapLayers($q, BoundaryState, InitialState, RecordState, QueryBuilder,
-                                   TileUrlService, BaseLayersService, RecordAggregates) {
+                                   TileUrlService, BaseLayersService, RecordAggregates, WebConfig) {
         var defaultLayerOptions = {attribution: 'PRS', detectRetina: true};
-        var recencyCutoffDays = 14;
         var selectedYear = null;
         var recordLayers = null;
         var layerSwitcher = null;
@@ -79,15 +78,11 @@
         function updateLayers(map) {
             var recordsLayerOptions = angular.extend(defaultLayerOptions, {zIndex: 3});
             if(!selectedYear){
-                RecordAggregates.lastYear().then(function(data){
-                        selectedYear = data.year-1;
-                        updateLayers(map);
-                 });
-                 return;
+                 selectedYear = WebConfig.constants.lastYear;
             }
             var occurredMin = new Date(selectedYear, 0, 1);
             var occurredMax = new Date(selectedYear, 12, 31);
-            occurredMin.setDate(occurredMin.getDate() - recencyCutoffDays);
+            //occurredMin.setDate(occurredMin.getDate() - recencyCutoffDays);
             RecordState.getSelected().then(function(selected) {
                 // Construct Windshaft URL
                 var baseUrl = TileUrlService.recTilesUrl(selected.uuid);

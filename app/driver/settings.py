@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-*
 """
 Django settings for driver project.
 
@@ -61,7 +62,10 @@ INSTALLED_APPS = (
     'user_filters',
     'black_spots',
     'captcha',
+
+    'constance',
 )
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -258,6 +262,25 @@ REST_FRAMEWORK = {
 
 REDIS_HOST = os.environ.get('DRIVER_REDIS_HOST', '127.0.0.1')
 REDIS_PORT = os.environ.get('DRIVER_REDIS_PORT', '6379')
+
+CONSTANCE_REDIS_CONNECTION = {
+    'host': REDIS_HOST,
+    'port': REDIS_PORT,
+}
+
+CONSTANCE_ADDITIONAL_FIELDS = {
+    'pop_select': ['django.forms.fields.ChoiceField', {
+        'widget': 'django.forms.Select',
+        'choices': ((0, u'Não'), (1, "Sim"), (2, "Popup"))
+    }],
+}
+
+CONSTANCE_CONFIG = {
+    'THE_ANSWER': (42, 'Answer to the Ultimate Question of Life, The Universe, and Everything'),
+    'LAST_YEAR': (2017, 'Ano Final na Base'),
+    'MAX_POINTS_PER_USER': (3, u'Quantidade máxima de registros de Pontos Críticos por cidadão'),
+    'USER_INPUT': (0, u'Entrada de pontos por usuário', 'pop_select')
+}
 
 # JAR file cache TLL (keep in redis for this many seconds since creation or last retrieval)
 JARFILE_REDIS_TTL_SECONDS = os.environ.get('DRIVER_JAR_TTL_SECONDS', 60 * 60 * 24 * 30) # 30 days

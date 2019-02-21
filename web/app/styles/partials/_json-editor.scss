@@ -122,12 +122,22 @@
     }
 
 }
-.form-area-expanded{
-    background:lime;
+.form-area-body{
     h3{
         display:none;
     }
     .col-md-12{
         border-width:0 !important;
+        padding: 0 !important;
+        margin-bottom:0 !important;
     }
+    .well{
+        background-color:white !important;
+        border-width: 0 !important;
+        padding:0 !important;
+        margin-bottom: 0 !important;
+    }
+}
+div.first{
+    margin-top:20px;
 }

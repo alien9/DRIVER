@@ -119,7 +119,9 @@
         'ui.router',
         'LocalStorageModule',
         'pascalprecht.translate',
-        'driver.tutorial'
+        'driver.tutorial',
+        'driver.legend',
+        'driver.pop'
     ])
     .config(DefaultRoutingConfig)
     .config(LogConfig)

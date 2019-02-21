@@ -26,7 +26,8 @@
         'driver.config',
         'driver.localization',
         'driver.map-layers',
-        'driver.state'
+        'driver.state',
+        'driver'
     ]).config(StateConfig);
 
 })();

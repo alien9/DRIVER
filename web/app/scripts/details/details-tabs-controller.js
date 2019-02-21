@@ -50,7 +50,6 @@
             // get section definitions as sorted array, with added property for the section name
             var sorted = _.map(ordering, function(section) {
                 var definition = ctl.recordSchema.schema.definitions[section];
-                definition.title = definition.title.replace('Incidente Details', 'Acidente');
                 definition.propertyName = definition.title;
                 definition.propertyKey = section;
                 // only set to pending if not details section and user not public

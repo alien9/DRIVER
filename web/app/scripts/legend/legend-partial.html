@@ -1,0 +1,7 @@
+<div class="legend driver-map-legend">
+    <div class="leaflet-bar" ng-class="ctl.legendClass">
+        <div ng-if="hasPrimary"><span class="icon circle-primary"></span>{{ ctl.layers.primary }}</div>
+        <div ng-if="hasSecondary"><span class="icon circle-secondary"></span>{{ ctl.layers.secondary }}</div>
+        <div ng-if="hasPublic"><span class="icon circle-public"></span>{{ ctl.layers.public }}</div>
+    </div>
+</div>

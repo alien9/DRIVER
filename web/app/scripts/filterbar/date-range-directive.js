@@ -2,7 +2,7 @@
     'use strict';
 
     /* ngInject */
-    function DateRangeField(DateLocalization) {
+    function DateRangeField(DateLocalization, WebConfig) {
         var module = {
             restrict: 'A',
             require: ['^driver-filterbar', 'date-range-field'],
@@ -103,10 +103,9 @@
                     configureDatePicker();
 
                     // Today
-                    var year = (new Date()).getFullYear();
-                    var defaultMax = new Date(year, 0, 1);
-
-                    var defaultMin = new Date(year-1, 0, 1);
+                    var year = WebConfig.constants.lastYear;
+                    var defaultMax = new Date(year+1, 0, 1);
+                    var defaultMin = new Date(year, 0, 1);
                     $('#dtMaxField')
                         .calendarsPicker(scope.calendarOptions)
                         .calendarsPicker('setDate', calendar.fromJSDate(defaultMax))

@@ -120,7 +120,20 @@ class ReadersReadWritersWrite(permissions.BasePermission):
 
 class Everybody(permissions.BasePermission):
     def has_permission(self, request, view):
+        if not request.user or not request.user.is_authenticated():
+            return False
+        if is_admin(request.user):
+            return True
         return True
+
+    def has_object_permission(self, request, view, obj):
+        if not request.user or not request.user.is_authenticated():
+            return False
+        if is_admin(request.user):
+            return True
+        if request.user == obj.recordauditlogentry_set.first().user or request.method in permissions.SAFE_METHODS:
+            return True
+        return False
 
 class IsOwnerOrAdmin(permissions.BasePermission):
     """Allow access only to the user who created the object, and admins"""

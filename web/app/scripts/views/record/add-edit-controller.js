@@ -424,12 +424,12 @@
             var prevPage = $window.location.href;
             $window.history.back();
 
-            // If going back to the previous page didn't result in any change, then it means
+            // If going back to the previous page didn't result in any change, then it meanslinklink
             // this was opened by the edit link which targets a new window. In this case we
             // want the window to be closed.
             // There is not a reliable way to check if this was navigated to via a normal link
             // or a new window link (the referrer value isn't useful due to the way angular loads),
-            // so this is just checking to see if going back in history changed anything, and if
+            // so this is just checking to see if going back in history changed anything, and iflink
             // not it closes the window.
             $timeout(function() {
                 if ($window.location.href === prevPage) {

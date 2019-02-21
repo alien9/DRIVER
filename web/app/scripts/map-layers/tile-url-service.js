@@ -8,9 +8,12 @@
         var allRecordsUrl = (WebConfig.windshaft.hostname +
             '/tiles/table/grout_record/id/ALL/{z}/{x}/{y}.png');
         var secondaryRecordsUrl = allRecordsUrl + '?secondary=true';
-        var requestsRecordsUrl = allRecordsUrl + '?tertiary=true';
+        var publicRecordsUrl = (WebConfig.windshaft.hostname +
+            '/tiles/table/data_driverpublicrecord/id/ALL/{z}/{x}/{y}.png' + '?tertiary=true');
         var allRecordsUtfGridUrl = (WebConfig.windshaft.hostname +
             '/tiles/table/grout_record/id/ALL/{z}/{x}/{y}.grid.json');
+        var publicRecordsUtfGridUrl = (WebConfig.windshaft.hostname +
+            '/tiles/table/data_driverpublicrecord/id/ALL/{z}/{x}/{y}.grid.json');
         var allBoundariesUrl = (WebConfig.windshaft.hostname +
             '/tiles/table/grout_boundary/id/ALL/{z}/{x}/{y}.png');
         var heatmapUrl = allRecordsUrl + '?heatmap=true';
@@ -22,8 +25,9 @@
         var module = {
             recTilesUrl: recordsTilesUrlForType,
             secondaryTilesUrl: secondaryTilesUrlForType,
-            tertiaryTilesUrl: requestsTilesUrlForType,
+            publicTilesUrl: publicTilesUrlForType,
             recUtfGridTilesUrl: recordsUtfGridTilesUrlForType,
+            publicRecUtfGridTilesUrl: publicRecordsUtfGridTilesUrlForType,
             recHeatmapUrl: recordsHeatmapTilesUrl,
             boundaryTilesUrl: boundaryTilesUrl,
             blackspotsUrl: blackspotTilesUrl,
@@ -52,13 +56,16 @@
             return _insertIdAtALL(secondaryRecordsUrl, typeUuid);
         }
 
-        function requestsTilesUrlForType(typeUuid) {
-            return _insertIdAtALL(requestsRecordsUrl, typeUuid);
+        function publicTilesUrlForType(typeUuid) {
+            return _insertIdAtALL(publicRecordsUrl, typeUuid);
         }
 
         function recordsUtfGridTilesUrlForType(typeUuid) {
             return _insertIdAtALL(allRecordsUtfGridUrl, typeUuid);
+        }
 
+        function publicRecordsUtfGridTilesUrlForType(typeUuid) {
+            return _insertIdAtALL(publicRecordsUtfGridUrl, typeUuid);
         }
 
         function recordsHeatmapTilesUrl(typeUuid) {
