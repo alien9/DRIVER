@@ -27,6 +27,7 @@ from django.db.models import (Case,
                               Sum,
                               Q)
 from django_redis import get_redis_connection
+from django.http import HttpResponseForbidden
 
 from rest_framework import viewsets
 from rest_framework.decorators import list_route, detail_route
@@ -35,7 +36,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework import renderers, status
-
+from rest_framework.authtoken.models import Token
 from rest_framework_csv import renderers as csv_renderer
 
 from grout.models import RecordSchema, RecordType, BoundaryPolygon, Boundary
@@ -71,11 +72,50 @@ from driver import mixins
 from django.http import JsonResponse
 from constance import config as cc
 
+from whoosh.qparser import QueryParser,FuzzyTermPlugin
+from whoosh.index import open_dir
+from geocoder.models import *
+from urlparse import urlparse, parse_qs
+
 logger = logging.getLogger(__name__)
 
 DateTimeField.register_lookup(transformers.ISOYearTransform)
 DateTimeField.register_lookup(transformers.WeekTransform)
 
+def search_location(request):
+    if not 'HTTP_AUTHORIZATION' in request.META:
+        return HttpResponseForbidden()
+    token = request.META['HTTP_AUTHORIZATION']
+    user = Token.objects.get(pk=token.replace('Token ', '')).user
+    if not user.is_authenticated():
+        return HttpResponseForbidden()
+    ix = open_dir("indexdir")
+    if ix is None:
+        geocoder.tasks.index()
+    searcher = ix.searcher()
+    parser = QueryParser("nome", schema=ix.schema)
+    parser.add_plugin(FuzzyTermPlugin())
+    qs=parse_qs(request.META['QUERY_STRING'])
+    res = []
+    if 'q' in qs:
+        term = str(qs['q'][0])+'~'
+        question = parser.parse(term)
+        res = searcher.search(question)
+    return JsonResponse([{'lat':r['lat'],'lon':r['lon'],'address':{'road':r['nome'], 'id': r['id']}} for r in res], safe=False)
+
+def reverse_search_location(request):
+    if not 'HTTP_AUTHORIZATION' in request.META:
+        return HttpResponseForbidden()
+    token = request.META['HTTP_AUTHORIZATION']
+    user = Token.objects.get(pk=token.replace('Token ', '')).user
+    if not user.is_authenticated():
+        return HttpResponseForbidden()
+    qs = parse_qs(request.META['QUERY_STRING'])
+    rua = Rua.objects.raw("select id,nome,null as the_geom,ST_DistanceSphere(ST_GeomFromText('POINT(%s %s)',4326),the_geom) as d \
+from (select id,nome,the_geom from segmento order by segmento.the_geom <#> geomfromewkt('SRID=4326;POINT(%s %s)') LIMIT 100) a order by d asc",
+        [float(qs['lon'][0]),float(qs['lat'][0]),float(qs['lon'][0]),float(qs['lat'][0])]
+    )
+    return JsonResponse({'address':{'road':rua[0].nome}}, safe=False)
 
 def build_toddow(queryset):
     """
@@ -1352,7 +1392,10 @@ class RecordCsvExportViewSet(viewsets.ViewSet):
         # N.B. Celery will never return an error if a task_id doesn't correspond to a
         # real task; it will simply return a task with a status of 'PENDING' that will never
         # complete.
+
+        logger.warn('pk '+pk)
         job_result = export_csv.AsyncResult(pk)
+
 
         if job_result.state in states.READY_STATES:
             if job_result.state in states.EXCEPTION_STATES:
@@ -1362,6 +1405,7 @@ class RecordCsvExportViewSet(viewsets.ViewSet):
             # TODO: This won't work with multiple celery workers
             # TODO: We should add a cleanup task to prevent result files from accumulating
             # on the celery worker.
+            logger.warn('tentando pegar o csv')
             uri = u'{scheme}://{host}{prefix}{file}'.format(scheme=request.scheme,
                                                             host=request.get_host(),
                                                             prefix=settings.CELERY_DOWNLOAD_PREFIX,
@@ -1376,10 +1420,13 @@ class RecordCsvExportViewSet(viewsets.ViewSet):
         filterkey is the same as the "tilekey" that we pass to Windshaft; it must be requested
         from the Records endpoint using tilekey=true
         """
+        logger.warn("trying to create")
         filter_key = request.data.get('tilekey', None)
+
         if not filter_key:
             return Response({'errors': {'tilekey': 'This parameter is required'}},
                             status=status.HTTP_400_BAD_REQUEST)
+
         task = export_csv.delay(filter_key, request.user.pk)
 
         return Response({'success': True, 'taskid': task.id}, status=status.HTTP_201_CREATED)

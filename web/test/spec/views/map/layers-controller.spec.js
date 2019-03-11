@@ -78,7 +78,7 @@ describe('driver.views.map: Layers Controller', function () {
 
         $httpBackend.expectGET(blackspotUrl).respond(200, ResourcesMock.BlackspotResponse);
 
-        Element = $compile('<div leaflet-map driver-map-layers></div>')($scope);
+        Element = $compile('<div leaflet-map driver-map-layers zoom-to-boundary></div>')($scope);
         Controller = Element.controller('driverMapLayers');
         $rootScope.$apply();
 

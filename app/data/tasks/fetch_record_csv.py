@@ -37,6 +37,8 @@ def FIELD_TRANSFORMS():
 
 @shared_task
 def export_records(occurred_min, occurred_max, record_type_id):
+    logger.warn('export record')
+    logger.wars(record_type_id)
     def to_utf8(s):
         """Convert to utf8 encoding and strip special whitespace/commas for csv writing"""
         if isinstance(s, str):

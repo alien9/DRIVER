@@ -47,7 +47,6 @@
          * @param {number} mapZoom The zoom level of the leaflet map
          */
         function setZoom(mapZoom) {
-            console.log('setting map zoom to '+ mapZoom);
             zoom = mapZoom;
         }
 

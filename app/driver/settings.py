@@ -62,6 +62,7 @@ INSTALLED_APPS = (
     'user_filters',
     'black_spots',
     'captcha',
+    'geocoder',
 
     'constance',
 )
@@ -335,7 +336,8 @@ CELERY_ROUTES = {
     'black_spots.tasks.generate_training_input.get_training_precip': {'queue': 'taskworker'},
     'data.tasks.remove_duplicates.remove_duplicates': {'queue': 'taskworker'},
     'data.tasks.export_csv.export_csv': {'queue': 'taskworker'},
-    'data.tasks.fetch_record_csv.export_records': {'queue': 'taskworker'}
+    'data.tasks.fetch_record_csv.export_records': {'queue': 'taskworker'},
+    'geocoder.tasks.index.index': {'queue': 'taskworker'},
 }
 # This needs to match the proxy configuration in nginx so that requests for files generated
 # by celery jobs go to the right place.

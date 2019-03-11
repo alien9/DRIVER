@@ -99,7 +99,7 @@
         }
 
         /**
-         * Sets the language initialized state value to true
+         * Sets the constants initialized state value to true
          */
         function setConstantsInitialized() {
             constantsInitialized = true;

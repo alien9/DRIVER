@@ -11,8 +11,6 @@ class GenerateViewsetQuery(object):
 
         cursor = connection.cursor().cursor
         sql, params = qset.query.sql_with_params()
-        print sql
-        print params
         # get properly escaped string representation of the query
         query_str = cursor.mogrify(sql, params)
         cursor.close()

@@ -38,8 +38,7 @@
             countryCode: 'ph',
             centerLatLon: [12.375, 121.5],
             languages: [
-                { "id": "en-us", "label": "English (US)", "rtl": false },
-                { "id": "ar-sa", "label": "Arabic (Saudi Arabia)", "rtl": true },
+                { "id": "pt-br", "label": "Português", "rtl": false },
                 { "id": "exclaim", "label": "Exclaim (DEV)", "rtl": false }
             ]
         },

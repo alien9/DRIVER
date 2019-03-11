@@ -43,6 +43,7 @@ describe('driver.state: InitialState', function () {
 
         InitialState.setGeographyInitialized();
         InitialState.setLanguageInitialized();
+        InitialState.setConstantsInitialized();
 
         $timeout(function() {
             expect(testVar1).toEqual(true);

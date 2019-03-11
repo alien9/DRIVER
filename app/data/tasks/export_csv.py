@@ -52,10 +52,7 @@ def export_csv(query_key, user_id):
                       Windshaft tiles so that the CSV will correspond to the filters applied in
                       the UI.
     """
-    print "getting records"
-    # Get Records
     records = get_queryset_by_key(query_key)
-    print "got records"
     # Get the most recent Schema for the Records' RecordType
     # This assumes that all of the Records have the same RecordType.
     try:
@@ -63,7 +60,6 @@ def export_csv(query_key, user_id):
         schema = record_type.get_current_schema()
     except IndexError:
         raise Exception('Filter includes no records')
-
     # Get user
     user = User.objects.get(pk=user_id)
     # Create files and CSV Writers from Schema
@@ -207,7 +203,7 @@ class DriverRecordExporter(object):
                          'lat': 'geom',
                          'lon': 'geom'}
         # Some model fields need to be transformed before they can go into a CSV
-        date_iso = lambda d: d.isoformat()
+        date_iso = lambda d: None if d is None else d.isoformat()
         value_transforms = {
             'record_id': lambda uuid: str(uuid),
             'created': date_iso,
@@ -304,6 +300,9 @@ class ModelAndDetailsWriter(BaseRecordWriter):
         self.model_writer.write_record(record, output)
         if hasattr(record.data, self.details_key):
             self.details_writer.write_related(record.pk, record.data[self.details_key], output)
+        else:
+            if self.details_key in record.data:
+                self.details_writer.write_related(record.pk, record.data[self.details_key], output)
         csv_file.write(self.merge_lines(output.getvalue()))
 
 
@@ -330,14 +329,12 @@ class RecordModelWriter(BaseRecordWriter):
         """Pull field data from record object, transform, write to csv_file"""
         output_data = dict()
         for column in self.csv_columns:
-            print column
             if hasattr(record, column):
                 model_value = self.get_model_value_for_column(record, column)
                 csv_val = self.transform_model_value(model_value, column)
                 output_data[column] = _utf8(csv_val)
             else:
                 output_data[column] = ''
-            print output_data
         writer = csv.DictWriter(csv_file, fieldnames=self.csv_columns)
         writer.writerow(output_data)
 
@@ -387,7 +384,6 @@ class RelatedInfoWriter(BaseRecordWriter):
         """Transform related_info and write to csv_file"""
         # Transform
         output_data = self.transform_value_keys(related_info)
-
         # Append record_id
         if self.output_record_id:
             output_data['record_id'] = record_id

@@ -38,6 +38,8 @@ router.register(r'groups', auth_views.GroupViewSet)
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^geocode/forward$', data_views.search_location, name='forward'),
+    url(r'^geocode/reverse$', data_views.reverse_search_location, name='reverse'),
     url(r'^password_reset/$', contrib_auth_views.password_reset, name='password_reset'),
     url(r'^password_reset/done/$', contrib_auth_views.password_reset_done, name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',

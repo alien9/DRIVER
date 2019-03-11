@@ -118,9 +118,6 @@
             ctl.nominatimSelect = nominatimSelect;
             Notifications.hide();
         }
-        ctl.setMarker = function(m){
-            console.log(m);
-        };
 
         var nMapper = function(k){
             /* jshint camelcase: false */

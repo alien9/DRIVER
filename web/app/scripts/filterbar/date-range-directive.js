@@ -2,7 +2,7 @@
     'use strict';
 
     /* ngInject */
-    function DateRangeField(DateLocalization, WebConfig) {
+    function DateRangeField(DateLocalization, WebConfig, InitialState) {
         var module = {
             restrict: 'A',
             require: ['^driver-filterbar', 'date-range-field'],
@@ -26,7 +26,13 @@
                  * ISO-8601 string, so we need to convert that to a localized CDate so that
                  * we can display it to the user.
                  */
+                var dateConfig = DateLocalization.currentDateFormats();
+                calendar = $.calendars.instance(dateConfig.calendar, dateConfig.language);
                 scope.$on('driver.filterbar:restored', function(event, filter) {
+                    calendar = $.calendars.instance(dateConfig.calendar, dateConfig.language);
+                    if(!calendar || !scope.calendarOptions) {
+                        return;
+                    }
                     if (filter.label === filterLabel) {
                         // The restored date will be an ISO-8601 string, so we need to convert
                         // that to a Javascript Date, and then convert that to a localized CDate,
@@ -171,11 +177,10 @@
                         $('#dtMaxField').calendarsPicker('setDate', scope.max);
                     }
                 };
-
                 // Initialize to 90 days by default.
                 // Must be called after the other scope variables are defined, since
                 // init references scope.
-                init();
+                InitialState.ready().then(init);
             }
         };
         return module;

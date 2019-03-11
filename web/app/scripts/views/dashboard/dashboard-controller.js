@@ -44,7 +44,7 @@
             return RecordSchemaState.get(currentSchemaId)
                 .then(function(recordSchema) {
                     ctl.recordSchema = recordSchema;
-                    ctl.lastYear=(new Date()).getFullYear()-1;
+                    ctl.lastYear=WebConfig.constants.lastYear;
                 });
         }
 

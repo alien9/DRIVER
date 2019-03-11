@@ -50,7 +50,7 @@
                                   ctl.recordQueryParams);
             /* jshint camelcase: true */
             // Get a tilekey then trigger an export
-            QueryBuilder.djangoQuery(0, params, {doJsonFilters: false}, true).then(
+            QueryBuilder.djangoQuery(0, params, {doJsonFilters: false, doAttrFilters:false}, true).then(
                 function(records) {
                     RecordExports.exportCSV(records.tilekey).promise.then(
                         function (result) { ctl.downloadURL = result; },
