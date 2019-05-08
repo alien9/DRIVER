@@ -7,7 +7,11 @@ var _ = require('windshaft/node_modules/underscore');
 // RFC4122. See: http://stackoverflow.com/questions/7905929/how-to-test-valid-uuid-guid
 var uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
+<<<<<<< ours
 var validTables = ['grout_boundary', 'grout_record', 'black_spots_blackspot', 'data_driverpublicrecord'];
+=======
+var validTables = ['grout_boundary', 'grout_record', 'black_spots_blackspot'];
+>>>>>>> theirs
 
 // queries
 var baseBoundaryQuery = ["(SELECT p.uuid AS polygon_id, b.uuid AS shapefile_id, ",
@@ -100,7 +104,11 @@ var myPublicRules = [
     'marker-width: 8;',
     'marker-allow-overlap: true;',
 ];
+<<<<<<< ours
 var myPublicStyle = constructCartoStyle('#data_driverpublicrecord', myPublicRules);
+=======
+var secondaryStyle = constructCartoStyle('#grout_record', secondaryRules);
+>>>>>>> theirs
 
 var boundaryRules = [
     'line-width: 2;',
@@ -147,11 +155,16 @@ function setRequestParameters(request, callback, redisClient) {
     params.table = params.tablename;
 
     if (params.tablename === 'grout_record') {
+<<<<<<< ours
         if (request.query.tertiary||request.query.public) {
             params.interactivity = 'uuid';
         }else{
             params.interactivity = 'uuid,occurred_from';
         }
+=======
+
+        params.interactivity = 'uuid,occurred_from';
+>>>>>>> theirs
         params.style = eventsStyle;
 
         if (request.query.heatmap) {
@@ -232,8 +245,12 @@ function setRequestParameters(request, callback, redisClient) {
                     }
                 }).join(', ');
 
+<<<<<<< ours
                 params.sql = '(' + castSelect + theRest + ') as data_driverpublicrecord' ;
                 console.log(params.sql);
+=======
+                params.sql = '(' + castSelect + theRest + ') as grout_record' ;
+>>>>>>> theirs
                 callback(null, request);
             });
         }

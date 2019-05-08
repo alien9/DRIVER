@@ -8,6 +8,7 @@ import uuid
 import calendar
 import datetime
 import pytz
+import hashlib
 
 from dateutil.parser import parse as parse_date
 from django.template.defaultfilters import date as template_date
@@ -16,16 +17,22 @@ from celery import states
 
 from django.conf import settings
 from django.db import transaction
-from django.db.models import (Case,
-                              When,
-                              IntegerField,
-                              DateTimeField,
-                              CharField,
-                              UUIDField,
-                              Value,
-                              Count,
-                              Sum,
-                              Q)
+from django.db.models import (
+    Case,
+    CharField,
+    Count,
+    DateTimeField,
+    IntegerField,
+    OuterRef,
+    Q,
+    Subquery,
+    Sum,
+    UUIDField,
+    Value,
+    When,
+)
+from django.db.models.functions import Coalesce
+from django.core import serializers
 from django_redis import get_redis_connection
 from django.http import HttpResponseForbidden
 
@@ -39,6 +46,7 @@ from rest_framework import renderers, status
 from rest_framework.authtoken.models import Token
 from rest_framework_csv import renderers as csv_renderer
 
+<<<<<<< ours
 from grout.models import RecordSchema, RecordType, BoundaryPolygon, Boundary
 from grout.views import (BoundaryPolygonViewSet,
                           RecordViewSet,
@@ -50,10 +58,23 @@ from grout.serializers import RecordSchemaSerializer
 from grout.filters import RecordFilter, FILTER_OVERRIDES
 from driver_auth.permissions import (Everybody,
                                      IsAdminOrReadOnly,
+=======
+from grout.models import RecordSchema, RecordType, BoundaryPolygon, Boundary, Record
+from grout.views import (BoundaryPolygonViewSet,
+                         RecordViewSet,
+                         RecordTypeViewSet,
+                         RecordSchemaViewSet,
+                         BoundaryViewSet)
+
+from grout.serializers import RecordSchemaSerializer
+
+from driver_auth.permissions import (IsAdminOrReadOnly,
+>>>>>>> theirs
                                      ReadersReadWritersWrite,
                                      IsAdminAndReadOnly,
                                      is_admin_or_writer)
 from data.tasks import export_csv
+from data.models import DriverRecord
 from data.localization.date_utils import (
     hijri_day_range,
     hijri_week_range,
@@ -66,7 +87,8 @@ from models import RecordAuditLogEntry, RecordDuplicate, RecordCostConfig, Drive
 from serializers import (DriverRecordSerializer, DriverRequestRecordSerializer, DriverPublicRecordSerializer,
                          DetailsReadOnlyRecordSerializer,
                          DetailsReadOnlyRecordSchemaSerializer, RecordAuditLogEntrySerializer,
-                         RecordDuplicateSerializer, RecordCostConfigSerializer)
+                         RecordDuplicateSerializer, RecordCostConfigSerializer,
+                         DetailsReadOnlyRecordNonPublicSerializer)
 import transformers
 from driver import mixins
 from django.http import JsonResponse
@@ -139,6 +161,8 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
     """Override base RecordViewSet from grout to provide aggregation and tiler integration
     """
     permission_classes = (ReadersReadWritersWrite,)
+    filter_class = filters.DriverRecordFilter
+    queryset = DriverRecord.objects.all()
 
     # Filter out everything except details for read-only users
     def get_serializer_class(self):
@@ -147,13 +171,38 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         details_only_param = self.request.query_params.get('details_only', None)
         if details_only_param == 'True' or details_only_param == 'true':
             requested_details_only = True
+<<<<<<< ours
         #if is_admin_or_writer(self.request.user) and not requested_details_only:
         return DriverRecordSerializer
         #return DetailsReadOnlyRecordSerializer
+=======
+
+        if is_admin_or_writer(self.request.user):
+            if requested_details_only:
+                return DetailsReadOnlyRecordNonPublicSerializer
+            else:
+                return DriverRecordSerializer
+        return DetailsReadOnlyRecordSerializer
+>>>>>>> theirs
 
     def get_queryset(self):
-        """Override default model ordering"""
         qs = super(DriverRecordViewSet, self).get_queryset()
+        if self.get_serializer_class() is DetailsReadOnlyRecordNonPublicSerializer:
+            # Add in `created_by` field for user who created the record
+            created_by_query = (
+                RecordAuditLogEntry.objects.filter(
+                    record=OuterRef('pk'),
+                    action=RecordAuditLogEntry.ActionTypes.CREATE
+                )
+                .annotate(
+                    # Fall back to username if the user has been deleted
+                    email_or_username=Coalesce('user__email', 'username')
+                )
+                .values('email_or_username')
+                [:1]
+            )
+            qs = qs.annotate(created_by=Subquery(created_by_query, output_field=CharField()))
+        # Override default model ordering
         return qs.order_by('-occurred_from')
 
     def get_filtered_queryset(self, request):
@@ -170,11 +219,26 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
             raise ValueError('Cannot create audit log entries for unsaved model objects')
         if action not in RecordAuditLogEntry.ActionTypes.as_list():
             raise ValueError("{} not one of 'create', 'update', or 'delete'".format(action))
-        RecordAuditLogEntry.objects.create(user=request.user,
-                                           username=request.user.username,
-                                           record=instance,
-                                           record_uuid=str(instance.pk),
-                                           action=action)
+        log = None
+        signature = None
+        if action == RecordAuditLogEntry.ActionTypes.CREATE:
+            log = serializers.serialize(
+                'json',
+                [
+                    DriverRecord.objects.get(pk=instance.pk),
+                    Record.objects.get(pk=instance.record_ptr_id)
+                ]
+            )
+            signature = hashlib.md5(log).hexdigest()
+        RecordAuditLogEntry.objects.create(
+            user=request.user,
+            username=request.user.username,
+            record=instance,
+            record_uuid=str(instance.pk),
+            action=action,
+            log=log,
+            signature=signature
+        )
 
     @transaction.atomic
     def perform_create(self, serializer):
@@ -200,7 +264,7 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
             response = Response(dict())
             query_sql = self.generate_query_sql(request)
             tile_token = uuid.uuid4()
-            self._cache_tile_sql(tile_token, query_sql.encode('utf-8'))
+            self._cache_tile_sql(tile_token, query_sql)
             response.data['tilekey'] = tile_token
         else:
             response = super(DriverRecordViewSet, self).list(self, request, *args, **kwargs)
@@ -1135,8 +1199,7 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
 
         return (True, labels, queryset.annotate(**annotations))
 
-
-    # TODO: This snippet also appears in data/serializers.py and should be refactored into the Ashlar
+    # TODO: This snippet also appears in data/serializers.py and should be refactored into the Grout
     # RecordSchema model
     def _get_schema_enum_choices(self, schema, path):
         """Returns the choices in a schema enum field at path
@@ -1149,11 +1212,13 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         """
         # Walk down the schema using the path components
         obj = schema.schema['definitions']  # 'definitions' is the root of all schema paths
-        try:
-            for key in path:
+        for key in path:
+            try:
                 obj = obj[key]
-        except KeyError as e:
-            raise ParseError(detail="Part of choices_path was not found: '{}'".format(e.message))
+            except KeyError as e:
+                raise ParseError(
+                    detail=u'Could not look up path "{}", "{}" was not found in schema'.format(
+                        u':'.join(path), key))
 
         # Checkbox types have an additional 'items' part at the end of the path
         if 'items' in obj:

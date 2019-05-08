@@ -12,8 +12,11 @@
             '/tiles/table/data_driverpublicrecord/id/ALL/{z}/{x}/{y}.png' + '?tertiary=true');
         var allRecordsUtfGridUrl = (WebConfig.windshaft.hostname +
             '/tiles/table/grout_record/id/ALL/{z}/{x}/{y}.grid.json');
+<<<<<<< ours
         var publicRecordsUtfGridUrl = (WebConfig.windshaft.hostname +
             '/tiles/table/data_driverpublicrecord/id/ALL/{z}/{x}/{y}.grid.json');
+=======
+>>>>>>> theirs
         var allBoundariesUrl = (WebConfig.windshaft.hostname +
             '/tiles/table/grout_boundary/id/ALL/{z}/{x}/{y}.png');
         var heatmapUrl = allRecordsUrl + '?heatmap=true';

@@ -30,6 +30,7 @@
                 } else {
                     ctl.record.isSecondary = false;
                 }
+                ctl.isSecondary = ctl.record.isSecondary;
             });
             RecordState.getTertiary().then(function (type) {
                 if (!!type && type.uuid === ctl.recordType.uuid) {

@@ -9,7 +9,11 @@ from django.test import TestCase
 
 from django_redis import get_redis_connection
 
+<<<<<<< ours
 from grout.models import Record, RecordSchema, RecordType
+=======
+from grout.models import RecordSchema, RecordType
+>>>>>>> theirs
 
 from data.tasks.export_csv import (get_sql_string_by_key, get_queryset_by_key,
                                    DriverRecordExporter, ReadOnlyRecordExporter,

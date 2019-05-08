@@ -42,7 +42,35 @@
                 { "id": "exclaim", "label": "Exclaim (DEV)", "rtl": false }
             ]
         },
+<<<<<<< ours
         hiddenFields: []
+=======
+        mapillary: {
+            enabled: false
+        },
+        filters: {
+            weather: {
+                visible: true
+            },
+            createdBy: {
+                visible: true
+            },
+            createdDate: {
+                visible: true
+            },
+        },
+        qualityChecks: {
+            outsideBoundary: {
+                visible: true
+            },
+        },
+        addressSearch: {
+            visible: true
+        },
+        duplicateRecordsLink: {
+            visible: true
+        }
+>>>>>>> theirs
     };
 
     angular.module('driver.config', [])

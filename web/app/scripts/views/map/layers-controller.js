@@ -6,7 +6,8 @@
         $q, $filter, $log, $scope, $rootScope, $timeout, $translate, $compile,
         AuthService, WebConfig, FilterState, RecordState, GeographyState,
         RecordSchemaState, BoundaryState, QueryBuilder,
-        MapState, TileUrlService, BaseLayersService, InitialState, BlackspotSets) {
+        MapState, TileUrlService, BaseLayersService, InitialState, BlackspotSets,
+        $http) {
         var ctl = this;
         var localizeRecordDateFilter = $filter('localizeRecordDate');
         var dateFormat = 'numeric';
@@ -698,7 +699,11 @@
 
                 new L.popup(popupOptions)
                     .setLatLng(e.latlng)
+<<<<<<< ours
                     .setContent(builder(e.data, popupParams))
+=======
+                    .setContent(ctl.buildRecordPopup(e.data, popupParams, e.latlng))
+>>>>>>> theirs
                     .openOn(ctl.map);
 
                 $compile($('#record-popup'))($scope);
@@ -802,11 +807,37 @@
 
                 new L.popup(popupOptions)
                     .setLatLng(e.latlng)
-                    .setContent(ctl.buildBlackspotPopup(e.data))
+                    .setContent(ctl.buildBlackspotPopup(e.data, e.latlng))
                     .openOn(ctl.map);
 
                 $compile($('#blackspot-popup'))($scope);
             });
+        }
+
+        function getMapillaryHtmlString() {
+            return '<img id="mapillaryimg" />' +
+                '<p id="mapillaryattributionp" align="right">' +
+                    'Image powered by <a target="_blank" href="https://www.mapillary.com/">Mapillary</a>.' +
+                '</p>';
+        }
+
+        function getMapillaryImg(latlng) {
+            var clientId = WebConfig.mapillary.clientId;
+            var mapillaryRadius = WebConfig.mapillary.range;
+            $http.get('https://a.mapillary.com/v3/images?closeto=' + latlng.lng + ',' + latlng.lat + '&radius=' + mapillaryRadius + '&client_id=' + clientId, { cache: true })
+                .success(function(data) {
+                    if (data.features.length !== 0) {
+                        var mapillaryImg = document.querySelector('#mapillaryimg');
+                        var mapillaryAttributionP = document.querySelector('#mapillaryattributionp');
+                        mapillaryImg.setAttribute('src', 'https://d1cuyjsrcm0gby.cloudfront.net/' + data.features[0].properties.key + '/thumb-320.jpg');
+                        mapillaryAttributionP.style.display = 'block';
+                    }
+                })
+                .error(function(data, status) {
+                    $log.error('Failed to get Mapillary data:');
+                    $log.error(status);
+                    $log.error(data);
+                });
         }
 
         /**
@@ -815,7 +846,7 @@
          * @param {Object} UTFGrid interactivity data from interaction event object
          * @returns {String} HTML snippet for a Leaflet popup
          */
-        ctl.buildBlackspotPopup = function(blackspot) {
+        ctl.buildBlackspotPopup = function(blackspot, latlng) {
             /* jshint camelcase: false */
             var str = '<div id="blackspot-popup" class="blackspot-popup">';
             str += '<div><h4>' + blackSpotLabel + '</h4></div>';
@@ -824,6 +855,13 @@
                 blackspot.num_records + '</h6></div>';
             str += '<div><h6>' + numSevereLabel + ': ' + blackspot.num_severe + '</h6></div>';
             /* jshint camelcase: true */
+
+            // Mapillary Image in popup
+            if (WebConfig.mapillary.enabled) {
+                str += getMapillaryHtmlString();
+                getMapillaryImg(latlng);
+            }
+
             return str;
         };
 
@@ -833,7 +871,7 @@
          * @param {Object} UTFGrid interactivity data from interaction event object
          * @returns {String} HTML snippet for a Leaflet popup.
          */
-        ctl.buildRecordPopup = function(record, popupParams) {
+        ctl.buildRecordPopup = function(record, popupParams, latlng) {
             // add header with record date constant field
             /* jshint camelcase: false */
             // DateTimes come back from Windshaft without tz information, but they're all UTC
@@ -842,6 +880,12 @@
             str += '<div><h5>' + popupParams.label +
                 '</h5><h3>' + occurredStr + '</h3>';
             /* jshint camelcase: true */
+
+            // Mapillary Image in popup
+            if (WebConfig.mapillary.enabled) {
+                str += getMapillaryHtmlString();
+                getMapillaryImg(latlng);
+            }
 
             // The ng-click here refers to a function which sits on the map-controller's scope
             str += '<a ng-click="showDetailsModal(\'' + record.uuid + '\')">';

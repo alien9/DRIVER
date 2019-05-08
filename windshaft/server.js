@@ -44,7 +44,7 @@ var config = {
             host: dbHost,
             port: dbPort,
             geometry_field: 'geom',
-            // this must match the ashlar SRID set in app/driver/settings.py
+            // this must match the Grout SRID set in app/driver/settings.py
             srid: 4326
           }
         }, //see grainstore npm for other options

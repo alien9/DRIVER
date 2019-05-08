@@ -12,7 +12,11 @@ from rest_framework.serializers import (
 from grout import serializers
 from grout import serializer_fields
 
+<<<<<<< ours
 from models import DriverPublicRecord, DriverRecord, RecordAuditLogEntry, RecordDuplicate, RecordCostConfig
+=======
+from models import DriverRecord, RecordAuditLogEntry, RecordDuplicate, RecordCostConfig
+>>>>>>> theirs
 
 from django.conf import settings
 
@@ -177,4 +181,8 @@ class RecordCostConfigSerializer(ModelSerializer):
 
     class Meta:
         model = RecordCostConfig
+<<<<<<< ours
         fields = '__all__'
+=======
+        fields = '__all__'
+>>>>>>> theirs

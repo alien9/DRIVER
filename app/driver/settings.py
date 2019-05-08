@@ -80,6 +80,24 @@ MIDDLEWARE_CLASSES = (
     'corsheaders.middleware.CorsMiddleware',
 )
 
+if DEBUG:
+    # Perform set up for Django Debug Toolbar
+    INSTALLED_APPS += (
+        'debug_toolbar',
+    )
+    # Prepend the Debug Toolbar middleware class to the begining of the list
+    MIDDLEWARE_CLASSES = (
+        'debug_toolbar.middleware.DebugToolbarMiddleware',
+    ) + MIDDLEWARE_CLASSES
+    # Show toolbar in local dev
+    DEBUG_TOOLBAR_CONFIG = {
+        # Since REMOTE_HOST gets overloaded by routing through Docker and Nginx, we can't rely on
+        # it like DDT normally does internally.
+        # Until an alternative is available, we have to trust DEBUG=True is safety enough
+        'SHOW_TOOLBAR_CALLBACK': lambda(request): True
+    }
+
+
 ROOT_URLCONF = 'driver.urls'
 
 TEMPLATES = [
@@ -290,15 +308,15 @@ CACHES = {
     "default": {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/2',
-        'TIMEOUT': None, # never expire
+        'TIMEOUT': None,  # never expire
         'KEY_PREFIX': 'DJANGO',
         'VERSION': 1,
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            'SOCKET_CONNECT_TIMEOUT': 5, # seconds
-            'SOCKET_TIMEOUT': 5, # seconds
-            'MAX_ENTRIES': 900, # defaults to 300
-            'CULL_FREQUENCY': 4, # fraction culled when max reached (1 / CULL_FREQ); default: 3
+            'SOCKET_CONNECT_TIMEOUT': 5,  # seconds
+            'SOCKET_TIMEOUT': 5,  # seconds
+            'MAX_ENTRIES': 900,  # defaults to 300
+            'CULL_FREQUENCY': 4,  # fraction culled when max reached (1 / CULL_FREQ); default: 3
             # 'COMPRESS_MIN_LEN': 0, # set to value > 0 to enable compression
         }
     },
@@ -310,12 +328,20 @@ CACHES = {
         'VERSION': 1,
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            'SOCKET_CONNECT_TIMEOUT': 5, # seconds
-            'SOCKET_TIMEOUT': 5, # seconds
-            'MAX_ENTRIES': 300, # defaults to 300
-            'CULL_FREQUENCY': 4, # fraction culled when max reached (1 / CULL_FREQ); default: 3
+            'SOCKET_CONNECT_TIMEOUT': 5,  # seconds
+            'SOCKET_TIMEOUT': 5,  # seconds
+            'MAX_ENTRIES': 300,  # defaults to 300
+            'CULL_FREQUENCY': 4,  # fraction culled when max reached (1 / CULL_FREQ); default: 3
             # 'COMPRESS_MIN_LEN': 0, # set to value > 0 to enable compression
         }
+    },
+    "boundaries": {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://{host}:{port}/4'.format(host=REDIS_HOST, port=REDIS_PORT),
+        # Timeout is set and renewed at the individual key level in data/filters.py
+        'TIMEOUT': None,
+        'KEY_PREFIX': 'boundary',
+        'VERSION': 1,
     }
 }
 
@@ -345,9 +371,9 @@ CELERY_DOWNLOAD_PREFIX = '/download/'
 CELERY_EXPORTS_FILE_PATH = '/var/www/media'
 
 # Deduplication settings
-DEDUPE_TIME_RANGE_HOURS = 12
+DEDUPE_TIME_RANGE_HOURS = float(os.environ.get('DRIVER_DEDUPE_TIME_RANGE_HOURS', '12'))
 # .001 ~= 110m
-DEDUPE_DISTANCE_DEGREES = 0.0008
+DEDUPE_DISTANCE_DEGREES = float(os.environ.get('DRIVER_DEDUPE_DISTANCE_DEGREES', '0.0008'))
 
 GROUT = {
     # It is suggested to change this if you know that your data will be limited to

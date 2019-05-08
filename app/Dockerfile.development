@@ -1,9 +1,13 @@
 FROM driver-app:latest
 
+<<<<<<< ours
 RUN apt-get install -y default-jdk libfftw3-dev
 
 RUN pip install --no-cache-dir djsonb -r dev-requirements.txt --src /opt
 
+=======
+RUN pip install --no-cache-dir djsonb -r dev-requirements.txt --src /opt
+>>>>>>> theirs
 EXPOSE 8000
 
 CMD ["driver.wsgi", "-w1", "-b:4000", "--reload", "-kgevent"]

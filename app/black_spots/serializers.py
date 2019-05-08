@@ -37,6 +37,7 @@ class EnforcerAssignmentSerializer(ModelSerializer):
         fields = ('black_spot_set', 'geom', 'latitude', 'longitude', 'severity_score',)
         read_only_fields = ('uuid',)
 
+
 class EnforcerAssignmentInputSerializer():
     """Serializer for enforcer assignment inputs"""
 

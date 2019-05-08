@@ -34,7 +34,15 @@ ANSIBLE_GROUPS = {
   "database-servers" => [ "database" ],
   "celery-servers" => [ "celery" ]
 }
+<<<<<<< ours
 MOUNT_OPTIONS = ['rw', 'vers=3', 'tcp', 'nolock']
+=======
+MOUNT_OPTIONS = if Vagrant::Util::Platform.linux? then
+                  ['rw', 'tcp', 'nolock']
+                else
+                  ['vers=3', 'udp']
+                end
+>>>>>>> theirs
 
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/trusty64"
@@ -91,7 +99,6 @@ Vagrant.configure("2") do |config|
     app.vm.synced_folder "./web", "/opt/web", type: "nfs", mount_options: MOUNT_OPTIONS
     app.vm.synced_folder "./windshaft", "/opt/windshaft", type: "nfs", mount_options: MOUNT_OPTIONS
     app.vm.synced_folder "./schema_editor", "/opt/schema_editor", type: "nfs", mount_options: MOUNT_OPTIONS
-    app.vm.synced_folder "../ashlar", "/opt/ashlar", type: "nfs", mount_options: MOUNT_OPTIONS
 
     # nginx
     app.vm.network "forwarded_port", guest: 80, host: Integer(ENV.fetch("DRIVER_WEB_PORT_80", 7000))
@@ -138,7 +145,6 @@ Vagrant.configure("2") do |config|
     celery.vm.synced_folder "./web", "/opt/web", type: "nfs", mount_options: MOUNT_OPTIONS
     celery.vm.synced_folder "./analysis_tasks", "/opt/analysis_tasks", type: "nfs", mount_options: MOUNT_OPTIONS
     celery.vm.synced_folder "./schema_editor", "/opt/schema_editor", type: "nfs", mount_options: MOUNT_OPTIONS
-    celery.vm.synced_folder "../ashlar", "/opt/ashlar", type: "nfs", mount_options: MOUNT_OPTIONS
     # jar build task on celery vm
     celery.vm.synced_folder "./gradle", "/opt/gradle", type: "nfs", mount_options: MOUNT_OPTIONS
 

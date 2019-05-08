@@ -80,8 +80,11 @@ docs/_build/
 
 # PyBuilder
 target/
+<<<<<<< ours
 
 # group_vars config
 deployment/ansible/group_vars/all
 
 .idea
+=======
+>>>>>>> theirs

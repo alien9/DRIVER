@@ -13,7 +13,11 @@ from celery.utils.log import get_task_logger
 
 from django_redis import get_redis_connection
 
+<<<<<<< ours
 from grout.models import Record
+=======
+from data.models import DriverRecord
+>>>>>>> theirs
 
 from driver_auth.permissions import is_admin_or_writer
 
@@ -34,6 +38,7 @@ def _utf8(value):
     else:
         return unicode(value).encode('utf-8')
 
+
 def _sanitize(value):
     """
     Helper for sanitizing the record type label to ensure it doesn't contain characters that are
@@ -43,6 +48,7 @@ def _sanitize(value):
     :param value: The string to sanitize
     """
     return ''.join(char for char in value if char.isalnum() or char in [' ', '.', '_']).rstrip()
+
 
 @shared_task(track_started=True)
 def export_csv(query_key, user_id):
@@ -63,10 +69,17 @@ def export_csv(query_key, user_id):
     # Get user
     user = User.objects.get(pk=user_id)
     # Create files and CSV Writers from Schema
+<<<<<<< ours
     #if is_admin_or_writer(user):
     record_writer = DriverRecordExporter(schema)
     #else:
     #    record_writer = ReadOnlyRecordExporter(schema)
+=======
+    if is_admin_or_writer(user):
+        record_writer = DriverRecordExporter(schema)
+    else:
+        record_writer = ReadOnlyRecordExporter(schema)
+>>>>>>> theirs
 
     # Write records to files
     for rec in records:
@@ -118,7 +131,7 @@ def get_queryset_by_key(key):
     :param key: A UUID specifying the SQL string to use
     """
     sql_str = get_sql_string_by_key(key)
-    return Record.objects.raw(sql_str)
+    return DriverRecord.objects.raw(sql_str)
 
 
 class DriverRecordExporter(object):
