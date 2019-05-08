@@ -1,5 +1,8 @@
 <main class="map-view">
-    <div class="records-map" leaflet-map driver-map-layers zoom-to-boundary></div>
+    <div class="records-map" leaflet-map driver-map-layers zoom-to-boundary>
+
+    </div>
+    <driver-legend ng-if="ctl.legend"></driver-legend>
     <div class="tools">
         <driver-charts stepwise="ctl.stepwise"
                        min-date="ctl.minDate"
@@ -11,8 +14,18 @@
             ng-if="ctl.userCanWrite && ctl.showInterventions" params="ctl.recordQueryParams">
         </driver-interventions>
 
-        <driver-export params="ctl.recordQueryParams"></driver-export>
-        <enforcers-tool params="ctl.recordQueryParams" ng-if="ctl.showBlackSpots" style="display:none"></enforcers-tool>
-        <driver-social-costs cost-data="ctl.socialCosts" as-tool="true"></driver-social-costs>
+        <driver-requests
+            ng-if="ctl.showRequests && ctl.userCanWrite" params="ctl.recordQueryParams">
+        </driver-requests>
+
+        <driver-export params="ctl.recordQueryParams">
+
+        </driver-export>
+        <enforcers-tool params="ctl.recordQueryParams" ng-if="ctl.showBlackSpots && ctl.userCanWrite">
+
+        </enforcers-tool>
+        <driver-social-costs cost-data="ctl.socialCosts" as-tool="true">
+
+        </driver-social-costs>
     </div>
 </main>

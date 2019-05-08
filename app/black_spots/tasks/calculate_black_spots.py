@@ -10,7 +10,7 @@ from django.utils import timezone
 from celery import shared_task, chain
 from celery.utils.log import get_task_logger
 
-from ashlar.models import RecordType
+from grout.models import RecordType
 
 from black_spots.tasks import (forecast_segment_incidents, load_blackspot_geoms,
                                load_road_network, get_training_noprecip)
@@ -23,6 +23,7 @@ logger = get_task_logger(__name__)
 
 @shared_task
 def calculate_black_spots(history_length=datetime.timedelta(days=5 * 365 + 1), roads_srid=3395):
+    print "calculating"
     """Integrates all black spot tasks into a pipeline
     Args:
         history_length (timedelta): Length of time to use for querying for historic records.
@@ -32,6 +33,7 @@ def calculate_black_spots(history_length=datetime.timedelta(days=5 * 365 + 1), r
                                     dynamic number of years without failure.
         roads_srid (int): SRID in which to deal with the Roads data
     """
+    logger.warn('Here we go')
     config = BlackSpotConfig.objects.all().order_by('pk').first()
     if not config:
         logger.warn('BlackSpots are not fully configured; set a percentile cutoff first.')
@@ -45,31 +47,39 @@ def calculate_black_spots(history_length=datetime.timedelta(days=5 * 365 + 1), r
         label=settings.BLACKSPOT_RECORD_TYPE_LABEL,
         active=True
     ).first()
-
+    logger.warn('Got Record type')
     segments_shp_obj = RoadSegmentsShapefile.objects.all().order_by('-created').first()
     if segments_shp_obj:
         # Get the UUID, since that is what is used when passing to tasks in the chain
         segments_shp_uuid = str(segments_shp_obj.uuid)
-
+        logger.warn('Segments found')
+    else:
+        logger.warn('No segments.')
     # - Get events CSV. This is obtained before the road network segments are calculated
     # as an optimization, so we can ignore roads that won't have any associated records.
     records_csv_obj_id = export_records(oldest, now, record_type.pk)
-
+    logger.warn('Exported CSV')
     # Refresh road segments if the most recent one is more than 30 days out of date
-    if not segments_shp_obj or (now - segments_shp_obj.created > datetime.timedelta(days=30)):
+    if not segments_shp_obj or (now - segments_shp_obj.created > datetime.timedelta(days=3000)):
+        if (now - segments_shp_obj.created > datetime.timedelta(days=30)):
+            logger.warn('segments are too old')
         # Celery callbacks prepend the result of the parent function to the callback's arg list
         segments_chain = chain(load_road_network.s(output_srid='EPSG:{}'.format(roads_srid)),
                                get_segments_shp.s(records_csv_obj_id, roads_srid),
                                create_segments_tar.s())()
         segments_shp_uuid = segments_chain.get()
     # - Match events to segments shapefile
+    logger.warn('Segments resolved:')
     blackspots_output = get_training_noprecip.delay(segments_shp_uuid,
                                                     records_csv_obj_id,
                                                     roads_srid).get()
-
+    logger.warn('got output')
     # - Run Rscript to output CSV
     segments_csv = BlackSpotTrainingCsv.objects.get(pk=blackspots_output).csv.path
+    logger.warn('training csv OK')
+
     forecasts_csv = forecast_segment_incidents(segments_csv, '/var/www/media/forecasts.csv')
+    logger.warn('forecasts done')
     # - Load blackspot geoms from shapefile and CSV
     # The shapefile is stored as a gzipped tarfile so we need to extract it
     tar_output_dir = tempfile.mkdtemp()

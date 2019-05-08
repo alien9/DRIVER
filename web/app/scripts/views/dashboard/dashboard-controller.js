@@ -36,6 +36,7 @@
             });
         }
 
+
         function loadRecordSchema() {
             /* jshint camelcase: false */
             var currentSchemaId = ctl.recordType.current_schema;
@@ -43,7 +44,7 @@
             return RecordSchemaState.get(currentSchemaId)
                 .then(function(recordSchema) {
                     ctl.recordSchema = recordSchema;
-                    ctl.lastYear=(new Date()).getFullYear()-1;
+                    ctl.lastYear=WebConfig.constants.lastYear;
                 });
         }
 
@@ -56,7 +57,7 @@
 
             if(!year){
                 if(!ctl.selectedYear){
-                    ctl.selectedYear = (new Date()).getFullYear()-1;
+                    ctl.selectedYear = WebConfig.constants.lastYear;
                 }
             }else{
                 ctl.selectedYear = year;
@@ -97,7 +98,7 @@
                     ctl.maxDate = params.occurred_max;
                     /* jshint camelcase: true */
                     ctl.stepwise = stepwiseData;
-                    ctl.lastYear=(new Date()).getFullYear()-1;
+                    ctl.lastYear=WebConfig.constants.lastYear;
                 });
             }
         }

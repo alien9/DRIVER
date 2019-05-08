@@ -19,13 +19,15 @@
         'driver.tools.charts',
         'driver.tools.export',
         'driver.tools.interventions',
+        'driver.tools.requests',
         'driver.tools.enforcers',
         'driver.customReports',
         'driver.enforcers',
         'driver.config',
         'driver.localization',
         'driver.map-layers',
-        'driver.state'
+        'driver.state',
+        'driver'
     ]).config(StateConfig);
 
 })();

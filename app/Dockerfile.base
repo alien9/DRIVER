@@ -22,6 +22,8 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     default-jdk \
     libfftw3-dev
+
+
 # install dependencies for generate_training_input script
 RUN apt-get update && apt-get install -y \
     libgeos-dev \
@@ -37,11 +39,7 @@ WORKDIR /opt/app
 
 COPY . /opt/app
 
-<<<<<<< ours
-RUN pip install --process-dependency-links --allow-external djsonb -r requirements.txt
-=======
-RUN pip install --no-cache-dir --process-dependency-links djsonb -r requirements.txt
->>>>>>> theirs
+RUN pip install --no-cache-dir djsonb -r requirements.txt
 
 EXPOSE 4000
 

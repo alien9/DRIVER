@@ -29,7 +29,7 @@ describe('driver.state: Map', function () {
     });
 
     it('should return default zoomlevel when none has been set', function () {
-        expect(MapState.getZoom()).toEqual(5);
+        expect(MapState.getZoom()).toEqual(11);
     });
 
     it('should set and get zoomlevel', function () {

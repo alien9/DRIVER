@@ -4,8 +4,22 @@ from django.db import models
 from django.contrib.postgres.fields import HStoreField
 from django.contrib.auth.models import User
 
-from ashlar.models import AshlarModel, Record, RecordType
+from grout.models import GroutModel, Record, RecordType
 
+class DriverRecord(Record):
+    """Extend Grout Record model with custom fields"""
+    weather = models.CharField(max_length=50, null=True, blank=True)
+    light = models.CharField(max_length=50, null=True, blank=True)
+
+    city = models.CharField(max_length=50, null=True, blank=True)
+    city_district = models.CharField(max_length=50, null=True, blank=True)
+    county = models.CharField(max_length=50, null=True, blank=True)
+    neighborhood = models.CharField(max_length=50, null=True, blank=True)
+    road = models.CharField(max_length=200, null=True, blank=True)
+    state = models.CharField(max_length=50, null=True, blank=True)
+
+class DriverPublicRecord(Record):
+    pass
 
 class RecordAuditLogEntry(models.Model):
     """Records an occurrence of a Record being altered, who did it, and when.
@@ -70,7 +84,7 @@ class DedupeJob(models.Model):
         get_latest_by = 'datetime'
 
 
-class RecordDuplicate(AshlarModel):
+class RecordDuplicate(GroutModel):
     """ Store information about a possible duplicate record pair
     Duplicates are found using a time-distance heuristic
     """
@@ -81,7 +95,7 @@ class RecordDuplicate(AshlarModel):
     job = models.ForeignKey(DedupeJob)
 
 
-class RecordCostConfig(AshlarModel):
+class RecordCostConfig(GroutModel):
     """Store a configuration for calculating costs of incidents.
 
     This takes the form of a reference to an enum field on a RecordType, along with user-

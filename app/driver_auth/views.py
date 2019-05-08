@@ -20,7 +20,7 @@ from rest_framework.response import Response
 from djangooidc.oidc import OIDCError
 from djangooidc.views import CLIENTS
 
-from ashlar.pagination import OptionalLimitOffsetPagination
+from grout.pagination import OptionalLimitOffsetPagination
 
 from django.conf import settings
 from driver_auth.serializers import UserSerializer, GroupSerializer
@@ -39,6 +39,7 @@ USER_ID_COOKIE = 'AuthService.userId'
 TOKEN_COOKIE = 'AuthService.token'
 CAN_WRITE_COOKIE = 'AuthService.canWrite'
 ADMIN_COOKIE = 'AuthService.isAdmin'
+EMAIL_COOKIE = 'AuthService.Email'
 
 logger = logging.getLogger(__name__)
 
@@ -64,6 +65,8 @@ def authz_cb(request):
             # set session cookie for frontend
             response = redirect(settings.START_PAGE)
             response.set_cookie(USER_ID_COOKIE, token.user_id)
+            response.set_cookie(EMAIL_COOKIE, user.email)
+
             # set cookie for frontend write access (will be false by default)
             if is_admin_or_writer(user):
                 response.set_cookie(CAN_WRITE_COOKIE, 'true')
@@ -193,7 +196,7 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 class DriverObtainAuthToken(ObtainAuthToken):
     def post(self, request):
-        serializer = self.serializer_class(data=request.DATA)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
             user = serializer.validated_data['user']
             token, created = Token.objects.get_or_create(user=user)

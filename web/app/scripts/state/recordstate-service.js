@@ -11,6 +11,8 @@
         var defaultParams,
             selected,
             secondaryType,
+            tertiaryType,
+            publicType,
             options,
             gettingSelected,
             selectedPromise,
@@ -23,6 +25,8 @@
         svc.setSelected = setSelected;
         svc.getSelected = getSelected;
         svc.getSecondary = getSecondary;
+        svc.getTertiary = getTertiary;
+        svc.getPublic = getPublic;
         init();
 
         /**
@@ -35,6 +39,7 @@
             options = [];
             defaultParams = {'active': 'True'};
             svc.updateOptions();
+
         }
 
         /**
@@ -118,6 +123,13 @@
                 return d.label === WebConfig.recordType.secondaryLabel;
             });
             localStorageService.set('secondaryrecordtype.selected', secondaryType);
+            tertiaryType = _.find(options, function(d) {
+                return d.label === WebConfig.recordType.tertiaryLabel;
+            });
+            localStorageService.set('tertiaryrecordtype.selected', tertiaryType);
+            publicType = _.find(options, function(d){
+                return d.label === WebConfig.recordType.publicLabel;
+            });
         }
 
         function getSelected() {
@@ -148,7 +160,20 @@
                 return getSelected().then(function () { return secondaryType; });
             }
         }
-
+        function getTertiary() {
+            if (initialized) {
+                return $q.resolve(tertiaryType);
+            } else {
+                return getSelected().then(function () { return tertiaryType; });
+            }
+        }
+        function getPublic() {
+            if (initialized) {
+                return $q.resolve(publicType);
+            } else {
+                return getSelected().then(function () { return publicType; });
+            }
+        }
         return svc;
     }
 

@@ -11,6 +11,14 @@
             create: {
                 method: 'POST'
             },
+            'create-request': {
+                method: 'POST',
+                url: WebConfig.api.hostname + '/api/requestrecords/'
+            },
+            'create-public': {
+                method: 'POST',
+                url: WebConfig.api.hostname + '/api/requestrecords/'
+            },
             get: {
                 method: 'GET'
             },
@@ -22,10 +30,19 @@
             update: {
                 method: 'PATCH'
             },
+            'update-public': {
+                method: 'PATCH',
+                url: WebConfig.api.hostname + '/api/requestrecords/'
+            },
             toddow: {
                 url: baseUrl + 'toddow/',
                 method: 'GET',
                 isArray: true
+            },
+            lastYear: {
+                url: baseUrl + 'last_year/',
+                method: 'GET',
+                isArray: false
             },
             stepwise: {
                 url: baseUrl + 'stepwise/',

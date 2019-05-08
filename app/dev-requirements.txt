@@ -1,6 +1,2 @@
 ipython==3.0.0
 ipdb==0.8.1
-<<<<<<< ours
--e git+https://github.com/azavea/ashlar.git@legacy#egg=ashlar
-=======
->>>>>>> theirs

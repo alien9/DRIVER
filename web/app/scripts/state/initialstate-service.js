@@ -13,6 +13,7 @@
         var boundaryInitialized = false;
         var geographyInitialized = false;
         var languageInitialized = false;
+        var constantsInitialized = false;
 
         var deferreds = [];
 
@@ -21,13 +22,13 @@
             setRecordTypeInitialized: setRecordTypeInitialized,
             setBoundaryInitialized: setBoundaryInitialized,
             setGeographyInitialized: setGeographyInitialized,
-            setLanguageInitialized: setLanguageInitialized
+            setLanguageInitialized: setLanguageInitialized,
+            setConstantsInitialized: setConstantsInitialized
         };
 
         // Ensure the translation file is available, since many components that
         // use InitialState also rely on instant translations.
         $translate.onReady(setLanguageInitialized);
-
         return svc;
 
         /**
@@ -62,7 +63,7 @@
          */
         function allInitialized() {
             return recordTypeInitialized && boundaryInitialized &&
-                geographyInitialized && languageInitialized;
+                geographyInitialized && languageInitialized && constantsInitialized;
         }
 
         /**
@@ -97,6 +98,13 @@
             resolveDeferreds();
         }
 
+        /**
+         * Sets the constants initialized state value to true
+         */
+        function setConstantsInitialized() {
+            constantsInitialized = true;
+            resolveDeferreds();
+        }
     }
 
     angular.module('driver.state')

@@ -31,6 +31,13 @@
                     ctl.record.isSecondary = false;
                 }
             });
+            RecordState.getTertiary().then(function (type) {
+                if (!!type && type.uuid === ctl.recordType.uuid) {
+                    ctl.record.isTertiary = true;
+                } else {
+                    ctl.record.isTertiary = false;
+                }
+            });
         }
     }
 

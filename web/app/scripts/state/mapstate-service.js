@@ -6,7 +6,7 @@
 
     /* ngInject */
     function MapState(BaseLayersService, localStorageService) {
-        var filterGeoJSON, zoom, location, baseLayer;
+        var filterGeoJSON, zoom, location, baseLayer, bbox;
         var baseLayers = _.map(BaseLayersService.baseLayers(), 'slugLabel');
         var baseLayerStorageName = 'map.baseLayerSlugLabel';
 
@@ -18,7 +18,11 @@
             setLocation: setLocation,
             getLocation: getLocation,
             setBaseLayerSlugLabel: setBaseLayerSlugLabel,
-            getBaseLayerSlugLabel: getBaseLayerSlugLabel
+            getBaseLayerSlugLabel: getBaseLayerSlugLabel,
+            setOverlayState: setOverlayState,
+            getOverlayState: getOverlayState,
+            setBbox: setBbox,
+            getBbox: getBbox
         };
 
         return svc;
@@ -50,7 +54,21 @@
          * Get zoomlevel - default to 5
          */
         function getZoom() {
-            return zoom || 5;
+            return zoom || 11;
+        }
+
+        /**
+         * Get bounding box
+         */
+        function getBbox() {
+            return bbox;
+        }
+
+        /**
+         * Get bounding box
+         */
+        function setBbox(b) {
+            bbox = b;
         }
 
         /**
@@ -85,6 +103,22 @@
                 baseLayer = localStorageService.get(baseLayerStorageName);
             }
             return baseLayer || baseLayers[0];
+        }
+
+        function setOverlayState(label, state){
+            var overlays = localStorageService.get('overlays');
+             if(!overlays){
+                overlays = {};
+             }
+             overlays[label] = state;
+             localStorageService.set('overlays',  overlays);
+        }
+
+        function getOverlayState(label){
+            var overlays = localStorageService.get('overlays');
+             if(overlays){
+                return overlays[label];
+            }
         }
     }
 

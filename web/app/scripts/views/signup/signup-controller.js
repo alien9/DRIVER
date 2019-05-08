@@ -4,7 +4,7 @@
     /**
      * @ngInject
      */
-    function SignupController ($scope, $state, $stateParams, $translate, $window, AuthService ) {
+    function SignupController ($scope, $cookies, $state, $stateParams, $translate, $window, AuthService ) {
         $scope.pending = false;
         $scope.alerts = [];
         $scope.addAlert = function(alertObject) {
@@ -33,7 +33,7 @@
                     case 400:
                         $scope.addAlert({
                             type: 'danger',
-                            msg: result.error
+                            msg: $translate.instant(result.error)
                         });
                         resetCaptcha();
                         $scope.pending = false;
@@ -83,6 +83,7 @@
             });
         };
         resetCaptcha();
+        AuthService.getCsrf();
     }
     angular.module('driver.views.signup').controller('SignupController', SignupController);
 })();

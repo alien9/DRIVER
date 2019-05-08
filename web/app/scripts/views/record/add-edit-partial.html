@@ -1,6 +1,6 @@
 <div class="json-editor-form form-area no-filterbar" ng-if="ctl.userCanWrite && !ctl.error">
     <div class="col-sm-8 col-sm-offset-2">
-        <div class="form-area-heading">
+        <div class="form-area-heading" ng-if="ctl.hasTitle">
             <h2>{{ ::ctl.recordType.label }} {{ 'RECORD.INPUT_FORM' | translate }}</h2>
             <div class="content-border"></div>
         </div>
@@ -9,7 +9,13 @@
                 <ase-notifications></ase-notifications>
                 <div class="constant-fields">
                     <div class="well">
-                        <h3>{{ ::ctl.recordType.label }} {{ 'RECORD.LOCATION_AND_TIME' | translate }}</h3>
+                        <h3 ng-if="!ctl.isTertiary">{{ ::ctl.recordType.label }} {{ 'RECORD.LOCATION_AND_TIME' | translate }}</h3>
+                        <h3 ng-if="ctl.isTertiary">{{ ::ctl.recordType.label }}</h3>
+                        <json-editor ng-if="ctl.isTertiary" editor-id="{{ ctl.editor.id }}"
+                             options="ctl.editor.options"
+                             on-data-change="ctl.onDataChange"
+                             class="form-area-expanded">
+                        </json-editor>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -48,7 +54,7 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div ng-if="!ctl.isTertiary" class="row">
                             <div class="col-md-6">
                                 <div class="form-group date-picker"
                                     ng-class="ctl.constantFieldErrors.occurred ? 'has-error' : ''">
@@ -110,7 +116,7 @@
                             </div>
                         </div>
 
-                        <div class="row" ng-if="!ctl.isSecondary">
+                        <div class="row" ng-if="!ctl.isSecondary && !ctl.isTertiary">
                             <div class="col-md-6">
                                 <label class="control-label">{{ 'RECORD.WEATHER' | translate }}</label>
                                 <div class="input-group">
@@ -138,7 +144,7 @@
                         </div>
                     </div>
                 </div>
-                <json-editor editor-id="{{ ctl.editor.id }}"
+                <json-editor ng-if="!ctl.isTertiary" editor-id="{{ ctl.editor.id }}"
                              options="ctl.editor.options"
                              on-data-change="ctl.onDataChange"
                              class="form-area-body">

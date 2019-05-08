@@ -22,8 +22,8 @@ redisClient.select(2);
 var config = {
         useProfiler: true,
         // :tablename parameter can be:
-        // ashlar_boundary to get the user-uploaded boundary polygon, or
-        // ashlar_record to get records points.
+        // grout_boundary to get the user-uploaded boundary polygon, or
+        // grout_record to get records points.
         // :id parameter can be either ALL to get all boundary polygons/record points, or
         // a UUID of a particular record type or boundary shapefile.
         base_url: '/tiles/table/:tablename/id/:id',

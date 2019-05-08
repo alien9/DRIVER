@@ -45,7 +45,7 @@
                     </ul>
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" role="button">
+                    <a class="dropdown-toggle abbreviated" data-toggle="dropdown" role="button">
                         {{ ctl.getBoundaryLabel(ctl.boundarySelected) }}
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -61,7 +61,14 @@
                         </li>
                     </ul>
                 </li>
-
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" ng-click="ctl.tutorial()" ng-keypress="ctl.keypress">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                    </a>
+                </li>
+                <li class="dropdown" ng-if="ctl.hasInput" style="margin-top:0">
+                    <a class="creator" routerLink="" ng-click="ctl.createPublicRecord()">Contribua!</a>
+                </li>
             </ul>
 
             <ul ng-if="ctl.authenticated" class="nav navbar-nav navbar-right">
@@ -83,9 +90,14 @@
                                 {{ 'NAV.MANAGE_DUPLICATE_RECORDS' | translate }}
                             </a>
                         </li>
-                        <li>
+                        <!--li>
                             <a ng-click="ctl.tutorial()">
                                 {{ 'NAV.TUTORIAL' | translate }}
+                            </a>
+                        </li-->
+                        <li>
+                            <a href="/download/vidasegura_metadados.csv">
+                                {{ 'NAV.METADATA' | translate }}
                             </a>
                         </li>
                         <li>
@@ -114,7 +126,7 @@
 
             <ul class="nav navbar-nav navbar-right" >
                 <li class="logo">
-                    <img src="/styles/images/logo-prefeitura-c.png">
+                    <img src="/styles/images/logo-prefeitura-d.png">
                 </li>
             </ul>
         </div>

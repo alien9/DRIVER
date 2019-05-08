@@ -24,10 +24,16 @@
   </head>
   <body ng-app="driver" ng-class="{ 'rtl': isRightToLeft }">
 
-    <!-- Google Tag Manager -->
-    <noscript><iframe src="//www.googletagmanager.com/ns.html?id={{ google_analytics_id }}"height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{ google_analytics_id }}');</script>
-    <!-- End Google Tag Manager -->
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-125903296-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '{{ google_analytics_id }}');
+</script>
 
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -116,11 +122,14 @@
     <script src="scripts/resources/recordexports-service.js"></script>
     <script src="scripts/resources/polygons-service.js"></script>
     <script src="scripts/resources/records-service.js"></script>
+    <script src="scripts/resources/public-records-service.js"></script>
     <script src="scripts/resources/query-builder-service.js"></script>
     <script src="scripts/resources/aggregate-query-service.js"></script>
     <script src="scripts/resources/saved-filters-service.js"></script>
     <script src="scripts/resources/blackspots-service.js"></script>
     <script src="scripts/resources/assignments-service.js"></script>
+    <script src="scripts/resources/constants-service.js"></script>
+
     <script src="scripts/state/module.js"></script>
     <script src="scripts/state/initialstate-service.js"></script>
     <script src="scripts/state/filters-service.js"></script>
@@ -131,6 +140,8 @@
     <script src="scripts/state/geographystate-service.js"></script>
     <script src="scripts/state/zoom-to-boundary-directive.js"></script>
     <script src="scripts/state/languagestate-service.js"></script>
+    <script src="scripts/state/constantsstate-service.js"></script>
+
 
     <script src="scripts/nominatim/module.js"></script>
     <script src="scripts/nominatim/nominatim-service.js"></script>
@@ -249,6 +260,9 @@
     <script src="scripts/tools/interventions/module.js"></script>
     <script src="scripts/tools/interventions/interventions-controller.js"></script>
     <script src="scripts/tools/interventions/interventions-directive.js"></script>
+    <script src="scripts/tools/requests/module.js"></script>
+    <script src="scripts/tools/requests/requests-controller.js"></script>
+    <script src="scripts/tools/requests/requests-directive.js"></script>
     <script src="scripts/tools/enforcers/module.js"></script>
     <script src="scripts/tools/enforcers/enforcers-directive.js"></script>
     <script src="scripts/tools/enforcers/enforcers-controller.js"></script>
@@ -265,6 +279,13 @@
     <script src="scripts/views/record/details-modal-controller.js"></script>
     <script src="scripts/views/record/list-controller.js"></script>
     <script src="scripts/views/record/list-directive.js"></script>
+    <script src="scripts/views/record/public-modal-controller.js"></script>
+    <script src="scripts/legend/module.js"></script>
+    <script src="scripts/legend/legend-controller.js"></script>
+    <script src="scripts/legend/legend-directive.js"></script>
+    <script src="scripts/pop/module.js"></script>
+    <script src="scripts/pop/pop-controller.js"></script>
+    <script src="scripts/pop/pop-directive.js"></script>
     <script src="scripts/app.js"></script>
     <!-- endbuild -->
 

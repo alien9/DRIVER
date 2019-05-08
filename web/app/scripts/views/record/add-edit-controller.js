@@ -26,11 +26,12 @@
             ctl.nominatimLookup = nominatimLookup;
             ctl.nominatimSelect = nominatimSelect;
 
-            ctl.userCanWrite = AuthService.hasWriteAccess();
-
             // This state attribute will be true when adding secondary records. When editing,
             // this will be set when the record type is loaded.
             ctl.isSecondary = $state.current.secondary;
+            ctl.isTertiary = $state.current.tertiary;
+
+            ctl.userCanWrite = AuthService.hasWriteAccess() || ctl.isTertiary;
 
             // Only location text is currently being displayed in the UI. The other nominatim
             // values are only being stored. The variables have been placed on the controller
@@ -228,10 +229,17 @@
                                 ctl.isSecondary = true;
                             }
                         });
+                        RecordState.getTertiary().then(function (tertiaryType) {
+                            if (!!tertiaryType && tertiaryType.uuid === recordType.uuid) {
+                                ctl.isTertiary = true;
+                            }
+                        });
                         return recordType;
                     });
             } else if (ctl.isSecondary) {
                 typePromise = RecordState.getSecondary();
+            } else if (ctl.isTertiary) {
+                typePromise = RecordState.getTertiary();
             } else {
                 typePromise = RecordState.getSelected();
             }
@@ -311,6 +319,7 @@
                                               $translate.instant('RECORD.BUTTON_DELETE_ROW_TITLE'));
             JsonEditorDefaults.addTranslation('button_expand',
                                               $translate.instant('RECORD.BUTTON_EXPAND'));
+            JSONEditor.defaults.editors.object.options.collapsed = false;
 
             /* jshint camelcase: false */
             ctl.editor = {
@@ -322,7 +331,8 @@
                     disable_array_delete_all_rows: true,
                     disable_array_delete_last_row: true,
                     disable_array_reorder: true,
-                    collapsed: true,
+                    disable_collapse:true,
+                    collapsed: false,
                     theme: 'bootstrap3',
                     iconlib: 'bootstrap3',
                     show_errors: 'change',
@@ -414,12 +424,12 @@
             var prevPage = $window.location.href;
             $window.history.back();
 
-            // If going back to the previous page didn't result in any change, then it means
+            // If going back to the previous page didn't result in any change, then it meanslinklink
             // this was opened by the edit link which targets a new window. In this case we
             // want the window to be closed.
             // There is not a reliable way to check if this was navigated to via a normal link
             // or a new window link (the referrer value isn't useful due to the way angular loads),
-            // so this is just checking to see if going back in history changed anything, and if
+            // so this is just checking to see if going back in history changed anything, and iflink
             // not it closes the window.
             $timeout(function() {
                 if ($window.location.href === prevPage) {
@@ -507,14 +517,23 @@
                 ctl.record.state = ctl.nominatimState;
                 ctl.record.weather = ctl.weather;
                 ctl.record.light = ctl.light;
-                ctl.record.occurred_from = ctl.occurredFrom;
-                ctl.record.occurred_to = ctl.occurredTo;
-
-                saveMethod = 'update';
+                if(ctl.recordType.temporal){
+                    ctl.record.occurred_from = ctl.occurredFrom;
+                    ctl.record.occurred_to = ctl.occurredTo;
+                }
+                if(ctl.isTertiary){
+                    saveMethod = 'update-request';
+                }else{
+                    saveMethod = 'update';
+                }
                 dataToSave = ctl.record;
                 dataToSave.data = editorData;
             } else {
-                saveMethod = 'create';
+                if(ctl.isTertiary){
+                    saveMethod = 'create-request';
+                }else{
+                    saveMethod = 'create';
+                }
                 dataToSave = {
                     data: editorData,
                     schema: ctl.recordSchema.uuid,
@@ -529,17 +548,20 @@
                     road: ctl.nominatimRoad,
                     state: ctl.nominatimState,
                     weather: ctl.weather,
-                    light: ctl.light,
-
-                    occurred_from: ctl.occurredFrom,
-                    occurred_to: ctl.occurredTo
+                    light: ctl.light
                 };
+                if(ctl.recordType.temporal){
+                    dataToSave.occurred_from = ctl.occurredFrom;
+                    dataToSave.occurred_to = ctl.occurredTo;
+                }
             }
             /* jshint camelcase: true */
 
             Records[saveMethod](dataToSave, function (record) {
                 $log.debug('Saved record with uuid: ', record.uuid);
                 if (ctl.isSecondary) {
+                    $state.go('map');
+                } else if (ctl.isTertiary) {
                     $state.go('map');
                 } else {
                     $state.go('record.list');
@@ -565,7 +587,6 @@
                 html: message
             });
         }
-
     }
 
     angular.module('driver.views.record')

@@ -6,7 +6,7 @@ import re
 
 from celery import shared_task
 
-from ashlar.models import Record
+from grout.models import Record
 from black_spots.models import BlackSpotRecordsFile
 
 
@@ -37,6 +37,8 @@ def FIELD_TRANSFORMS():
 
 @shared_task
 def export_records(occurred_min, occurred_max, record_type_id):
+    logger.warn('export record')
+    logger.wars(record_type_id)
     def to_utf8(s):
         """Convert to utf8 encoding and strip special whitespace/commas for csv writing"""
         if isinstance(s, str):
@@ -84,9 +86,11 @@ def export_records(occurred_min, occurred_max, record_type_id):
         for field in RECORD_FIELDS:
             if field in transforms:
                 ft = transforms[field]
-                row[field] = to_utf8(ft.transform(getattr(record, ft.field)))
+                if hasattr(record, ft.field):
+                    row[field] = to_utf8(ft.transform(getattr(record, ft.field)))
             else:
-                row[field] = to_utf8(getattr(record, field))
+                if hasattr(record, field):
+                    row[field] = to_utf8(getattr(record, field))
         for field in record_detail_fields:
             if field in transforms:
                 ft = transforms[field]

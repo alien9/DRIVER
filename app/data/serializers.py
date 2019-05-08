@@ -2,17 +2,27 @@ import re
 import datetime
 import pytz
 
-from rest_framework.serializers import (ModelSerializer, SerializerMethodField, ValidationError)
+from rest_framework.serializers import (
+    CharField,
+    ModelSerializer,
+    SerializerMethodField,
+    ValidationError,
+)
 
-from ashlar import serializers
-from ashlar import serializer_fields
+from grout import serializers
+from grout import serializer_fields
 
-from models import RecordAuditLogEntry, RecordDuplicate, RecordCostConfig
+from models import DriverPublicRecord, DriverRecord, RecordAuditLogEntry, RecordDuplicate, RecordCostConfig
 
 from django.conf import settings
 
 
 class BaseDriverRecordSerializer(serializers.RecordSerializer):
+    class Meta:
+        model = DriverRecord
+        fields = '__all__'
+        read_only_fields = ('uuid',)
+
     def validate_occurred_from(self, value):
         """ Require that record occurred_from be in the past. """
         if value > datetime.datetime.now(pytz.timezone(settings.TIME_ZONE)):
@@ -35,6 +45,42 @@ class DriverRecordSerializer(BaseDriverRecordSerializer):
             return latest_audit_entry.username
         return None
 
+class DriverRequestRecordSerializer(DriverRecordSerializer):
+    def validate(self, data):
+        """
+        Check that the data is of the allowed format, the third data type.
+
+        """
+        from grout.models import GroutModel, Record, RecordType
+        if settings.TERTIARY_LABEL:
+            data_types = RecordType.objects.filter(active=True, label=settings.TERTIARY_LABEL)
+            if len(data_types)>0:
+                if data['schema'].uuid == data_types[0].get_current_schema().uuid:
+                    return data
+        raise ValidationError("Permission denied")
+
+class DriverPublicRecordSerializer(DriverRecordSerializer):
+    class Meta:
+        model = DriverPublicRecord
+        fields = '__all__'
+        read_only_fields = ('uuid',)
+    modified_by = SerializerMethodField(method_name='get_latest_change_uuid')
+
+    def validate_occurred_from(self, value):
+        return value
+
+    def validate(self, data):
+        return data
+
+    def get_latest_change_uuid(self, record):
+        """Returns the uuid of the user who has most recently modified this Record"""
+        latest_audit_entry = (RecordAuditLogEntry.objects
+                              .filter(record=record)
+                              .order_by('-date')
+                              .first())
+        if latest_audit_entry:
+            return latest_audit_entry.user_id
+        return None
 
 class DetailsReadOnlyRecordSerializer(BaseDriverRecordSerializer):
     """Serialize records with only read-only fields included"""
@@ -46,6 +92,14 @@ class DetailsReadOnlyRecordSerializer(BaseDriverRecordSerializer):
             return key, value
         else:
             raise serializer_fields.DropJsonKeyException
+
+
+class DetailsReadOnlyRecordNonPublicSerializer(DetailsReadOnlyRecordSerializer):
+    """
+    Serialize records with only read-only fields included plus non-public fields
+    (only available to admins and analysts)
+    """
+    created_by = CharField()
 
 
 class DetailsReadOnlyRecordSchemaSerializer(serializers.RecordSchemaSerializer):
@@ -99,7 +153,7 @@ class RecordCostConfigSerializer(ModelSerializer):
 
         cost_keys = set(get_from_data('enum_costs').keys())
         schema = get_from_data('record_type').get_current_schema()
-        # TODO: This snippet also appears in data/views.py and should be refactored into the Ashlar
+        # TODO: This snippet also appears in data/views.py and should be refactored into the Grout
         # RecordSchema model
         path = [get_from_data('content_type_key'), 'properties', get_from_data('property_key')]
         obj = schema.schema['definitions']  # 'definitions' is the root of all schema paths
@@ -123,3 +177,4 @@ class RecordCostConfigSerializer(ModelSerializer):
 
     class Meta:
         model = RecordCostConfig
+        fields = '__all__'

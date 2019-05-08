@@ -9,6 +9,10 @@
   ufw: rule=allow port=80 from_ip={{ item }}
   with_items: "{{ ip_addresses_app }}"
 
+- name: Allow http connections from app machines for geoserver
+  ufw: rule=allow port=8080 from_ip={{ item }}
+  with_items: "{{ ip_addresses_app }}"
+
 - name: Allow https connections from app machines (e.g. for CSV downloads)
   ufw: rule=allow port=443 from_ip={{ item }}
   with_items: "{{ ip_addresses_app }}"

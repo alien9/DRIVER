@@ -1,6 +1,31 @@
 ---
+- name: Install pexpect 3.3 or above
+  command: pip install pexpect
+  when: aws_access_key_id is defined
+
+- name: install pexpect
+  pip:
+    name: pexpect
+  become: yes
+
+- name: Install awscli
+  command: pip install awscli
+  when: aws_access_key_id is defined
+
+- name: Create aws credentials
+  expect:
+    command: aws configure
+    responses:
+      (?i)aws\saccess: "{{aws_access_key_id}}"
+      (?i)aws\ssecret: "{{aws_secret_access_key}}"
+      (?i)region\sname: "{{aws_region_name}}"
+      (?i)output\sformat: "{{aws_output_format}}"
+  when: aws_access_key_id is defined
+
 - name: Authenticate to ECR
-  shell: $(aws ecr get-login --no-include-email --region us-east-1)
+  shell: $(aws ecr get-login --region us-east-1)
+  when: aws_access_key_id is defined
+
 - name: Pull editor Docker image
   command: /usr/bin/docker pull {{ docker_repository }}driver-editor:{{ docker_image_tag }}
 

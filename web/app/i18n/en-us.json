@@ -44,7 +44,8 @@
         "TO": "to",
         "TOTAL": "Total",
         "VIEW": "View",
-        "YES": "Yes"
+        "YES": "Yes",
+        "CONTRIBUTE": "Contribute"
     },
     "DASHBOARD": {
         "ANALYZE_AND_FILTER": "Analyze & filter",
@@ -111,7 +112,8 @@
         "SAVING_FILTER_ERROR": "Error saving filter",
         "UNKNOWN_ERROR": "Unknown error",
         "UNKNOWN_RULE_TYPE": "Unknown rule type",
-        "VALUE_REQUIRED": "Value required"
+        "VALUE_REQUIRED": "Value required" ,
+        "LIMIT_RECORDS_EXCEEDED": "Registers maximum exceeded. Would you like to erase"
     },
     "LOGIN": {
         "LOG_IN_TO": "Log in to",
@@ -191,7 +193,8 @@
         "RECORD_LIST": "Record List",
         "ENFORCER_ASSIGNMENTS": "Enforcement",
         "GEOGRAPHIC_TITLE": "Regions",
-        "TUTORIAL": "Tutorial"
+        "TUTORIAL": "Tutorial",
+        "METADATA": "Metadata"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "Add \\{\\{0\\}\\}",
@@ -223,7 +226,9 @@
         "SHOWING_RESULTS": "Showing results",
         "WEATHER": "Weather",
         "WEEK_OF": "Week of",
-        "DETAILS_OF_ACCIDENT": "Details of the Crash"
+        "DETAILS_OF_ACCIDENT": "Details of the Crash",
+        "SET_LOCATION_TITLE": "Choose a Location"
+
     },
     "REPORT": {
         "ACTIVE_FILTERS": "Active Filters",

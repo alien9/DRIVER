@@ -94,12 +94,7 @@
             tmpToken = token;
             var dfd = $q.defer();
             module.User.queryWithTmpHeader({id: userId}, function (user) {
-                $log.debug('user service got user to test:');
-                $log.debug(user);
-                $log.debug('with groups:');
-                $log.debug(user.groups);
                 if (userBelongsToAdmin(user)) {
-                    $log.debug('have admin in user service');
                     dfd.resolve(true);
                 } else {
                     dfd.resolve(false);

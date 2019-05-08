@@ -7,16 +7,16 @@ var _ = require('windshaft/node_modules/underscore');
 // RFC4122. See: http://stackoverflow.com/questions/7905929/how-to-test-valid-uuid-guid
 var uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-var validTables = ['ashlar_boundary', 'ashlar_record', 'black_spots_blackspot'];
+var validTables = ['grout_boundary', 'grout_record', 'black_spots_blackspot', 'data_driverpublicrecord'];
 
 // queries
 var baseBoundaryQuery = ["(SELECT p.uuid AS polygon_id, b.uuid AS shapefile_id, ",
                          "b.label, b.color, p.geom ",
-                         "FROM ashlar_boundarypolygon p INNER JOIN ashlar_boundary b ",
+                         "FROM grout_boundarypolygon p INNER JOIN grout_boundary b ",
                          "ON (p.boundary_id=b.uuid)"
                         ].join("");
 var filterBoundaryQuery = " WHERE b.uuid ='";
-var endBoundaryQuery = ") AS ashlar_boundary";
+var endBoundaryQuery = ") AS grout_boundary";
 
 var baseBlackspotQuery = ["(SELECT * ",
                           "FROM black_spots_blackspot b "].join("");
@@ -35,7 +35,7 @@ var heatmapRules = [
     '[zoom < 7] { marker-width: 5; }',
     '[zoom > 9] { marker-width: 15; }',
 ];
-var heatmapStyle = constructCartoStyle('#ashlar_record', heatmapRules);
+var heatmapStyle = constructCartoStyle('#grout_record', heatmapRules);
 
 var eventsRules = [
     'marker-fill-opacity: 0.5;',
@@ -48,20 +48,59 @@ var eventsRules = [
     'marker-width: 4;',
     'marker-allow-overlap: true;',
 ];
-var eventsStyle = constructCartoStyle('#ashlar_record', eventsRules);
+var eventsStyle = constructCartoStyle('#grout_record', eventsRules);
 
 var secondaryRules = [
     'marker-fill-opacity: 0.5;',
-    'marker-fill: #00ee40;',
+    'marker-fill: #006620;',
     'marker-line-color: #FFF;',
     'marker-line-width: 0;',
     'marker-line-opacity: 1;',
     'marker-placement: point;',
     'marker-type: ellipse;',
-    'marker-width: 4;',
+    'marker-width: 8;',
     'marker-allow-overlap: true;',
 ];
-var secondaryStyle = constructCartoStyle('#ashlar_record', secondaryRules);
+var secondaryStyle = constructCartoStyle('#grout_record', secondaryRules);
+
+var tertiaryRules = [
+    'marker-fill-opacity: 0.5;',
+    'marker-fill: #ff0000;',
+    'marker-line-color: #FFF;',
+    'marker-line-width: 1;',
+    'marker-line-opacity: 1;',
+    'marker-placement: point;',
+    'marker-type: ellipse;',
+    'marker-width: 10;',
+    'marker-allow-overlap: true;',
+];
+var tertiaryStyle = constructCartoStyle('#grout_record', tertiaryRules);
+
+var publicRules = [
+    'marker-fill-opacity: 0.5;',
+    'marker-fill: #ff0099;',
+    'marker-line-color: #FFF;',
+    'marker-line-width: 1;',
+    'marker-line-opacity: 1;',
+    'marker-placement: point;',
+    'marker-type: ellipse;',
+    'marker-width: 8;',
+    'marker-allow-overlap: true;',
+];
+var publicStyle = constructCartoStyle('#data_driverpublicrecord', publicRules);
+
+var myPublicRules = [
+    'marker-fill-opacity: 0.5;',
+    'marker-fill: #ff0099;',
+    'marker-line-color: #FFF;',
+    'marker-line-width: 1;',
+    'marker-line-opacity: 1;',
+    'marker-placement: point;',
+    'marker-type: ellipse;',
+    'marker-width: 8;',
+    'marker-allow-overlap: true;',
+];
+var myPublicStyle = constructCartoStyle('#data_driverpublicrecord', myPublicRules);
 
 var boundaryRules = [
     'line-width: 2;',
@@ -88,7 +127,6 @@ function constructCartoStyle(layer, rules) {
 
 // takes the Windshaft request, sets the filter params, and calls the callback
 function setRequestParameters(request, callback, redisClient) {
-
     var params = request.params;
     var tilekey = request.query.tilekey;
 
@@ -108,9 +146,12 @@ function setRequestParameters(request, callback, redisClient) {
 
     params.table = params.tablename;
 
-    if (params.tablename === 'ashlar_record') {
-
-        params.interactivity = 'uuid,occurred_from';
+    if (params.tablename === 'grout_record') {
+        if (request.query.tertiary||request.query.public) {
+            params.interactivity = 'uuid';
+        }else{
+            params.interactivity = 'uuid,occurred_from';
+        }
         params.style = eventsStyle;
 
         if (request.query.heatmap) {
@@ -119,12 +160,17 @@ function setRequestParameters(request, callback, redisClient) {
         } else if (request.query.secondary) {
             params.style = secondaryStyle;
         }
+        else if (request.query.tertiary) {
+            params.style = tertiaryStyle;
+        }
 
         // retrieve stored query for record points
         if (!tilekey) {
             throw('Parameter: `tilekey` must be specified');
         } else {
+            console.log('Creating redis client');
             redisClient.get(tilekey, function(err, sql) {
+                console.log(sql);
                 if (!sql) {
                     callback('Error getting tilekey', null);
                     return;
@@ -144,15 +190,58 @@ function setRequestParameters(request, callback, redisClient) {
                     }
                 }).join(', ');
 
-                params.sql = '(' + castSelect + theRest + ') as ashlar_record' ;
+                params.sql = '(' + castSelect + theRest + ') as grout_record' ;
+                console.log(params.sql);
                 callback(null, request);
             });
         }
-    } else if (params.tablename === 'ashlar_boundary'){
+    } else if (params.tablename === 'data_driverpublicrecord') {
+        params.interactivity = 'uuid,occurred_from,location_text';
+        params.style = eventsStyle;
+
+        if (request.query.heatmap) {
+            // make a heatmap if optional parameter for that was sent in
+            params.style = heatmapStyle;
+        } else{
+            params.style = publicStyle;
+        }
+
+        // retrieve stored query for record points
+        if (!tilekey) {
+            throw('Parameter: `tilekey` must be specified');
+        } else {
+            console.log('Creating redis client');
+            redisClient.get(tilekey, function(err, sql) {
+                console.log(sql);
+                if (!sql) {
+                    callback('Error getting tilekey', null);
+                    return;
+                }
+
+                // cast string columns for interactivity
+                var fromIdx = sql.indexOf(' FROM');
+                var select = sql.substr(0, fromIdx);
+                var theRest = sql.substr(fromIdx);
+                var fields = select.split(', ');
+                var geomRegex = /geom/;
+                var castSelect = _.map(fields, function(field) {
+                    if (field.match(geomRegex)) {
+                        return field; // do not cast geom field
+                    } else {
+                        return field + '::varchar';
+                    }
+                }).join(', ');
+
+                params.sql = '(' + castSelect + theRest + ') as data_driverpublicrecord' ;
+                console.log(params.sql);
+                callback(null, request);
+            });
+        }
+    } else if (params.tablename === 'grout_boundary'){
         params.interactivity = 'label';
         var boundaryColor = request.query.color || '#f4b431';
         var colorStyle = 'line-color: ' + boundaryColor + ';';
-        params.style = constructCartoStyle('#ashlar_boundary', boundaryRules.concat([colorStyle]));
+        params.style = constructCartoStyle('#grout_boundary', boundaryRules.concat([colorStyle]));
 
         // build query for bounding polygon
         // filter for a specific bounding polygon UUID

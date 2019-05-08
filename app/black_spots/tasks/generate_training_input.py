@@ -141,7 +141,6 @@ def get_data(records_csv_uuid, segments_shp_uuid, road_srid):
             RECORD_COL_OCCURRED, RECORD_COL_SEVERE, RECORD_COL_SEVERE_VALS,
             RECORD_COL_PRECIP, RECORD_COL_PRECIP_VALS
         )
-
     # segments shapefile
     tar_output_dir = tempfile.mkdtemp()
     try:

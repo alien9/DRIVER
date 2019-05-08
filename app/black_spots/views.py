@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from django_redis import get_redis_connection
 from django.utils import timezone
 
-from ashlar.models import Record
+from grout.models import Record
 from black_spots.models import (BlackSpot, BlackSpotSet, BlackSpotConfig)
 from black_spots.serializers import (BlackSpotSerializer, BlackSpotSetSerializer,
                                      BlackSpotConfigSerializer, EnforcerAssignmentInputSerializer,

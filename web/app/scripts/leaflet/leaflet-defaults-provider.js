@@ -11,7 +11,7 @@
         var svc = this;
         var defaults = {
             center: [0,0],
-            zoom: 1,
+            zoom: 10,
             crs: L.CRS.EPSG3857
         };
 

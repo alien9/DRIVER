@@ -2,9 +2,9 @@
     'use strict';
 
     /* ngInject */
-    function NavbarController($rootScope, $scope, $state, $modal, $translate, $window,
-                              AuthService, BoundaryState, GeographyState, InitialState,
-                              LanguageState, MapState, RecordState, UserService, WebConfig) {
+    function NavbarController($rootScope, $scope, $state, $modal, $translate, $window, $document,
+                              AuthService, BoundaryState, GeographyState, InitialState, ConstantsState,
+                              LanguageState, MapState, RecordState, RecordSchemaState, UserService, WebConfig) {
         var ctl = this;
         var initialized = false;
 
@@ -33,6 +33,32 @@
             setStates();
             ctl.isTutorial = false;
             initialized = true;
+            $scope.$on('driver.exitTutorial', function() {
+                ctl.isTutorial = false;
+            });
+            var control=ctl;
+            $document.bind('keyup', function (e) {
+                if(e.keyCode===27){
+                    control.isTutorial = false;
+                }
+            });
+            RecordState.getPublic().then(function (p) {
+                ctl.recordType = p;
+            });
+            if(WebConfig.constants.userInput){
+                switch(parseInt(WebConfig.constants.userInput)){
+                    case 0:
+                        ctl.hasInput = false;
+                        break;
+                    case 2:
+                        ctl.hasInput = true;
+                        ctl.pop();
+                        break;
+                    case 1:
+                        ctl.hasInput = true;
+                }
+
+            }
         }
 
         $rootScope.$on('$stateChangeSuccess', function (event, toState) {
@@ -70,6 +96,7 @@
             updateState();
             MapState.setLocation(null);
             MapState.setZoom(null);
+            MapState.setBbox(selected.bbox);
         });
 
         // Geography selections
@@ -201,9 +228,48 @@
         ctl.tutorial = function(){
             ctl.isTutorial = !ctl.isTutorial;
         };
-        $scope.$on('driver.exitTutorial', function() {
-            ctl.isTutorial = false;
-        });
+
+        ctl.pop = function(){
+            $modal.open({
+                templateUrl: 'scripts/pop/pop-partial.html',
+                    controller: 'PopController as modal',
+                    size: 'sm',
+                    resolve: {
+                        create: function(){
+                            return ctl.createPublicRecord;
+                        }
+                    }
+            });
+        };
+
+        ctl.createPublicRecord = function(){
+            navigateToStateName('map');
+            var uid = AuthService.getUserId();
+        /* jshint camelcase: false */
+            RecordSchemaState.get(ctl.recordType.current_schema).then(function(recordSchema) {
+        /* jshint camelcase: true */
+                $modal.open({
+                    templateUrl: 'scripts/views/record/public-modal-partial.html',
+                    controller: 'RecordPublicModalController as modal',
+                    size: 'lg',
+                    resolve: {
+                        record: function() {
+                             return null;
+                        },
+                        recordType: function() {
+                            return ctl.recordType;
+                        },
+                        recordSchema: function() {
+                            return recordSchema;
+                        },
+                        userCanWrite: function() {
+                            return true;
+                        },
+                        ownerId: uid
+                    }
+                });
+             });
+        };
     }
 
     angular.module('driver.navbar')

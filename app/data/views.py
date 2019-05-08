@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from collections import defaultdict
 import json
 import logging
@@ -24,6 +27,7 @@ from django.db.models import (Case,
                               Sum,
                               Q)
 from django_redis import get_redis_connection
+from django.http import HttpResponseForbidden
 
 from rest_framework import viewsets
 from rest_framework.decorators import list_route, detail_route
@@ -32,19 +36,20 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.settings import api_settings
 from rest_framework import renderers, status
-
+from rest_framework.authtoken.models import Token
 from rest_framework_csv import renderers as csv_renderer
 
-from ashlar.models import RecordSchema, RecordType, BoundaryPolygon, Boundary
-from ashlar.views import (BoundaryPolygonViewSet,
+from grout.models import RecordSchema, RecordType, BoundaryPolygon, Boundary
+from grout.views import (BoundaryPolygonViewSet,
                           RecordViewSet,
                           RecordTypeViewSet,
                           RecordSchemaViewSet,
                           BoundaryViewSet)
 
-from ashlar.serializers import RecordSchemaSerializer
-
-from driver_auth.permissions import (IsAdminOrReadOnly,
+from grout.serializers import RecordSchemaSerializer
+from grout.filters import RecordFilter, FILTER_OVERRIDES
+from driver_auth.permissions import (Everybody,
+                                     IsAdminOrReadOnly,
                                      ReadersReadWritersWrite,
                                      IsAdminAndReadOnly,
                                      is_admin_or_writer)
@@ -57,18 +62,60 @@ from data.localization.date_utils import (
 )
 
 import filters
-from models import RecordAuditLogEntry, RecordDuplicate, RecordCostConfig
-from serializers import (DriverRecordSerializer, DetailsReadOnlyRecordSerializer,
+from models import RecordAuditLogEntry, RecordDuplicate, RecordCostConfig, DriverPublicRecord
+from serializers import (DriverRecordSerializer, DriverRequestRecordSerializer, DriverPublicRecordSerializer,
+                         DetailsReadOnlyRecordSerializer,
                          DetailsReadOnlyRecordSchemaSerializer, RecordAuditLogEntrySerializer,
                          RecordDuplicateSerializer, RecordCostConfigSerializer)
 import transformers
 from driver import mixins
+from django.http import JsonResponse
+from constance import config as cc
+
+from whoosh.qparser import QueryParser,FuzzyTermPlugin
+from whoosh.index import open_dir
+from geocoder.models import *
+from urlparse import urlparse, parse_qs
 
 logger = logging.getLogger(__name__)
 
 DateTimeField.register_lookup(transformers.ISOYearTransform)
 DateTimeField.register_lookup(transformers.WeekTransform)
 
+def search_location(request):
+    if not 'HTTP_AUTHORIZATION' in request.META:
+        return HttpResponseForbidden()
+    token = request.META['HTTP_AUTHORIZATION']
+    user = Token.objects.get(pk=token.replace('Token ', '')).user
+    if not user.is_authenticated():
+        return HttpResponseForbidden()
+    ix = open_dir("indexdir")
+    if ix is None:
+        geocoder.tasks.index()
+    searcher = ix.searcher()
+    parser = QueryParser("nome", schema=ix.schema)
+    parser.add_plugin(FuzzyTermPlugin())
+    qs=parse_qs(request.META['QUERY_STRING'])
+    res = []
+    if 'q' in qs:
+        term = str(qs['q'][0])+'~'
+        question = parser.parse(term)
+        res = searcher.search(question)
+    return JsonResponse([{'lat':r['lat'],'lon':r['lon'],'address':{'road':r['nome'], 'id': r['id']}} for r in res], safe=False)
+
+def reverse_search_location(request):
+    if not 'HTTP_AUTHORIZATION' in request.META:
+        return HttpResponseForbidden()
+    token = request.META['HTTP_AUTHORIZATION']
+    user = Token.objects.get(pk=token.replace('Token ', '')).user
+    if not user.is_authenticated():
+        return HttpResponseForbidden()
+    qs = parse_qs(request.META['QUERY_STRING'])
+    rua = Rua.objects.raw("select id,nome,null as the_geom,ST_DistanceSphere(ST_GeomFromText('POINT(%s %s)',4326),the_geom) as d \
+from (select id,nome,the_geom from segmento order by segmento.the_geom <#> geomfromewkt('SRID=4326;POINT(%s %s)') LIMIT 100) a order by d asc",
+        [float(qs['lon'][0]),float(qs['lat'][0]),float(qs['lon'][0]),float(qs['lat'][0])]
+    )
+    return JsonResponse({'address':{'road':rua[0].nome}}, safe=False)
 
 def build_toddow(queryset):
     """
@@ -88,9 +135,8 @@ def build_toddow(queryset):
             .order_by('tod', 'dow')
             .annotate(count=Count('tod')))
 
-
 class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
-    """Override base RecordViewSet from ashlar to provide aggregation and tiler integration
+    """Override base RecordViewSet from grout to provide aggregation and tiler integration
     """
     permission_classes = (ReadersReadWritersWrite,)
 
@@ -101,7 +147,6 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         details_only_param = self.request.query_params.get('details_only', None)
         if details_only_param == 'True' or details_only_param == 'true':
             requested_details_only = True
-
         #if is_admin_or_writer(self.request.user) and not requested_details_only:
         return DriverRecordSerializer
         #return DetailsReadOnlyRecordSerializer
@@ -172,6 +217,16 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         redis_conn.set(token, sql.encode('utf-8'))
 
     @list_route(methods=['get'])
+    def constants(self, request):
+        c = {
+            'lastYear': cc.LAST_YEAR,
+            'maxPointsPerUser': cc.MAX_POINTS_PER_USER,
+            'userInput': cc.USER_INPUT,
+        }
+        return JsonResponse(c)
+
+
+    @list_route(methods=['get'])
     def stepwise(self, request):
         """Return an aggregation counts the occurrence of events per week (per year) between
         two bounding datetimes
@@ -239,11 +294,21 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         return Response(counts)
 
     @list_route(methods=['get'])
+    def last_year(self, request):
+        """ Return the most recent year where we had crashes"""
+        qs = self.get_filtered_queryset(request).order_by('-occurred_from').first()
+        return Response({'year':qs.occurred_from.year})
+
+    @list_route(methods=['get'])
     def recent_counts_last_3_years(self, request):
         """ Return the recent record counts for 3 former years """
-        frist = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE)).date().replace(month=1, day=1)
+        if cc.LAST_YEAR:
+            a = cc.LAST_YEAR
+        else:
+            qs = self.get_filtered_queryset(request).order_by('-occurred_from').first()
+            a = qs.occurred_from.year
+        frist = datetime.datetime.now(tz=pytz.timezone(settings.TIME_ZONE)).date().replace(year=a+1, month=1, day=1)
         qs = self.get_filtered_queryset(request).filter(occurred_from__lt=frist)
-        
         labels=['ano0','ano1','ano2']
         counts = {
           labels[ano[0]]:{
@@ -253,8 +318,6 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
             ).count(),
             'ano':ano[1]-1} for ano in enumerate(reversed(range(frist.year-2, frist.year+1)))
         }
-        
-   
         return Response(counts)
 
     @list_route(methods=['get'])
@@ -1132,6 +1195,67 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
             filter_rule = tmp
         return filter_rule
 
+class DriverRequestRecordViewSet(DriverRecordViewSet, mixins.GenerateViewsetQuery):
+    permission_classes = (Everybody,)
+    # Filter out everything except details for read-only users
+    def get_serializer_class(self):
+        return DriverRequestRecordSerializer
+    def get_queryset(self):
+        """Override default model ordering"""
+        qs = super(DriverRecordViewSet, self).get_queryset()
+        return qs.order_by('-occurred_from')
+
+
+class PublicRecordFilter(RecordFilter):
+    class Meta:
+        model = DriverPublicRecord
+        fields = ['archived']
+        filter_overrides = FILTER_OVERRIDES
+
+class DriverPublicRecordViewSet(DriverRecordViewSet, mixins.GenerateViewsetQuery):
+    queryset = DriverPublicRecord.objects.all()
+    serializer_class = DriverPublicRecordSerializer
+    filter_class = PublicRecordFilter
+    permission_classes = (Everybody,)
+
+    def get_serializer_class(self):
+        return DriverPublicRecordSerializer
+
+    def get_queryset(self):
+        """Override default model ordering"""
+        qs = DriverPublicRecord.objects.all()
+        return qs.order_by('-occurred_from')
+
+    @list_route(methods=['get'])
+    def count(self, request):
+        c = DriverPublicRecord.objects.filter(recordauditlogentry__user=request.user, archived=False).order_by('uuid').distinct('uuid').count()
+        result = {
+            'count': c,
+            'max': cc.MAX_POINTS_PER_USER,
+        }
+        if c >= cc.MAX_POINTS_PER_USER:
+            frist = DriverPublicRecord.objects.filter(recordauditlogentry__user=request.user, archived=False).order_by(
+                'created').first()
+            result['last'] =  {
+                'locationText': frist.location_text,
+                'uuid': frist.uuid,
+            }
+        return JsonResponse(result)
+
+    # Views
+    def list(self, request, *args, **kwargs):
+        # Don't generate a tile key unless the user specifically requests it, to avoid
+        # filling up the Redis cache with queries that will never be viewed as tiles
+        if ('tilekey' in request.query_params and
+                request.query_params['tilekey'] in ['True', 'true']):
+            response = Response(dict())
+            query_sql = self.generate_query_sql(request)
+            tile_token = uuid.uuid4()
+            self._cache_tile_sql(tile_token, query_sql.encode('utf-8'))
+            response.data['tilekey'] = tile_token
+        else:
+            response = super(DriverRecordViewSet, self).list(self, request, *args, **kwargs)
+        return response
 
 class DriverRecordAuditLogViewSet(viewsets.ModelViewSet):
     """Viewset for accessing audit logs; will output CSVs if Accept text/csv is specified"""
@@ -1181,7 +1305,7 @@ def start_jar_build(schema_uuid):
     return True
 
 
-# override ashlar views to set permissions and trigger model jar builds
+# override grout views to set permissions and trigger model jar builds
 class DriverBoundaryPolygonViewSet(BoundaryPolygonViewSet):
     permission_classes = (IsAdminOrReadOnly,)
 
@@ -1256,7 +1380,6 @@ class DriverRecordCostConfigViewSet(viewsets.ModelViewSet):
     serializer_class = RecordCostConfigSerializer
     filter_fields = ('record_type', )
 
-
 class RecordCsvExportViewSet(viewsets.ViewSet):
     """A view for interacting with CSV export jobs
 
@@ -1269,7 +1392,10 @@ class RecordCsvExportViewSet(viewsets.ViewSet):
         # N.B. Celery will never return an error if a task_id doesn't correspond to a
         # real task; it will simply return a task with a status of 'PENDING' that will never
         # complete.
+
+        logger.warn('pk '+pk)
         job_result = export_csv.AsyncResult(pk)
+
 
         if job_result.state in states.READY_STATES:
             if job_result.state in states.EXCEPTION_STATES:
@@ -1279,6 +1405,7 @@ class RecordCsvExportViewSet(viewsets.ViewSet):
             # TODO: This won't work with multiple celery workers
             # TODO: We should add a cleanup task to prevent result files from accumulating
             # on the celery worker.
+            logger.warn('tentando pegar o csv')
             uri = u'{scheme}://{host}{prefix}{file}'.format(scheme=request.scheme,
                                                             host=request.get_host(),
                                                             prefix=settings.CELERY_DOWNLOAD_PREFIX,
@@ -1293,7 +1420,9 @@ class RecordCsvExportViewSet(viewsets.ViewSet):
         filterkey is the same as the "tilekey" that we pass to Windshaft; it must be requested
         from the Records endpoint using tilekey=true
         """
+        logger.warn("trying to create")
         filter_key = request.data.get('tilekey', None)
+
         if not filter_key:
             return Response({'errors': {'tilekey': 'This parameter is required'}},
                             status=status.HTTP_400_BAD_REQUEST)

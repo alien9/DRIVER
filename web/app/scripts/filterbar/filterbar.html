@@ -1,6 +1,6 @@
 <div class="filterbar drop-shadow">
     <div class="pull-left">
-        <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav" style="display:none">
             <li text-search-field></li>
         </ul>
         <ul class="nav navbar-nav">
@@ -8,6 +8,11 @@
         </ul>
         <ul class="nav navbar-nav" ng-repeat="(key, value) in filterbar.filterables">
             <li ng-if="value.format === 'number'"
+                numeric-range-field
+                label="key"
+                data="value"
+                class="dropdown"></li>
+            <li ng-if="value.fieldType === 'number'"
                 numeric-range-field
                 label="key"
                 data="value"

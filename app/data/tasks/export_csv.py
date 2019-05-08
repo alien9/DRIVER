@@ -13,7 +13,7 @@ from celery.utils.log import get_task_logger
 
 from django_redis import get_redis_connection
 
-from ashlar.models import Record
+from grout.models import Record
 
 from driver_auth.permissions import is_admin_or_writer
 
@@ -52,7 +52,6 @@ def export_csv(query_key, user_id):
                       Windshaft tiles so that the CSV will correspond to the filters applied in
                       the UI.
     """
-    # Get Records
     records = get_queryset_by_key(query_key)
     # Get the most recent Schema for the Records' RecordType
     # This assumes that all of the Records have the same RecordType.
@@ -61,12 +60,11 @@ def export_csv(query_key, user_id):
         schema = record_type.get_current_schema()
     except IndexError:
         raise Exception('Filter includes no records')
-
     # Get user
     user = User.objects.get(pk=user_id)
     # Create files and CSV Writers from Schema
     #if is_admin_or_writer(user):
-    record_writer = AshlarRecordExporter(schema)
+    record_writer = DriverRecordExporter(schema)
     #else:
     #    record_writer = ReadOnlyRecordExporter(schema)
 
@@ -123,7 +121,7 @@ def get_queryset_by_key(key):
     return Record.objects.raw(sql_str)
 
 
-class AshlarRecordExporter(object):
+class DriverRecordExporter(object):
     """Exports Records matching a schema to CSVs"""
     def __init__(self, schema_obj):
         # Detect related info types and set up CSV Writers as necessary
@@ -184,11 +182,13 @@ class AshlarRecordExporter(object):
         for related_name, writer in self.writers.viewitems():
             if related_name in rec.data:
                 if writer.is_multiple:
-                    for item in rec.data[related_name]:
-                        writer.write_related(rec.pk, item, self.outfiles[related_name])
+                    if related_name in rec.data:
+                        for item in rec.data[related_name]:
+                            writer.write_related(rec.pk, item, self.outfiles[related_name])
                 else:
-                    writer.write_related(rec.pk, rec.data[related_name],
-                                         self.outfiles[related_name])
+                    if related_name in rec.data:
+                        writer.write_related(rec.pk, rec.data[related_name],
+                                             self.outfiles[related_name])
 
     def make_constants_csv_writer(self):
         """Generate a Record Writer capable of writing out the non-json fields of a Record"""
@@ -203,7 +203,7 @@ class AshlarRecordExporter(object):
                          'lat': 'geom',
                          'lon': 'geom'}
         # Some model fields need to be transformed before they can go into a CSV
-        date_iso = lambda d: d.isoformat()
+        date_iso = lambda d: None if d is None else d.isoformat()
         value_transforms = {
             'record_id': lambda uuid: str(uuid),
             'created': date_iso,
@@ -238,7 +238,7 @@ class AshlarRecordExporter(object):
         return ModelAndDetailsWriter(model_writer, details_writer, details_key)
 
 
-class ReadOnlyRecordExporter(AshlarRecordExporter):
+class ReadOnlyRecordExporter(DriverRecordExporter):
     """Export only fields which read-only users are allow to access"""
     def __init__(self, schema_obj):
         # Don't write any related info fields, just details only.
@@ -298,7 +298,11 @@ class ModelAndDetailsWriter(BaseRecordWriter):
         """Pull data from a record, send to appropriate writers, and then combine output"""
         output = StringIO.StringIO()
         self.model_writer.write_record(record, output)
-        self.details_writer.write_related(record.pk, record.data[self.details_key], output)
+        if hasattr(record.data, self.details_key):
+            self.details_writer.write_related(record.pk, record.data[self.details_key], output)
+        else:
+            if self.details_key in record.data:
+                self.details_writer.write_related(record.pk, record.data[self.details_key], output)
         csv_file.write(self.merge_lines(output.getvalue()))
 
 
@@ -325,9 +329,12 @@ class RecordModelWriter(BaseRecordWriter):
         """Pull field data from record object, transform, write to csv_file"""
         output_data = dict()
         for column in self.csv_columns:
-            model_value = self.get_model_value_for_column(record, column)
-            csv_val = self.transform_model_value(model_value, column)
-            output_data[column] = _utf8(csv_val)
+            if hasattr(record, column):
+                model_value = self.get_model_value_for_column(record, column)
+                csv_val = self.transform_model_value(model_value, column)
+                output_data[column] = _utf8(csv_val)
+            else:
+                output_data[column] = ''
         writer = csv.DictWriter(csv_file, fieldnames=self.csv_columns)
         writer.writerow(output_data)
 
@@ -377,7 +384,6 @@ class RelatedInfoWriter(BaseRecordWriter):
         """Transform related_info and write to csv_file"""
         # Transform
         output_data = self.transform_value_keys(related_info)
-
         # Append record_id
         if self.output_record_id:
             output_data['record_id'] = record_id

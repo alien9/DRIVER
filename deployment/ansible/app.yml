@@ -21,6 +21,7 @@
       apt: pkg=git state=present
 
   roles:
+    - { role: "driver.python2" }
     - { role: "driver.windshaft" }
     - { role: "driver.app" }
     - { role: "driver.nginx" }

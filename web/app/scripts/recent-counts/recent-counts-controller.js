@@ -33,8 +33,6 @@
                 ctl.ano2 = aggregate.ano2;
             });
         }
-
-
     }
 
     angular.module('driver.recentCounts')

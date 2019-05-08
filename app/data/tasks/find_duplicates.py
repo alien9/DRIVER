@@ -7,7 +7,7 @@ from celery.app.task import Task
 from celery.utils.log import get_task_logger
 
 from data.models import (DedupeJob, RecordDuplicate)
-from ashlar.models import Record
+from grout.models import Record
 
 import datetime
 

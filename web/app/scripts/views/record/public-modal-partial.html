@@ -1,0 +1,69 @@
+<div class="incident-report modal-content json-editor-form">
+    <div class="modal-content">
+        <div class="close" ng-click="modal.close()">
+            &times;
+        </div>
+        <div class="report-header">
+            <h3 class="modal-title">
+                <span>{{ 'RECORD.SET_LOCATION_TITLE' | translate }}</span>
+            </h3>
+        </div>
+        <div class="row first">
+            <div class="col-md-12">
+                <json-editor editor-id="{{ modal.editor.id }}"
+                     options="modal.editor.options"
+                     on-data-change="modal.onDataChange"
+                     class="form-area-body borderless">
+                </json-editor>
+                <div class="form-group">
+                    <label class="control-label">{{ 'RECORD.LOCATION' | translate }}</label>
+                    <input type="text" class="form-control"
+                        typeahead="result.display_name for result in modal.nominatimLookup($viewValue)"
+                        typeahead-on-select="modal.nominatimSelect($item)"
+                        typeahead-wait-ms="250"
+                        ng-model="modal.nominatimLocationText">
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="map" leaflet-map driver-embed-map editable="true" lat="{{ modal.lat }}" lng="{{ modal.lng }}"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group"
+                    ng-class="modal.constantFieldErrors.latitude ? 'has-error' : ''">
+                    <label class="control-label required">{{ 'RECORD.LATITUDE' | translate }}</label>
+                    <input type="number" class="form-control"
+                        ng-change="modal.onGeomChanged(false)" ng-model="modal.geom.lat">
+                    <p ng-if="modal.constantFieldErrors.latitude"
+                        class="help-block errormsg">{{ 'ERRORS.VALUE_REQUIRED' | translate }}.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group"
+                    ng-class="modal.constantFieldErrors.longitude ? 'has-error' : ''">
+                    <label class="control-label required">{{ 'RECORD.LONGITUDE' | translate }}</label>
+                    <input type="number" class="form-control"
+                        ng-change="modal.onGeomChanged(false)" ng-model="modal.geom.lng">
+                    <p ng-if="modal.constantFieldErrors.longitude"
+                        class="help-block errormsg">{{ 'ERRORS.VALUE_REQUIRED' | translate }}.</p>
+                </div>
+            </div>
+        </div>
+        <ase-notifications></ase-notifications>
+        <div class="modal-footer">
+            <button ng-if="modal.isItMine()" type="button" class="btn btn-primary"
+                ng-disabled="modal.editor.errors.length > 0 || modal.constantFieldErrors"
+                ng-click="modal.onSaveClicked()">
+                {{ 'COMMON.SAVE' | translate }}
+            </button>
+            <button type="button" class="btn btn-warning" ng-if="modal.record && modal.isItMine()"
+                ng-click="modal.onDeleteClicked()">
+                {{ 'COMMON.DELETE' | translate }}
+            </button>
+            <button class="btn btn-primary" ng-click="modal.close()">
+                {{ 'COMMON.CLOSE' | translate }}
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,44 @@
+.driver-map-legend{
+    position:absolute;
+    bottom:20px;
+    right:0;
+    z-index:100;
+    margin-right:10px;
+    >div{
+        padding:8px;
+        white-space:nowrap;
+        position:relative;
+        background:white;
+        display:inline-block;
+    }
+    span.icon{
+        display:inline-block;
+        width:18px;
+        height:18px;
+    }
+
+    .circle-primary:before{
+      content: ' \25CF';
+      font-size: 18px;
+      color:#0040ff;
+      opacity:0.5;
+    }
+    .circle-secondary:before{
+      content: ' \25CF';
+      font-size: 22px;
+      color:#006620;
+      opacity:0.5;
+    }
+    .circle-public:before{
+      content: ' \25CF';
+      font-size: 25px;
+      color:#ff0066;
+      opacity:0.5;
+    }
+    .on{
+        display:block;
+    }
+    .off{
+        display:none;
+    }
+}

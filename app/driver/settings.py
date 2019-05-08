@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-*
 """
 Django settings for driver project.
 
@@ -53,7 +54,7 @@ INSTALLED_APPS = (
     'django_filters',
     'rest_framework_gis',
 
-    'ashlar',
+    'grout',
 
     'driver',
     'driver_auth',
@@ -61,7 +62,11 @@ INSTALLED_APPS = (
     'user_filters',
     'black_spots',
     'captcha',
+    'geocoder',
+
+    'constance',
 )
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -180,7 +185,7 @@ LOGGING = {
             'propagate': True,
             'level': 'INFO',
         },
-        'ashlar': {
+        'grout': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
@@ -259,6 +264,25 @@ REST_FRAMEWORK = {
 REDIS_HOST = os.environ.get('DRIVER_REDIS_HOST', '127.0.0.1')
 REDIS_PORT = os.environ.get('DRIVER_REDIS_PORT', '6379')
 
+CONSTANCE_REDIS_CONNECTION = {
+    'host': REDIS_HOST,
+    'port': REDIS_PORT,
+}
+
+CONSTANCE_ADDITIONAL_FIELDS = {
+    'pop_select': ['django.forms.fields.ChoiceField', {
+        'widget': 'django.forms.Select',
+        'choices': ((0, u'Não'), (1, "Sim"), (2, "Popup"))
+    }],
+}
+
+CONSTANCE_CONFIG = {
+    'THE_ANSWER': (42, 'Answer to the Ultimate Question of Life, The Universe, and Everything'),
+    'LAST_YEAR': (2017, 'Ano Final na Base'),
+    'MAX_POINTS_PER_USER': (3, u'Quantidade máxima de registros de Pontos Críticos por cidadão'),
+    'USER_INPUT': (0, u'Entrada de pontos por usuário', 'pop_select')
+}
+
 # JAR file cache TLL (keep in redis for this many seconds since creation or last retrieval)
 JARFILE_REDIS_TTL_SECONDS = os.environ.get('DRIVER_JAR_TTL_SECONDS', 60 * 60 * 24 * 30) # 30 days
 
@@ -312,7 +336,8 @@ CELERY_ROUTES = {
     'black_spots.tasks.generate_training_input.get_training_precip': {'queue': 'taskworker'},
     'data.tasks.remove_duplicates.remove_duplicates': {'queue': 'taskworker'},
     'data.tasks.export_csv.export_csv': {'queue': 'taskworker'},
-    'data.tasks.fetch_record_csv.export_records': {'queue': 'taskworker'}
+    'data.tasks.fetch_record_csv.export_records': {'queue': 'taskworker'},
+    'geocoder.tasks.index.index': {'queue': 'taskworker'},
 }
 # This needs to match the proxy configuration in nginx so that requests for files generated
 # by celery jobs go to the right place.
@@ -324,12 +349,13 @@ DEDUPE_TIME_RANGE_HOURS = 12
 # .001 ~= 110m
 DEDUPE_DISTANCE_DEGREES = 0.0008
 
-ASHLAR = {
+GROUT = {
     # It is suggested to change this if you know that your data will be limited to
     # a certain part of the world, for example to a UTM Grid projection or a state
     # plane.
     'SRID': 4326,
 }
+
 
 ## django-oidc settings
 HOST_URL = os.environ.get('DRIVER_APP_HOST', os.environ.get('HOSTNAME'))
@@ -427,17 +453,14 @@ if len(GOOGLE_OAUTH_CLIENT_ID) > 0:
 # These fields will be visible to read-only users
 READ_ONLY_FIELDS_REGEX = r'Details$'
 
-#EMAIL_USE_TLS = True
-#EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_HOST_USER = 'vidasegura@gmail.com'
-#EMAIL_HOST_PASSWORD = 'test432pest'
-#EMAIL_PORT = 587
 
-EMAIL_HOST = '172.17.0.1'
-#EMAIL_HOST_USER = 'noreply@vidasegura.prefeitura.sp.gov.br'
+
+EMAIL_HOST = '10.10.67.34'
 EMAIL_PORT = 25
 EMAIL_USE_TLS = False
-DEFAULT_FROM_EMAIL = 'vidasegura@prefeitura.sp.gov.br'
+DEFAULT_FROM_EMAIL = 'webmaster@vidasegura.prefeitura.sp.gov.br'
 
 START_PAGE = os.environ.get('DRIVER_START_PAGE', '/')
+
+TERTIARY_LABEL = os.environ.get('DRIVER_TERTIARY_LABEL', None)
 

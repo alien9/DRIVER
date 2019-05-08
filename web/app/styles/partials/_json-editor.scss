@@ -91,6 +91,9 @@
                 }
             }
         }
+        .borderless{
+            background-color:lime;
+        }
     }
     
     .well {
@@ -108,5 +111,33 @@
             content: ' *';
         }
     }
+    .borderless{
+        background-color:lime;
+        >div>h3, >div>p{
+            display:none;
+        }
+    }
+    .col-md-12{
+        padding:0;
+    }
 
+}
+.form-area-body{
+    h3{
+        display:none;
+    }
+    .col-md-12{
+        border-width:0 !important;
+        padding: 0 !important;
+        margin-bottom:0 !important;
+    }
+    .well{
+        background-color:white !important;
+        border-width: 0 !important;
+        padding:0 !important;
+        margin-bottom: 0 !important;
+    }
+}
+div.first{
+    margin-top:20px;
 }
