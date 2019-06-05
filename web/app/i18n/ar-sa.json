@@ -281,11 +281,10 @@
         "TORNADO": "عاصفة",
         "WIND": "رياح"
     },
-<<<<<<< ours
     "NUMBER": {
         "DECIMAL_SEPARATOR": ".",
         "THOUSAND_SEPARATOR": "."
-=======
+    },
     "INTERVENTION_TYPE": {
         "I01": "!Bicycle Facilities",
         "I02": "!Central Hatching",
@@ -345,6 +344,5 @@
         "I59": "!School Zones",
         "I60": "!Road Surface Rehabilitation",
         "I61": "!Sight Distance (obstruction removal)"
->>>>>>> theirs
     }
 }

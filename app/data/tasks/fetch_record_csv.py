@@ -6,14 +6,13 @@ import re
 
 from celery import shared_task
 
-<<<<<<< ours
-from grout.models import Record
-=======
+
 from data.models import DriverRecord
 from grout.models import RecordType
->>>>>>> theirs
 from black_spots.models import BlackSpotRecordsFile
+from celery.utils.log import get_task_logger
 
+logger = get_task_logger(__name__)
 
 # Keys which cannot be usefully exported to csv
 DROPPED_KEYS = ['media']
@@ -40,28 +39,6 @@ def FIELD_TRANSFORMS():
     }
 
 
-<<<<<<< ours
-@shared_task
-def export_records(occurred_min, occurred_max, record_type_id):
-    logger.warn('export record')
-    logger.wars(record_type_id)
-    def to_utf8(s):
-        """Convert to utf8 encoding and strip special whitespace/commas for csv writing"""
-        if isinstance(s, str):
-            return re.sub(r'[\r\n\t]', '', s)
-        elif isinstance(s, unicode):
-            return re.sub(r'[\r\n\t]', '', s).encode('utf-8')
-        elif s is None:
-            return unicode('').encode('utf-8')
-        else:
-            return re.sub(r'[\r\n\t]', '', unicode(s)).encode('utf-8')
-
-    records = Record.objects.filter(
-        occurred_from__gte=occurred_min,
-        occurred_to__lte=occurred_max,
-        schema__record_type_id=record_type_id
-    )
-=======
 def to_utf8(s):
     """Convert to utf8 encoding and strip special whitespace/commas for csv writing"""
     if isinstance(s, str):
@@ -72,7 +49,7 @@ def to_utf8(s):
         return unicode('').encode('utf-8')
     else:
         return re.sub(r'[\r\n\t]', '', unicode(s)).encode('utf-8')
->>>>>>> theirs
+
 
 
 def generate_row_dicts(records_qs, record_detail_fields, details_key):

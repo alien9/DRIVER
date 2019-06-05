@@ -1,13 +1,10 @@
 from datetime import datetime, timedelta
 import pytz
 
-<<<<<<< ours
-from grout.models import RecordSchema, RecordType, Record
-from data.models import DedupeJob, RecordDuplicate
-=======
+
 from grout.models import RecordSchema, RecordType
 from data.models import DedupeJob, RecordDuplicate, DriverRecord
->>>>>>> theirs
+
 from data.tasks import find_duplicates as task
 
 from django.test import TestCase

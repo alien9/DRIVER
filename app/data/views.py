@@ -9,6 +9,7 @@ import calendar
 import datetime
 import pytz
 import hashlib
+import os
 
 from dateutil.parser import parse as parse_date
 from django.template.defaultfilters import date as template_date
@@ -46,30 +47,19 @@ from rest_framework import renderers, status
 from rest_framework.authtoken.models import Token
 from rest_framework_csv import renderers as csv_renderer
 
-<<<<<<< ours
-from grout.models import RecordSchema, RecordType, BoundaryPolygon, Boundary
+from grout.models import RecordSchema, RecordType, BoundaryPolygon, Boundary, Record
 from grout.views import (BoundaryPolygonViewSet,
                           RecordViewSet,
                           RecordTypeViewSet,
                           RecordSchemaViewSet,
                           BoundaryViewSet)
 
-from grout.serializers import RecordSchemaSerializer
 from grout.filters import RecordFilter, FILTER_OVERRIDES
+
+from grout.serializers import RecordSchemaSerializer
+
 from driver_auth.permissions import (Everybody,
                                      IsAdminOrReadOnly,
-=======
-from grout.models import RecordSchema, RecordType, BoundaryPolygon, Boundary, Record
-from grout.views import (BoundaryPolygonViewSet,
-                         RecordViewSet,
-                         RecordTypeViewSet,
-                         RecordSchemaViewSet,
-                         BoundaryViewSet)
-
-from grout.serializers import RecordSchemaSerializer
-
-from driver_auth.permissions import (IsAdminOrReadOnly,
->>>>>>> theirs
                                      ReadersReadWritersWrite,
                                      IsAdminAndReadOnly,
                                      is_admin_or_writer)
@@ -111,6 +101,8 @@ def search_location(request):
     user = Token.objects.get(pk=token.replace('Token ', '')).user
     if not user.is_authenticated():
         return HttpResponseForbidden()
+    if not os.path.isdir("indexdir"):
+        geocoder.tasks.index()
     ix = open_dir("indexdir")
     if ix is None:
         geocoder.tasks.index()
@@ -171,19 +163,11 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
         details_only_param = self.request.query_params.get('details_only', None)
         if details_only_param == 'True' or details_only_param == 'true':
             requested_details_only = True
-<<<<<<< ours
+
         #if is_admin_or_writer(self.request.user) and not requested_details_only:
         return DriverRecordSerializer
         #return DetailsReadOnlyRecordSerializer
-=======
 
-        if is_admin_or_writer(self.request.user):
-            if requested_details_only:
-                return DetailsReadOnlyRecordNonPublicSerializer
-            else:
-                return DriverRecordSerializer
-        return DetailsReadOnlyRecordSerializer
->>>>>>> theirs
 
     def get_queryset(self):
         qs = super(DriverRecordViewSet, self).get_queryset()
@@ -257,6 +241,7 @@ class DriverRecordViewSet(RecordViewSet, mixins.GenerateViewsetQuery):
 
     # Views
     def list(self, request, *args, **kwargs):
+        print("listing antes")
         # Don't generate a tile key unless the user specifically requests it, to avoid
         # filling up the Redis cache with queries that will never be viewed as tiles
         if ('tilekey' in request.query_params and
@@ -1293,13 +1278,13 @@ class DriverPublicRecordViewSet(DriverRecordViewSet, mixins.GenerateViewsetQuery
 
     @list_route(methods=['get'])
     def count(self, request):
-        c = DriverPublicRecord.objects.filter(recordauditlogentry__user=request.user, archived=False).order_by('uuid').distinct('uuid').count()
+        c = DriverPublicRecord.objects.filter(publicrecordauditlogentry__user=request.user, archived=False).order_by('uuid').distinct('uuid').count()
         result = {
             'count': c,
             'max': cc.MAX_POINTS_PER_USER,
         }
         if c >= cc.MAX_POINTS_PER_USER:
-            frist = DriverPublicRecord.objects.filter(recordauditlogentry__user=request.user, archived=False).order_by(
+            frist = DriverPublicRecord.objects.filter(publicrecordauditlogentry__user=request.user, archived=False).order_by(
                 'created').first()
             result['last'] =  {
                 'locationText': frist.location_text,

@@ -76,7 +76,7 @@
                     if(!ctl.nominatimLocationText || !suppressReverseNominatim) {
                         Nominatim.reverse(newVal.lng, newVal.lat).then(function (nominatimData) {
                             /* jshint camelcase: false */
-                            ctl.nominatimLocationText = nominatimData.display_name;
+                            ctl.nominatimLocationText = (!nominatimData.display_name)?nominatimData.address.road:nominatimData.display_name;
                             ctl.nominatimCity = nominatimData.address.city;
                             ctl.nominatimCityDistrict = nominatimData.address.city_district;
                             ctl.nominatimCounty = nominatimData.address.county;

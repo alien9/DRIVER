@@ -138,6 +138,7 @@ def get_record_buffers(road_srid, records_csv_uuid):
         pyproj.Proj(road_projection)
     )
     record_buffers = []
+    logger.warn("records object %s" % (records_csv_uuid))
     with BlackSpotRecordsFile.objects.get(uuid=records_csv_uuid).csv as records_csv:
         records_csv.open('rb')
         try:
@@ -310,16 +311,19 @@ def split_line(line, max_line_units):
     half_length = line.length / 2
     coords = list(line.coords)
     for idx, point in enumerate(coords):
-        proj_dist = line.project(Point(point))
-        if proj_dist == half_length:
-            return [LineString(coords[:idx + 1]), LineString(coords[idx:])]
+        try:
+            proj_dist = line.project(Point(point))
+            if proj_dist == half_length:
+                return [LineString(coords[:idx + 1]), LineString(coords[idx:])]
 
-        if proj_dist > half_length:
-            mid_point = line.interpolate(half_length)
-            head_line = LineString(coords[:idx] + [(mid_point.x, mid_point.y)])
-            tail_line = LineString([(mid_point.x, mid_point.y)] + coords[idx:])
-            return split_line(head_line, max_line_units) + split_line(tail_line, max_line_units)
-
+            if proj_dist > half_length:
+                mid_point = line.interpolate(half_length)
+                head_line = LineString(coords[:idx] + [(mid_point.x, mid_point.y)])
+                tail_line = LineString([(mid_point.x, mid_point.y)] + coords[idx:])
+                return split_line(head_line, max_line_units) + split_line(tail_line, max_line_units)
+        except:
+            logger.warn(line.geom_type)
+            return
 
 def get_intersection_parts(roads, int_buffers, max_line_units):
     """Finds all segments that intersect the buffers, and all that don't

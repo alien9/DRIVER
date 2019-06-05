@@ -38,13 +38,16 @@ def load_road_network(output_root=None, output_srid='EPSG:3395'):
     osm_path = os.path.join(output_root, 'road_network.osm.pbf')
     # Download OSM data
     try:
+        logger.info(osm_path)
         with open(osm_path, 'wb') as osm_fh:
-            logger.info('Downloading OSM extract')
+            logger.info('Downloading OSM extract '+settings.OSM_EXTRACT_URL)
             response = requests.get(settings.OSM_EXTRACT_URL, stream=True)
             response.raise_for_status()
             for chunk in response.iter_content(chunk_size=1024):
                 if chunk:
                     osm_fh.write(chunk)
+
+            logger.info('Downloaded')
             osm_fh.flush()
 
         # Convert from OSM XML to a Shapefile using ogr2ogr

@@ -290,3 +290,8 @@ redis_bind_address: "{{ database_server_ip }}"
 ## CELERY SETTINGS
 # The internal IP address of the server on which Celery tasks will run.
 celery_host_address: "{{ celery_server_ip }}"
+
+
+hidden_fields: ["acidente_id","Tipo de Acidente","Veículo"]
+web_js_nominatim_key: "NmfGZYebsExMYfFWP4Tf"
+web_js_nominatim_url: "http://localhost:3001/geocode" #'https://pickpoint.io/api/v1/';

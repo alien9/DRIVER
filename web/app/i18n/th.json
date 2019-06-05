@@ -1,4 +1,5 @@
 {
+    "Incidente": "!Accident",
     "LANG": "ภาษาไทย",
     "AGG": {
         "DAY": "วัน",
@@ -44,7 +45,8 @@
         "TO": "ไปยัง",
         "TOTAL": "ทั้งหมด",
         "VIEW": "ดู",
-        "YES": "ใช่"
+        "YES": "ใช่",
+        "CONTRIBUTE": "!Contribute"
     },
     "DASHBOARD": {
         "ANALYZE_AND_FILTER": "วิเคราะห์และคัดกรอง",
@@ -54,9 +56,11 @@
         "RECENT_EVENTS_PERIOD": "สองสัปดาห์ล่าสุด",
         "SOCIAL_COSTS_TEXT": "การสูญเสียทางเศรษฐกิจและสังคมทั้งหมด",
         "SOCIAL_COSTS_90DAYS": "90 วันที่ผ่านมา",
+        "SOCIAL_COSTS_3_YEARS": "3 anos",
         "SOCIAL_COSTS_CONFIG_WARN": "การคำนวณต้นทุนอาจมีการกำหนดค่าผิดพลาด โปรดแจ้งผู้ดูแลระบบของคุณ",
         "STEPWISE_TITLE": "การนับรายสัปดาห์: 90 วันล่าสุด",
         "TODDOW_TITLE": "เวลาในวัน, วันของสัปดาห์: 90 วันล่าสุด",
+        "TOD_LAST_YEAR_TITLE": "Hora do Dia, Dia da Semana: ",
         "VIEW_ALL": "ดูทั้งหมด"
     },
     "DAY": {
@@ -109,14 +113,26 @@
         "SAVING_FILTER_ERROR": "เกิดข้อผิดพลาดในการบันทึกตัวกรอง",
         "UNKNOWN_ERROR": "ข้อผิดพลาดที่ไม่รู้จัก",
         "UNKNOWN_RULE_TYPE": "ประเภทกฎที่ไม่รู้จัก",
-        "VALUE_REQUIRED": "ต้องมีค่าบันทึก"
+        "VALUE_REQUIRED": "ต้องมีค่าบันทึก",
+        "LIMIT_RECORDS_EXCEEDED": "!Registers maximum exceeded. Would you like to erase"
     },
     "LOGIN": {
         "LOG_IN_TO_DRIVER": "เข้าสู่ระบบ DRIVER",
         "LOG_IN_WITH": "เข้าสู่ระบบด้วย",
+        "EMAIL": "Email",
         "PASSWORD": "รหัสผ่าน",
+        "PASSWORD_CONFIRM": "Confirmar senha",
         "SIGN_IN": "ลงชื่อเข้าใช้",
-        "USERNAME": "ชื่อผู้ใช้"
+        "SIGN_UP": "Inscreva-se",
+        "USERNAME": "ชื่อผู้ใช้",
+        "FORGOT": "Forgot Password",
+        "INSERT_EMAIL": "Type email address",
+        "RESET_PASSWORD": "Reset password",
+        "PASSWORD_RESET_LINK_SENT": "A link to reset password was sent to your email address",
+        "CAPTCHA": "!Captcha",
+        "LOGIN.CAPTCHA_ERROR": "!Captcha error",
+        "LOGIN.CAPTCHA_MISSING": "!Captcha missing",
+        "EMAIL_NEEDED": "!Email needed"
     },
     "MANAGEMENT": {
         "ACCOUNT_INFORMATION": "ข้อมูลผู้ใช้",
@@ -142,8 +158,10 @@
         "HEATMAP": "Heatmap",
         "NUM_SEVERE": "จำนวนอุบัติเหตรุนแรง",
         "SEVERITY_SCORE": "คะแนนความรุนแรง",
+        "STREETS_MDC": "Mapa Oficial",
         "STREETS": "ถนน",
-        "SATELLITE": "ดาวเทียม"
+        "SATELLITE": "ดาวเทียม",
+        "GEOSAMPA": ""
     },
     "MONTH": {
         "JANUARY": "มกราคม",
@@ -174,7 +192,10 @@
         "MY_ACCOUNT": "บัญชีของฉัน",
         "RECORD_DETAILS": "รายละเอียดบันทึก",
         "RECORD_LIST": "รายการบันทึก",
-        "ENFORCER_ASSIGNMENTS": "การบังคับใช้"
+        "ENFORCER_ASSIGNMENTS": "การบังคับใช้",
+        "GEOGRAPHIC_TITLE": "!Regions",
+        "TUTORIAL": "!Tutorial",
+        "METADATA": "!Metadata"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "เพิ่ม \\{\\{0\\}\\}",
@@ -210,7 +231,9 @@
         "RECORDS": "บันทึก",
         "SHOWING_RESULTS": "กำลังแสดงผล",
         "WEATHER": "สภาพอากาศ",
-        "WEEK_OF": "สัปดาห์ของ"
+        "WEEK_OF": "สัปดาห์ของ",
+        "DETAILS_OF_ACCIDENT": "!Details of the Crash",
+        "SET_LOCATION_TITLE": "!Choose a Location"
     },
     "REPORT": {
         "ACTIVE_FILTERS": "ตัวกรองที่ใช้งานอยู่",
@@ -257,6 +280,10 @@
         "THUNDERSTORM": "ฝนฟ้าคะนอง",
         "TORNADO": "พายุทอร์นาโด",
         "WIND": "ลม"
+    },
+    "NUMBER": {
+        "DECIMAL_SEPARATOR": ".",
+        "THOUSAND_SEPARATOR": "."
     },
     "INTERVENTION_TYPE": {
         "I01": "!Bicycle Facilities",

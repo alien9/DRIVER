@@ -699,11 +699,7 @@
 
                 new L.popup(popupOptions)
                     .setLatLng(e.latlng)
-<<<<<<< ours
-                    .setContent(builder(e.data, popupParams))
-=======
                     .setContent(ctl.buildRecordPopup(e.data, popupParams, e.latlng))
->>>>>>> theirs
                     .openOn(ctl.map);
 
                 $compile($('#record-popup'))($scope);

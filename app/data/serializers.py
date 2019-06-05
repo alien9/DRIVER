@@ -12,11 +12,7 @@ from rest_framework.serializers import (
 from grout import serializers
 from grout import serializer_fields
 
-<<<<<<< ours
-from models import DriverPublicRecord, DriverRecord, RecordAuditLogEntry, RecordDuplicate, RecordCostConfig
-=======
-from models import DriverRecord, RecordAuditLogEntry, RecordDuplicate, RecordCostConfig
->>>>>>> theirs
+from models import DriverPublicRecord, DriverRecord, RecordAuditLogEntry, PublicRecordAuditLogEntry, RecordDuplicate, RecordCostConfig
 
 from django.conf import settings
 
@@ -78,7 +74,7 @@ class DriverPublicRecordSerializer(DriverRecordSerializer):
 
     def get_latest_change_uuid(self, record):
         """Returns the uuid of the user who has most recently modified this Record"""
-        latest_audit_entry = (RecordAuditLogEntry.objects
+        latest_audit_entry = (PublicRecordAuditLogEntry.objects
                               .filter(record=record)
                               .order_by('-date')
                               .first())
@@ -181,8 +177,4 @@ class RecordCostConfigSerializer(ModelSerializer):
 
     class Meta:
         model = RecordCostConfig
-<<<<<<< ours
         fields = '__all__'
-=======
-        fields = '__all__'
->>>>>>> theirs

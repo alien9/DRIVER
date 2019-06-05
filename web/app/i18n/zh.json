@@ -1,4 +1,5 @@
 {
+    "Incidente": "!Accident",
     "LANG": "中文",
     "AGG": {
         "DAY": "天",
@@ -44,7 +45,8 @@
         "TO": "至",
         "TOTAL": "全部",
         "VIEW": "查看",
-        "YES": "是"
+        "YES": "是",
+        "CONTRIBUTE": "!Contribute"
     },
     "DASHBOARD": {
         "ANALYZE_AND_FILTER": "分析和过滤",
@@ -54,9 +56,11 @@
         "RECENT_EVENTS_PERIOD": "最近的事件日期",
         "SOCIAL_COSTS_TEXT": "社会损失文字",
         "SOCIAL_COSTS_90DAYS": "过去90天的社会损失",
+        "SOCIAL_COSTS_3_YEARS": "3 anos",
         "SOCIAL_COSTS_CONFIG_WARN": "费用计算配置警告",
         "STEPWISE_TITLE": "逐步_名称",
         "TODDOW_TITLE": "每天的时间段，每周的天：过去90天",
+        "TOD_LAST_YEAR_TITLE": "Hora do Dia, Dia da Semana: ",
         "VIEW_ALL": "查看全部"
     },
     "DAY": {
@@ -109,14 +113,26 @@
         "SAVING_FILTER_ERROR": "保存过滤错误",
         "UNKNOWN_ERROR": "未知错误",
         "UNKNOWN_RULE_TYPE": "未知规则类型",
-        "VALUE_REQUIRED": "需要值"
+        "VALUE_REQUIRED": "需要值",
+        "LIMIT_RECORDS_EXCEEDED": "!Registers maximum exceeded. Would you like to erase"
     },
     "LOGIN": {
         "LOG_IN_TO_DRIVER": "登录至 用于公路事故可视化，评估和报告的数据",
         "LOG_IN_WITH": "用…登录",
+        "EMAIL": "Email",
         "PASSWORD": "密码",
+        "PASSWORD_CONFIRM": "Confirmar senha",
         "SIGN_IN": "登录",
-        "USERNAME": "用户名"
+        "SIGN_UP": "Inscreva-se",
+        "USERNAME": "用户名",
+        "FORGOT": "Forgot Password",
+        "INSERT_EMAIL": "Type email address",
+        "RESET_PASSWORD": "Reset password",
+        "PASSWORD_RESET_LINK_SENT": "A link to reset password was sent to your email address",
+        "CAPTCHA": "!Captcha",
+        "LOGIN.CAPTCHA_ERROR": "!Captcha error",
+        "LOGIN.CAPTCHA_MISSING": "!Captcha missing",
+        "EMAIL_NEEDED": "!Email needed"
     },
     "MANAGEMENT": {
         "ACCOUNT_INFORMATION": "账号信息",
@@ -142,8 +158,10 @@
         "HEATMAP": "热图",
         "NUM_SEVERE": "严重数量",
         "SEVERITY_SCORE": "严重分数",
+        "STREETS_MDC": "Mapa Oficial",
         "STREETS": "街",
-        "SATELLITE": "卫星图"
+        "SATELLITE": "卫星图",
+        "GEOSAMPA": ""
     },
     "MONTH": {
         "JANUARY": "一月",
@@ -174,7 +192,10 @@
         "MY_ACCOUNT": "我的账户",
         "RECORD_DETAILS": "记录详情",
         "RECORD_LIST": "记录列表",
-        "ENFORCER_ASSIGNMENTS": "执法"
+        "ENFORCER_ASSIGNMENTS": "执法",
+        "GEOGRAPHIC_TITLE": "!Regions",
+        "TUTORIAL": "!Tutorial",
+        "METADATA": "!Metadata"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "添加 \\{\\{0\\}\\}",
@@ -210,7 +231,9 @@
         "RECORDS": "记录",
         "SHOWING_RESULTS": "展示结果",
         "WEATHER": "天气",
-        "WEEK_OF": "周"
+        "WEEK_OF": "周",
+        "DETAILS_OF_ACCIDENT": "!Details of the Crash",
+        "SET_LOCATION_TITLE": "!Choose a Location"
     },
     "REPORT": {
         "ACTIVE_FILTERS": "激活的过滤",
@@ -257,6 +280,10 @@
         "THUNDERSTORM": "雷雨",
         "TORNADO": "龙卷风",
         "WIND": "风"
+    },
+    "NUMBER": {
+        "DECIMAL_SEPARATOR": ".",
+        "THOUSAND_SEPARATOR": "."
     },
     "INTERVENTION_TYPE": {
         "I01": "!Bicycle Facilities",

@@ -398,13 +398,7 @@
                     'short': 'M Y'
                 }
             },
-<<<<<<< ours
-            'pt-br': {
-                calendar: 'gregorian',
-                language: 'pt-BR',
-=======
             'lo': {
->>>>>>> theirs
                 formats: {
                     'long': 'd MM, Y',
                     'longNoTime': 'd MM, Y',

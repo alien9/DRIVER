@@ -13,11 +13,7 @@ from celery.utils.log import get_task_logger
 
 from django_redis import get_redis_connection
 
-<<<<<<< ours
-from grout.models import Record
-=======
 from data.models import DriverRecord
->>>>>>> theirs
 
 from driver_auth.permissions import is_admin_or_writer
 
@@ -69,17 +65,10 @@ def export_csv(query_key, user_id):
     # Get user
     user = User.objects.get(pk=user_id)
     # Create files and CSV Writers from Schema
-<<<<<<< ours
     #if is_admin_or_writer(user):
     record_writer = DriverRecordExporter(schema)
     #else:
     #    record_writer = ReadOnlyRecordExporter(schema)
-=======
-    if is_admin_or_writer(user):
-        record_writer = DriverRecordExporter(schema)
-    else:
-        record_writer = ReadOnlyRecordExporter(schema)
->>>>>>> theirs
 
     # Write records to files
     for rec in records:

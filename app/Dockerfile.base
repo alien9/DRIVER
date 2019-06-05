@@ -33,8 +33,6 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get update && apt-get install -y \
     libgeos-dev \
     libspatialindex-dev
-<<<<<<< ours
-=======
 
 # Install dependencies to install Docker
 RUN apt-get update && apt-get install -y \
@@ -50,7 +48,6 @@ RUN add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/debian \
    $(lsb_release -cs) \
    stable"
->>>>>>> theirs
 
 RUN apt-get update && apt-get install -y \
     docker-ce

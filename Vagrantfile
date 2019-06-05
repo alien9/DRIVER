@@ -34,15 +34,7 @@ ANSIBLE_GROUPS = {
   "database-servers" => [ "database" ],
   "celery-servers" => [ "celery" ]
 }
-<<<<<<< ours
 MOUNT_OPTIONS = ['rw', 'vers=3', 'tcp', 'nolock']
-=======
-MOUNT_OPTIONS = if Vagrant::Util::Platform.linux? then
-                  ['rw', 'tcp', 'nolock']
-                else
-                  ['vers=3', 'udp']
-                end
->>>>>>> theirs
 
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/trusty64"

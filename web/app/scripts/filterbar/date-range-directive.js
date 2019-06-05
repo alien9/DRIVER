@@ -36,15 +36,11 @@
                 var dateConfig = DateLocalization.currentDateFormats();
                 calendar = $.calendars.instance(dateConfig.calendar, dateConfig.language);
                 scope.$on('driver.filterbar:restored', function(event, filter) {
-<<<<<<< ours
                     calendar = $.calendars.instance(dateConfig.calendar, dateConfig.language);
                     if(!calendar || !scope.calendarOptions) {
                         return;
                     }
-                    if (filter.label === filterLabel) {
-=======
                     if (filter.label === attrs.dateRangeField) {
->>>>>>> theirs
                         // The restored date will be an ISO-8601 string, so we need to convert
                         // that to a Javascript Date, and then convert that to a localized CDate,
                         // and then store the formatted string.
@@ -120,17 +116,10 @@
                     configureDatePicker();
 
                     // Today
-<<<<<<< ours
                     var year = WebConfig.constants.lastYear;
                     var defaultMax = new Date(year+1, 0, 1);
                     var defaultMin = new Date(year, 0, 1);
-                    $('#dtMaxField')
-=======
-                    var defaultMax = new Date();
-                    // 90 days ago
-                    var defaultMin = new Date(moment(defaultMax) - moment.duration({days:90}));
                     $(elem).find('.dt-max-field')
->>>>>>> theirs
                         .calendarsPicker(scope.calendarOptions)
                         .calendarsPicker('setDate', calendar.fromJSDate(defaultMax))
                         .calendarsPicker('option', 'onSelect', function(dates) {

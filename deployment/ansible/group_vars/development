@@ -55,9 +55,9 @@ web_js_mapillary_client_id: ""
 web_js_mapillary_range: 10
 
 web_js_record_type_visible: "false"
-web_js_record_type_primary_label: "Incident"
+web_js_record_type_primary_label: "Incidente"
 web_js_interventions_visible: "true"
-web_js_record_type_secondary_label: "Intervention"
+web_js_record_type_secondary_label: "Intervenção"
 web_js_blackspots_visible: "true"
 web_js_heatmap_visible: "true"
 
@@ -75,19 +75,19 @@ driver_app_hostname: "{{ web_js_api_hostname }}"
 editor_js_api_hostname: "http://localhost:7000"
 google_analytics_id: "GTM-5B5G65"
 
-<<<<<<< ours
+
 ## page where to land after login
 start_page: "/"
-=======
+
 ## OIDC SETTINGS
 oauth_client_id: ''
 oauth_client_secret: ''
 
 ## Localization settings
-local_time_zone_id: 'Asia/Manila'
-local_country_code: 'ph'
-local_center_lat_lon: [12.375, 121.5]
-osm_extract_url: 'https://download.geofabrik.de/asia/philippines-latest.osm.pbf'
+local_time_zone_id: 'America/Sao_Paulo'
+local_country_code: 'br'
+local_center_lat_lon: [-23.550164466, -46.633664132]
+osm_extract_url: 'https://bigrs.alien9.net/static/saopaulo.pbf'
 
 # List of languages to allow in the application. There must be at least one defined,
 # and the first one in the list is used as the application's default language.
@@ -133,4 +133,4 @@ driver_admin_group: "admin"
 
 ## Django allowed hosts setting. Override when not in DEBUG mode.
 allowed_host: ''
->>>>>>> theirs
+

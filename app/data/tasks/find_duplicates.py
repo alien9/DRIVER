@@ -6,12 +6,7 @@ from celery import shared_task
 from celery.app.task import Task
 from celery.utils.log import get_task_logger
 
-<<<<<<< ours
-from data.models import (DedupeJob, RecordDuplicate)
-from grout.models import Record
-=======
 from data.models import DedupeJob, RecordDuplicate, DriverRecord
->>>>>>> theirs
 
 import datetime
 

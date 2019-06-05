@@ -1,4 +1,5 @@
 {
+    "Incidente": "!Accident",
     "LANG": "ລາວ",
     "AGG": {
         "DAY": "ມື້/ວັນ",
@@ -44,7 +45,8 @@
         "TO": "ເຖີງ",
         "TOTAL": "ທັງໝົດ/ລວມ",
         "VIEW": "ວິວ",
-        "YES": "ແມ່ນ"
+        "YES": "ແມ່ນ",
+        "CONTRIBUTE": "!Contribute"
     },
     "DASHBOARD": {
         "ANALYZE_AND_FILTER": "ວິເຄາະ ແລະ ການຈັດ​ລຽງ",
@@ -54,9 +56,11 @@
         "RECENT_EVENTS_PERIOD": "ສອງອາທິດຜ່ານມາ",
         "SOCIAL_COSTS_TEXT": "ການສູນເສຍດ້ານເສດຖະກິດ ແລະ ຜົນກະທົບຕໍ່ສັງຄົມທັງໝົດ",
         "SOCIAL_COSTS_90DAYS": "90 ມື້ທີ່ຜ່ານມາ",
+        "SOCIAL_COSTS_3_YEARS": "3 anos",
         "SOCIAL_COSTS_CONFIG_WARN": "ການຄິດໄລ່ມູນຄ່າອາດບໍ່ຖືກຕ້ອງ. ກະລຸນາຕິດຕໍ່ຜູ້ບໍລິຫານຈັດການ",
         "STEPWISE_TITLE": "ການນັບແຕ່ລະອາທິດ: 90 ວັນທີ່ຜ່ານມາ",
         "TODDOW_TITLE": "ເວລາຂອງມື້, ມື້ຂອງອາທິດ: 90 ວັນທີ່ຜ່ານມາ",
+        "TOD_LAST_YEAR_TITLE": "Hora do Dia, Dia da Semana: ",
         "VIEW_ALL": "ເບີ່ງທັງໝົດ"
     },
     "DAY": {
@@ -109,14 +113,26 @@
         "SAVING_FILTER_ERROR": "ຂໍ້ຜິດພາດໃນການດຳເນີນການການຈັດ​ລຽງ",
         "UNKNOWN_ERROR": "ບໍ່ຮູ້ສາເຫດຂອງຂໍ້ຜິດພາດ",
         "UNKNOWN_RULE_TYPE": "ບໍ່ຮູ້ສາເຫດຂອງກົດລະບຽບດັ່ງກ່າວ",
-        "VALUE_REQUIRED": "ຕ້ອງຕື່ມມູນຄ່າ"
+        "VALUE_REQUIRED": "ຕ້ອງຕື່ມມູນຄ່າ",
+        "LIMIT_RECORDS_EXCEEDED": "!Registers maximum exceeded. Would you like to erase"
     },
     "LOGIN": {
         "LOG_IN_TO_DRIVER": "ການເຂົ້າສູ່ ລະບົບ DRIVER",
         "LOG_IN_WITH": "ການເຂົ້າໂດຍ",
+        "EMAIL": "Email",
         "PASSWORD": "ລະຫັດຜ່ານ",
+        "PASSWORD_CONFIRM": "Confirmar senha",
         "SIGN_IN": "ການເຂົ້າສູ່ລະບົບ",
-        "USERNAME": "ຊື່ຜູ້ນຳໃຊ້"
+        "SIGN_UP": "Inscreva-se",
+        "USERNAME": "ຊື່ຜູ້ນຳໃຊ້",
+        "FORGOT": "Forgot Password",
+        "INSERT_EMAIL": "Type email address",
+        "RESET_PASSWORD": "Reset password",
+        "PASSWORD_RESET_LINK_SENT": "A link to reset password was sent to your email address",
+        "CAPTCHA": "!Captcha",
+        "LOGIN.CAPTCHA_ERROR": "!Captcha error",
+        "LOGIN.CAPTCHA_MISSING": "!Captcha missing",
+        "EMAIL_NEEDED": "!Email needed"
     },
     "MANAGEMENT": {
         "ACCOUNT_INFORMATION": "ຂໍ້ມູນຂອງບັນຊີ",
@@ -142,8 +158,10 @@
         "HEATMAP": "ຈຸດ​ສຸມ​ຂ​ອງ​ອຸ​ບັດ​ເຫັດ",
         "NUM_SEVERE": "​ຈໍານວນຄວາມຮຸນແຮງຂອງ​ເຫັດ​ການ",
         "SEVERITY_SCORE": "ຄະແນນຄວາມຮຸນແຮງ",
+        "STREETS_MDC": "Mapa Oficial",
         "STREETS": "ຖະໜົນ",
-        "SATELLITE": "ພາບຖ່າຍທາງດາວທຽມ"
+        "SATELLITE": "ພາບຖ່າຍທາງດາວທຽມ",
+        "GEOSAMPA": ""
     },
     "MONTH": {
         "JANUARY": "ມັງກອນ",
@@ -174,7 +192,10 @@
         "MY_ACCOUNT": "ບັນຊີຂອງຂ້ອຍ",
         "RECORD_DETAILS": "ລາຍລະອຽດການບັນທຶກຂໍ້ມູນ",
         "RECORD_LIST": "ລາຍການບັນທຶກຂໍ້ມູນ",
-        "ENFORCER_ASSIGNMENTS": "ການບັງຄັບໃຊ້"
+        "ENFORCER_ASSIGNMENTS": "ການບັງຄັບໃຊ້",
+        "GEOGRAPHIC_TITLE": "!Regions",
+        "TUTORIAL": "!Tutorial",
+        "METADATA": "!Metadata"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "ເພີ່ມຕື່ມ \\{\\{0\\}\\}",
@@ -210,7 +231,9 @@
         "RECORDS": "ການບັນທຶກຂໍ້ມູນຕ່າງໆ",
         "SHOWING_RESULTS": "ສະແດງຜົນຮັບ",
         "WEATHER": "ສະພາບອາກາດ",
-        "WEEK_OF": "ອາທິດຂອງ/ອາທິດທີ"
+        "WEEK_OF": "ອາທິດຂອງ/ອາທິດທີ",
+        "DETAILS_OF_ACCIDENT": "!Details of the Crash",
+        "SET_LOCATION_TITLE": "!Choose a Location"
     },
     "REPORT": {
         "ACTIVE_FILTERS": "ການຈັດ​ລຽງທີ່ຍັງເຄື່ອນໄຫວ",
@@ -257,6 +280,10 @@
         "THUNDERSTORM": "ຟ້າລົມຝົນຕົກ",
         "TORNADO": "ພາຍຸໝູນ/ພາຍຸໂທນາໂດ",
         "WIND": "ລົມ"
+    },
+    "NUMBER": {
+        "DECIMAL_SEPARATOR": ".",
+        "THOUSAND_SEPARATOR": "."
     },
     "INTERVENTION_TYPE": {
         "I01": "!Bicycle Facilities",

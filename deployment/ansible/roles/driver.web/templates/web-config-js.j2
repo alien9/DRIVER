@@ -55,12 +55,10 @@
             languages: {{ languages | to_json }}
             /*jshint quotmark: single */
         },
-<<<<<<< ours
         /*jshint quotmark: double */
         hiddenFields: {{ hidden_fields | to_json }},
         /*jshint quotmark: single */
-        startPage: '{{ start_page }}'
-=======
+        startPage: '{{ start_page }}',
         mapillary: {
             enabled: {{ web_js_mapillary }},
             clientId: '{{ web_js_mapillary_client_id }}',
@@ -88,7 +86,6 @@
         duplicateRecordsLink: {
             visible: {{ web_js_duplicate_records_link_visible }}
         }
->>>>>>> theirs
     };
 
     angular.module('driver.config', [])

@@ -62,12 +62,8 @@ urlpatterns = [
 # Allow login to the browseable API
 urlpatterns.append(url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')))
 
-<<<<<<< ours
-=======
-
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
         url(r'^api/__debug__/', include(debug_toolbar.urls)),
     ] + urlpatterns
->>>>>>> theirs

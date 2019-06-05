@@ -1,4 +1,5 @@
 {
+    "Incidente": "!Accident",
     "LANG": "Español",
     "AGG": {
         "DAY": "Día",
@@ -44,7 +45,8 @@
         "TO": "para",
         "TOTAL": "total",
         "VIEW": "Ver",
-        "YES": "sí"
+        "YES": "sí",
+        "CONTRIBUTE": "!Contribute"
     },
     "DASHBOARD": {
         "ANALYZE_AND_FILTER": "Analizar y filtrar",
@@ -54,9 +56,11 @@
         "RECENT_EVENTS_PERIOD": "Últimas dos semanas",
         "SOCIAL_COSTS_TEXT": "Pérdida total económica y social",
         "SOCIAL_COSTS_90DAYS": "Últimos 90 días",
+        "SOCIAL_COSTS_3_YEARS": "3 anos",
         "SOCIAL_COSTS_CONFIG_WARN": "El cálculo de costes puede estar mal configurado. Por favor notifique a su administrador.",
         "STEPWISE_TITLE": "Cuentas Semanales: Últimos 90 Días",
         "TODDOW_TITLE": "Hora del día, Día de la semana: Últimos 90 días",
+        "TOD_LAST_YEAR_TITLE": "Hora do Dia, Dia da Semana: ",
         "VIEW_ALL": "Ver todos"
     },
     "DAY": {
@@ -109,14 +113,26 @@
         "SAVING_FILTER_ERROR": "Error guardando filtro",
         "UNKNOWN_ERROR": "Error desconocido",
         "UNKNOWN_RULE_TYPE": "Tipo de regla desconocida",
-        "VALUE_REQUIRED": "Valor requerido"
+        "VALUE_REQUIRED": "Valor requerido",
+        "LIMIT_RECORDS_EXCEEDED": "!Registers maximum exceeded. Would you like to erase"
     },
     "LOGIN": {
         "LOG_IN_TO_DRIVER": "Iniciar sesión a DRIVER",
         "LOG_IN_WITH": "Iniciar sesión con",
+        "EMAIL": "Email",
         "PASSWORD": "Contraseña",
+        "PASSWORD_CONFIRM": "Confirmar senha",
         "SIGN_IN": "Registrarse",
-        "USERNAME": "Nombre de usuario"
+        "SIGN_UP": "Inscreva-se",
+        "USERNAME": "Nombre de usuario",
+        "FORGOT": "Forgot Password",
+        "INSERT_EMAIL": "Type email address",
+        "RESET_PASSWORD": "Reset password",
+        "PASSWORD_RESET_LINK_SENT": "A link to reset password was sent to your email address",
+        "CAPTCHA": "!Captcha",
+        "LOGIN.CAPTCHA_ERROR": "!Captcha error",
+        "LOGIN.CAPTCHA_MISSING": "!Captcha missing",
+        "EMAIL_NEEDED": "!Email needed"
     },
     "MANAGEMENT": {
         "ACCOUNT_INFORMATION": "Información de la cuenta",
@@ -142,8 +158,10 @@
         "HEATMAP": "Mapa de calor",
         "NUM_SEVERE": "Num grave",
         "SEVERITY_SCORE": "Puntaje de gravedad",
+        "STREETS_MDC": "Mapa Oficial",
         "STREETS": "Calles",
-        "SATELLITE": "Satélite"
+        "SATELLITE": "Satélite",
+        "GEOSAMPA": ""
     },
     "MONTH": {
         "JANUARY": "Enero",
@@ -174,7 +192,10 @@
         "MY_ACCOUNT": "Mi cuenta",
         "RECORD_DETAILS": "Detalles del registro",
         "RECORD_LIST": "Lista de registros",
-        "ENFORCER_ASSIGNMENTS": "Aplicación"
+        "ENFORCER_ASSIGNMENTS": "Aplicación",
+        "GEOGRAPHIC_TITLE": "!Regions",
+        "TUTORIAL": "!Tutorial",
+        "METADATA": "!Metadata"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "Añadir \\{\\{0\\}\\}",
@@ -210,7 +231,9 @@
         "RECORDS": "Registros",
         "SHOWING_RESULTS": "Mostrando resultados",
         "WEATHER": "Clima",
-        "WEEK_OF": "Semana de"
+        "WEEK_OF": "Semana de",
+        "DETAILS_OF_ACCIDENT": "!Details of the Crash",
+        "SET_LOCATION_TITLE": "!Choose a Location"
     },
     "REPORT": {
         "ACTIVE_FILTERS": "Filtros Activos",
@@ -257,6 +280,10 @@
         "THUNDERSTORM": "Tormenta",
         "TORNADO": "Tornado",
         "WIND": "Viento"
+    },
+    "NUMBER": {
+        "DECIMAL_SEPARATOR": ".",
+        "THOUSAND_SEPARATOR": "."
     },
     "INTERVENTION_TYPE": {
         "I01": "!Bicycle Facilities",

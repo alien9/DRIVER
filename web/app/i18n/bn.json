@@ -1,4 +1,5 @@
 {
+    "Incidente": "!Accident",
     "LANG": "বাংলা",
     "AGG": {
         "DAY": "দিন",
@@ -44,7 +45,8 @@
         "TO": "পর্যন্ত",
         "TOTAL": "মোট",
         "VIEW": "দেখুন",
-        "YES": "হ্যাঁ"
+        "YES": "হ্যাঁ",
+        "CONTRIBUTE": "!Contribute"
     },
     "DASHBOARD": {
         "ANALYZE_AND_FILTER": "বিশ্লেষণ ও ফিল্টার করুন",
@@ -54,9 +56,11 @@
         "RECENT_EVENTS_PERIOD": "গত দুই সপ্তাহ",
         "SOCIAL_COSTS_TEXT": "মোট অর্থনৈতিক লোকসান ও সামাজিক ক্ষতি",
         "SOCIAL_COSTS_90DAYS": "গত ৯০ দিন",
+        "SOCIAL_COSTS_3_YEARS": "3 anos",
         "SOCIAL_COSTS_CONFIG_WARN": "খরচের হিসাবটি ভুলভাবে কনফিগার করা হতে পারে। অনুগ্রহ করে আপনার প্রশাসককে অবহিত করুন।",
         "STEPWISE_TITLE": "সাপ্তাহিক গণনা: সর্বশেষ ৯০ দিন",
         "TODDOW_TITLE": "দিনের সময়, সপ্তাহের দিন: শেষ ৯০ দিন",
+        "TOD_LAST_YEAR_TITLE": "Hora do Dia, Dia da Semana: ",
         "VIEW_ALL": "সবগুলো দেখুন"
     },
     "DAY": {
@@ -109,14 +113,26 @@
         "SAVING_FILTER_ERROR": "ফিল্টার সেভ করতে ত্রুটি হচ্ছে",
         "UNKNOWN_ERROR": "অজানা ত্রুটি",
         "UNKNOWN_RULE_TYPE": "অজানা ধরণের নিয়ম",
-        "VALUE_REQUIRED": "তথ্য প্রয়োজন"
+        "VALUE_REQUIRED": "তথ্য প্রয়োজন",
+        "LIMIT_RECORDS_EXCEEDED": "!Registers maximum exceeded. Would you like to erase"
     },
     "LOGIN": {
         "LOG_IN_TO_DRIVER": "লগ ইন করুন ড্রাইভার",
         "LOG_IN_WITH": "দিয়ে লগ ইন করুন",
+        "EMAIL": "Email",
         "PASSWORD": " পাসওয়ার্ড",
+        "PASSWORD_CONFIRM": "Confirmar senha",
         "SIGN_IN": "সাইন ইন করুন",
-        "USERNAME": "ব্যবহারকারীর নাম"
+        "SIGN_UP": "Inscreva-se",
+        "USERNAME": "ব্যবহারকারীর নাম",
+        "FORGOT": "Forgot Password",
+        "INSERT_EMAIL": "Type email address",
+        "RESET_PASSWORD": "Reset password",
+        "PASSWORD_RESET_LINK_SENT": "A link to reset password was sent to your email address",
+        "CAPTCHA": "!Captcha",
+        "LOGIN.CAPTCHA_ERROR": "!Captcha error",
+        "LOGIN.CAPTCHA_MISSING": "!Captcha missing",
+        "EMAIL_NEEDED": "!Email needed"
     },
     "MANAGEMENT": {
         "ACCOUNT_INFORMATION": "পরিচয়সূচক তথ্য",
@@ -142,8 +158,10 @@
         "HEATMAP": "তাপ মানচিত্র",
         "NUM_SEVERE": "গুরুতর ঘটনার সংখ্যা",
         "SEVERITY_SCORE": "তীব্রতা স্কোর",
+        "STREETS_MDC": "Mapa Oficial",
         "STREETS": " রাস্তা",
-        "SATELLITE": " উপগ্রহ"
+        "SATELLITE": " উপগ্রহ",
+        "GEOSAMPA": ""
     },
     "MONTH": {
         "JANUARY": "জানুয়ারী",
@@ -174,7 +192,10 @@
         "MY_ACCOUNT": "আমার একাউন্ট",
         "RECORD_DETAILS": "বিস্তারিত তথ্য",
         "RECORD_LIST": "তথ্য তালিকা",
-        "ENFORCER_ASSIGNMENTS": "প্রয়োগ"
+        "ENFORCER_ASSIGNMENTS": "প্রয়োগ",
+        "GEOGRAPHIC_TITLE": "!Regions",
+        "TUTORIAL": "!Tutorial",
+        "METADATA": "!Metadata"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "যোগ করুন \\{\\{0\\}\\}",
@@ -210,7 +231,9 @@
         "RECORDS": "রেকর্ডস",
         "SHOWING_RESULTS": "ফলাফল দেখানো হচ্ছে",
         "WEATHER": "আবহাওয়া",
-        "WEEK_OF": "সপ্তাহের"
+        "WEEK_OF": "সপ্তাহের",
+        "DETAILS_OF_ACCIDENT": "!Details of the Crash",
+        "SET_LOCATION_TITLE": "!Choose a Location"
     },
     "REPORT": {
         "ACTIVE_FILTERS": "সক্রিয় ফিল্টারগুলি",
@@ -257,6 +280,10 @@
         "THUNDERSTORM": "বজ্রসহঝড়",
         "TORNADO": "টর্নোডো",
         "WIND": "ঝড়োহাওয়া"
+    },
+    "NUMBER": {
+        "DECIMAL_SEPARATOR": ".",
+        "THOUSAND_SEPARATOR": "."
     },
     "INTERVENTION_TYPE": {
         "I01": "!Bicycle Facilities",

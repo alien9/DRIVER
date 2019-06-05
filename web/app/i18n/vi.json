@@ -1,4 +1,5 @@
 {
+    "Incidente": "!Accident",
     "LANG": "Tiếng Việt",
     "AGG": {
         "DAY": "Ngày",
@@ -44,7 +45,8 @@
         "TO": "đến",
         "TOTAL": "Tổng",
         "VIEW": "Xem",
-        "YES": "Có"
+        "YES": "Có",
+        "CONTRIBUTE": "!Contribute"
     },
     "DASHBOARD": {
         "ANALYZE_AND_FILTER": "Phân tích & lọc",
@@ -54,9 +56,11 @@
         "RECENT_EVENTS_PERIOD": "Hai tuần trước",
         "SOCIAL_COSTS_TEXT": "Tổng thiệt hại kinh tế và ảnh hưởng xã hội",
         "SOCIAL_COSTS_90DAYS": "90 ngày gần đây",
+        "SOCIAL_COSTS_3_YEARS": "3 anos",
         "SOCIAL_COSTS_CONFIG_WARN": "Tính toán chi phí có thể chưa chuẩn xác. Vui lòng thông báo cho nhà điều hành của bạn.",
         "STEPWISE_TITLE": "Đếm theo tuần: 90 ngày gần đây",
         "TODDOW_TITLE": "Giờ trong ngày, ngày trong tuần: 90 ngày gần đây",
+        "TOD_LAST_YEAR_TITLE": "Hora do Dia, Dia da Semana: ",
         "VIEW_ALL": "Xem tất cả"
     },
     "DAY": {
@@ -109,14 +113,26 @@
         "SAVING_FILTER_ERROR": "Lọc các lệnh lưu sai",
         "UNKNOWN_ERROR": "Lỗi không xác định được",
         "UNKNOWN_RULE_TYPE": "Kiểu lệnh không xác định được",
-        "VALUE_REQUIRED": "Giá trị được yêu cầu"
+        "VALUE_REQUIRED": "Giá trị được yêu cầu",
+        "LIMIT_RECORDS_EXCEEDED": "!Registers maximum exceeded. Would you like to erase"
     },
     "LOGIN": {
         "LOG_IN_TO_DRIVER": "Nhập vào Người lái xe",
         "LOG_IN_WITH": "Nhập với",
+        "EMAIL": "Email",
         "PASSWORD": "Mật khẩu",
+        "PASSWORD_CONFIRM": "Confirmar senha",
         "SIGN_IN": "Đăng nhập",
-        "USERNAME": "Tên người sử dụng"
+        "SIGN_UP": "Inscreva-se",
+        "USERNAME": "Tên người sử dụng",
+        "FORGOT": "Forgot Password",
+        "INSERT_EMAIL": "Type email address",
+        "RESET_PASSWORD": "Reset password",
+        "PASSWORD_RESET_LINK_SENT": "A link to reset password was sent to your email address",
+        "CAPTCHA": "!Captcha",
+        "LOGIN.CAPTCHA_ERROR": "!Captcha error",
+        "LOGIN.CAPTCHA_MISSING": "!Captcha missing",
+        "EMAIL_NEEDED": "!Email needed"
     },
     "MANAGEMENT": {
         "ACCOUNT_INFORMATION": "Thông tin tài khoản",
@@ -142,8 +158,10 @@
         "HEATMAP": "Bản đồ nhiệt",
         "NUM_SEVERE": "Số vụ tai nạn nghiêm trọng",
         "SEVERITY_SCORE": "Mức độ nghiêm trọng",
+        "STREETS_MDC": "Mapa Oficial",
         "STREETS": "Các phố",
-        "SATELLITE": "Vệ tinh"
+        "SATELLITE": "Vệ tinh",
+        "GEOSAMPA": ""
     },
     "MONTH": {
         "JANUARY": "Tháng Một",
@@ -174,7 +192,10 @@
         "MY_ACCOUNT": "Tài khoản của tôi",
         "RECORD_DETAILS": "Chi tiết hồ sơ",
         "RECORD_LIST": "Danh sách hồ sơ",
-        "ENFORCER_ASSIGNMENTS": "Thực thi"
+        "ENFORCER_ASSIGNMENTS": "Thực thi",
+        "GEOGRAPHIC_TITLE": "!Regions",
+        "TUTORIAL": "!Tutorial",
+        "METADATA": "!Metadata"
     },
     "RECORD": {
         "BUTTON_ADD_ROW_TITLE": "Thêm [Điền tên dòng]",
@@ -210,7 +231,9 @@
         "RECORDS": "Các hồ sơ",
         "SHOWING_RESULTS": "Hiển thị kết quả",
         "WEATHER": "Thời tiết",
-        "WEEK_OF": "Tuần của"
+        "WEEK_OF": "Tuần của",
+        "DETAILS_OF_ACCIDENT": "!Details of the Crash",
+        "SET_LOCATION_TITLE": "!Choose a Location"
     },
     "REPORT": {
         "ACTIVE_FILTERS": "Các bộ lọc đang hoạt động",
@@ -257,6 +280,10 @@
         "THUNDERSTORM": "Dông",
         "TORNADO": "Vòi rồng ",
         "WIND": "Gió"
+    },
+    "NUMBER": {
+        "DECIMAL_SEPARATOR": ".",
+        "THOUSAND_SEPARATOR": "."
     },
     "INTERVENTION_TYPE": {
         "I01": "!Bicycle Facilities",

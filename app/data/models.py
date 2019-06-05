@@ -6,22 +6,6 @@ from django.contrib.postgres.fields import HStoreField
 from django.contrib.auth.models import User
 
 from grout.models import GroutModel, Record, RecordType
-<<<<<<< ours
-=======
-
-
-class DriverRecord(Record):
-    """Extend Grout Record model with custom fields"""
-    weather = models.CharField(max_length=50, null=True, blank=True)
-    light = models.CharField(max_length=50, null=True, blank=True)
-
-    city = models.CharField(max_length=50, null=True, blank=True)
-    city_district = models.CharField(max_length=50, null=True, blank=True)
-    county = models.CharField(max_length=50, null=True, blank=True)
-    neighborhood = models.CharField(max_length=50, null=True, blank=True)
-    road = models.CharField(max_length=200, null=True, blank=True)
-    state = models.CharField(max_length=50, null=True, blank=True)
->>>>>>> theirs
 
 class DriverRecord(Record):
     """Extend Grout Record model with custom fields"""
@@ -38,7 +22,10 @@ class DriverRecord(Record):
 class DriverPublicRecord(Record):
     pass
 
-class RecordAuditLogEntry(models.Model):
+
+class AuditLogEntry(models.Model):
+    class Meta:
+        abstract=True
     """Records an occurrence of a Record being altered, who did it, and when.
 
     Note that 'user' and 'record' are maintained as foreign keys for convenience querying,
@@ -83,6 +70,14 @@ class RecordAuditLogEntry(models.Model):
         if self.log is None:
             return True
         return hashlib.md5(self.log).hexdigest() == str(self.signature)
+
+
+class RecordAuditLogEntry(AuditLogEntry):
+    pass
+
+
+class PublicRecordAuditLogEntry(AuditLogEntry):
+    record = models.ForeignKey(DriverPublicRecord, null=True, on_delete=models.SET_NULL)
 
 
 class DedupeJob(models.Model):

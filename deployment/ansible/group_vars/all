@@ -46,3 +46,25 @@ redis_version: 2:2.8.4-2ubuntu0.2
 
 ## Reload the nginx config after an SSL certificate is renewed
 letsencrypt_post_renew_cmd: "service nginx reload"
+application_name: "DRIVER"
+hidden_fields: ["acidente_id","Tipo de Acidente","Veículo"]
+web_js_nominatim_key: "NmfGZYebsExMYfFWP4Tf"
+web_js_nominatim_url: "http://localhost:3001/geocode" #'https://pickpoint.io/api/v1/';
+
+web_js_html5mode: "{{ js_html5mode }}"
+web_js_html5mode_prefix: "{{ js_html5mode_prefix }}"
+web_js_record_type_visible: "false"
+web_js_record_type_primary_label: "Incidente"
+web_js_record_type_secondary_label: "Fiscalização Existente"
+web_js_record_type_tertiary_label: "Solicitação"
+web_js_record_type_public_label: "Solicitação"
+web_js_blackspots_visible: "true"
+web_js_heatmap_visible: "true"
+web_js_interventions_visible: "true"
+editor_js_html5mode: "{{ js_html5mode }}"
+editor_js_html5mode_prefix: "{{ js_html5mode_prefix }}"
+server_name: "_"
+geoserver: 'localhost'
+
+languages:
+    - { id: 'pt-br', label: 'português do Brasil', rtl: false }

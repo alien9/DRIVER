@@ -4,11 +4,7 @@ from rest_framework.response import Response
 from django_redis import get_redis_connection
 from django.utils import timezone
 
-<<<<<<< ours
-from grout.models import Record
-=======
 from data.models import DriverRecord
->>>>>>> theirs
 from black_spots.models import (BlackSpot, BlackSpotSet, BlackSpotConfig)
 from black_spots.serializers import (BlackSpotSerializer, BlackSpotSetSerializer,
                                      BlackSpotConfigSerializer, EnforcerAssignmentInputSerializer,

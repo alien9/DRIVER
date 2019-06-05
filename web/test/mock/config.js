@@ -42,9 +42,7 @@
                 { "id": "exclaim", "label": "Exclaim (DEV)", "rtl": false }
             ]
         },
-<<<<<<< ours
-        hiddenFields: []
-=======
+        hiddenFields: [],
         mapillary: {
             enabled: false
         },
@@ -70,7 +68,6 @@
         duplicateRecordsLink: {
             visible: true
         }
->>>>>>> theirs
     };
 
     angular.module('driver.config', [])

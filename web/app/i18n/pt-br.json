@@ -130,7 +130,7 @@
         "RESET_PASSWORD": "Redefinir senha",
         "PASSWORD_RESET_LINK_SENT": "Um link para definição da senha foi enviado para seu email",
         "CAPTCHA": "Texto na imagem:",
-        "CAPTCHA_ERROR": "A resposta do captcha não confere.",
+        "LOGIN.CAPTCHA_ERROR": "!Captcha error",
         "LOGIN.CAPTCHA_MISSING": "Responda",
         "EMAIL_NEEDED": "Email necessário"
     },
@@ -161,7 +161,7 @@
         "STREETS_MDC": "Mapa Oficial",
         "STREETS": "OSM",
         "SATELLITE": "Satélite",
-        "GEOSAMPA":"&copy; <a href='http://geosampa.prefeitura.sp.gov.br/PaginasPublicas/_SBC.aspx'>GeoSampa</a> | Prefeitura de São Paulo"
+        "GEOSAMPA": "&copy; <a href='http://geosampa.prefeitura.sp.gov.br/PaginasPublicas/_SBC.aspx'>GeoSampa</a> | Prefeitura de São Paulo"
     },
     "MONTH": {
         "JANUARY": "Janeiro",
@@ -281,11 +281,10 @@
         "TORNADO": "Tornado",
         "WIND": "Vento"
     },
-<<<<<<< ours
     "NUMBER": {
         "DECIMAL_SEPARATOR": ",",
         "THOUSAND_SEPARATOR": "."
-=======
+    },
     "INTERVENTION_TYPE": {
         "I01": "!Bicycle Facilities",
         "I02": "!Central Hatching",
@@ -345,6 +344,5 @@
         "I59": "!School Zones",
         "I60": "!Road Surface Rehabilitation",
         "I61": "!Sight Distance (obstruction removal)"
->>>>>>> theirs
     }
 }
