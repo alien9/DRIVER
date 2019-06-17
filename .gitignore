@@ -85,3 +85,5 @@ target/
 deployment/ansible/group_vars/all
 
 .idea
+
+app/lines*

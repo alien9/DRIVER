@@ -118,8 +118,9 @@ def get_segments_shp(path_to_roads_shp, records_csv_uuid, road_srid):
         logger.info('Cleaning up old lines shapefile')
         for f in glob.glob(path_to_roads_shp.replace('.shp', '.*')):
             logger.info('Removing file: {}'.format(f))
-            os.remove(f)
-    except:
+            #os.remove(f)
+    except Exception as x:
+        logger.info(str(x))
         logger.exception('Error generating segments shapefile')
         raise
     return shp_output_dir
@@ -229,6 +230,10 @@ def read_roads(roads_shp, record_buffers):
     :param roads_shp: Path to the shapefile containing roads
     :param record_buffers: List of shapely geometries representing buffered event points
     """
+    logger.info("getting roads / record buffers")
+    logger.info("roads shp %s" % str(roads_shp))
+    logger.info("record_buffers %s" % str(record_buffers))
+
     # Create a spatial index for record buffers to efficiently find intersecting roads
     record_buffers_index = rtree.index.Index()
     for idx, record_buffer in enumerate(record_buffers):
@@ -255,8 +260,12 @@ def get_intersection_buffers(roads, road_bounds, intersection_buffer_units, tile
     # As an optimization, the road network is divided up into a grid of tiles,
     # and intersections are calculated within each tile.
     def roads_per_tile_iter():
+        logger.info('Iterating through Pool')
         """Generator which yields a set of roads for each tile"""
+        logger.info(str(road_bounds))
         min_x, min_y, max_x, max_y = road_bounds
+        logger.info(str(road_bounds))
+
         bounds_width = max_x - min_x
         bounds_height = max_y - min_y
         x_divisions = ceil(bounds_width / tile_max_units)
@@ -269,7 +278,6 @@ def get_intersection_buffers(roads, road_bounds, intersection_buffer_units, tile
         roads_index = rtree.index.Index()
         for idx, road in enumerate(roads):
             roads_index.insert(idx, road.bounds)
-
         logger.info('Number of tiles: {}'.format(int(x_divisions * y_divisions)))
         for x_offset in range(0, int(x_divisions)):
             for y_offset in range(0, int(y_divisions)):
@@ -282,10 +290,14 @@ def get_intersection_buffers(roads, road_bounds, intersection_buffer_units, tile
                 roads_in_tile = [roads[road_id] for road_id in road_ids_in_tile]
                 if len(roads_in_tile) > 1:
                     yield roads_in_tile
-
+    logger.info('getting intersection buffers')
     # Allocate one worker per core, and parallelize the discovery of intersections
     pool = multiprocessing.Pool(multiprocessing.cpu_count())
+    logger.info('Pool %s' % (str(pool)))
+
     tile_intersections = pool.imap(get_intersections, roads_per_tile_iter())
+    logger.info('intersections %s' % (str(tile_intersections)))
+
     pool.close()
     pool.join()
 
@@ -366,7 +378,9 @@ def get_intersection_parts(roads, int_buffers, max_line_units):
     # be equal lengths, just that none of them are exceptionally long.
     split_non_int_lines = []
     for line in non_int_lines:
-        split_non_int_lines.extend(split_line(line, max_line_units))
+        s = split_line(line, max_line_units)
+        if s is not None:
+            split_non_int_lines.extend(s)
 
     # Return a tuple of intersection multilines and non-intersecting segments
     return int_multilines + split_non_int_lines

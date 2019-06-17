@@ -15,6 +15,7 @@
         ctl.showWeatherFilter = WebConfig.filters.weather.visible;
         ctl.showCreatedByFilter = WebConfig.filters.createdBy.visible;
         ctl.showCreatedDateFilter = ctl.hasWriteAccess && WebConfig.filters.createdDate.visible;
+        ctl.searchTextVisible = WebConfig.filters.searchText.visible;
         init();
 
         function init() {

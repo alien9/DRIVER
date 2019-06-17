@@ -34,8 +34,9 @@ def get_latest_segments_tar_uuid(roads_srid, records_csv_obj_id):
 
     # Refresh road segments if the most recent one is more than 30 days out of date
     if segments_shp_obj and segments_shp_obj.created > cutoff:
-        logger.info("Using existing RoadSegmentsShapefile")
-        return str(segments_shp_obj.uuid)
+        if os.path.isfile(segments_shp_obj.path):
+            logger.info("Using existing RoadSegmentsShapefile")
+            return str(segments_shp_obj.uuid)
 
     logger.info("Creating new RoadSegmentsShapefile")
 
@@ -67,7 +68,6 @@ def get_forecast_csv_path(segments_shp_uuid, records_csv_obj_id, roads_srid):
 
 @shared_task
 def calculate_black_spots(history_length=datetime.timedelta(days=5 * 365 + 1), roads_srid=3395):
-    print "calculating"
     """Integrates all black spot tasks into a pipeline
     Args:
         history_length (timedelta): Length of time to use for querying for historic records.
