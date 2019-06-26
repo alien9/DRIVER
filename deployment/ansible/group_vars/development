@@ -50,6 +50,8 @@ editor_js_html5mode: "{{ js_html5mode }}"
 editor_js_html5mode_prefix: "{{ js_html5mode_prefix }}"
 
 web_js_nominatim_key: ""
+web_js_nominatim_url: "http://localhost:7000/geocode" #'https://pickpoint.io/api/v1/';
+
 web_js_mapillary: "false"
 web_js_mapillary_client_id: ""
 web_js_mapillary_range: 10

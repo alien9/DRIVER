@@ -17,7 +17,7 @@
         return module;
 
         function forward(text, bboxArray, mapper, filter) {
-            var params = {
+            var p = {
                 key: WebConfig.nominatim.key,
                 q: text,
                 countrycodes: WebConfig.localization.countryCode,
@@ -27,11 +27,11 @@
 
             // bboxArray can sometimes be null, which was causing a null ref error
             if (bboxArray) {
-                params.viewbox = bboxArray.join(',');
-                params.bounded = 1;
+                p.viewbox = bboxArray.join(',');
+                p.bounded = 1;
             }
             return $http.get(PICKPOINT_NOMINATIM_URL + 'forward', {
-                params: params,
+                params: p,
                 headers: {
                     'Authorization': 'Token '+token,
                     'X-CSRFToken': $cookies.get('csrftoken'),

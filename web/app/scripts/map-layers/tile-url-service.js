@@ -5,6 +5,7 @@
      */
 
     function TileUrlService(WebConfig) {
+        console.log('inciio tielwebserveice');
         var allRecordsUrl = (WebConfig.windshaft.hostname +
             '/tiles/table/grout_record/id/ALL/{z}/{x}/{y}.png');
         var secondaryRecordsUrl = allRecordsUrl + '?secondary=true';

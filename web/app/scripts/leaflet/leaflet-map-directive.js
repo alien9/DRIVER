@@ -57,7 +57,7 @@
             if (!L.Icon.Default.imagePath) {
                 L.Icon.Default.imagePath = 'styles/images';
             }
-            var c=controller;
+            //var c=controller;
             controller.setMap(map);
         }
     }

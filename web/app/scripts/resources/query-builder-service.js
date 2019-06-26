@@ -9,7 +9,7 @@
 
     /* ngInject */
     function QueryBuilder($q, FilterState, RecordState, RecordSchemaState, BoundaryState,
-                          GeographyState, Records, WebConfig) {
+                          GeographyState, Records, PublicRecords, WebConfig) {
         var FILTER_DEFAULTS = {
             doAttrFilters: true,
             doBoundaryFilter: true,
@@ -47,9 +47,18 @@
             filterConfig = _.extend({}, FILTER_DEFAULTS, filterConfig);
             // Default to include only details in response
             detailsOnly = detailsOnly !== false;
-
+            var s = Records;
+            if(extraParams.service){
+                switch(extraParams.service){
+                    case 'PublicRecords':
+                        s=PublicRecords;
+                        break;
+                        default:
+                        s=Records;
+                }
+            }
             assembleParams(offset, filterConfig, detailsOnly).then(function(params) {
-                Records.get(_.extend(params, extraParams)).$promise.then(function(records) {
+                s.get(_.extend(params, extraParams)).$promise.then(function(records) {
                     deferred.resolve(records);
                 });
             });
@@ -140,9 +149,13 @@
             /* jshint camelcase: false */
             if (filterConfig.doAttrFilters) {
                 var dateFilter = FilterState.getDateFilter();
-                paramObj.occurred_max = dateFilter.maxDate;
-                paramObj.occurred_min = dateFilter.minDate;
-
+                if(!filterConfig.timeless){
+                    paramObj.occurred_max = dateFilter.maxDate;
+                    paramObj.occurred_min = dateFilter.minDate;
+                }else{
+                    paramObj.occurred_max = '2119-06-22T02:59:59.999Z';
+                    paramObj.occurred_min = '2000-06-22T02:59:59.999Z';
+                }
                 if (WebConfig.filters.createdDate.visible) {
                     var createdFilter = FilterState.getCreatedFilter();
                     paramObj.created_max = createdFilter.maxDate;

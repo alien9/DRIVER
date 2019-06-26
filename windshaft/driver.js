@@ -270,7 +270,7 @@ function setRequestParameters(request, callback, redisClient) {
                         return field; // do not cast geom field
                     } else {
                         return field + '::varchar';
-                    }
+                    }x
                 }).join(', ');
 
                 params.sql = '(' + castSelect + theRest + ') as black_spots_blackspot' ;

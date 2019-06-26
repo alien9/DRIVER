@@ -73,7 +73,7 @@ from data.localization.date_utils import (
 )
 
 import filters
-from models import RecordAuditLogEntry, RecordDuplicate, RecordCostConfig, DriverPublicRecord
+from models import RecordAuditLogEntry, RecordDuplicate, RecordCostConfig, DriverPublicRecord, PublicRecordAuditLogEntry
 from serializers import (DriverRecordSerializer, DriverRequestRecordSerializer, DriverPublicRecordSerializer,
                          DetailsReadOnlyRecordSerializer,
                          DetailsReadOnlyRecordSchemaSerializer, RecordAuditLogEntrySerializer,
@@ -87,6 +87,7 @@ from constance import config as cc
 from whoosh.qparser import QueryParser,FuzzyTermPlugin
 from whoosh.index import open_dir
 from geocoder.models import *
+from geocoder.tasks import index as geo_index
 from urlparse import urlparse, parse_qs
 
 logger = logging.getLogger(__name__)
@@ -102,10 +103,10 @@ def search_location(request):
     if not user.is_authenticated():
         return HttpResponseForbidden()
     if not os.path.isdir("indexdir"):
-        geocoder.tasks.index()
+        geo_index()
     ix = open_dir("indexdir")
     if ix is None:
-        geocoder.tasks.index()
+        geo_index()
     searcher = ix.searcher()
     parser = QueryParser("nome", schema=ix.schema)
     parser.add_plugin(FuzzyTermPlugin())
@@ -1306,6 +1307,51 @@ class DriverPublicRecordViewSet(DriverRecordViewSet, mixins.GenerateViewsetQuery
         else:
             response = super(DriverRecordViewSet, self).list(self, request, *args, **kwargs)
         return response
+
+
+    # Change auditing
+    def add_to_audit_log(self, request, instance, action):
+        """Creates a new audit log entry; instance must have an ID"""
+        if not instance.pk:
+            raise ValueError('Cannot create audit log entries for unsaved model objects')
+        if action not in PublicRecordAuditLogEntry.ActionTypes.as_list():
+            raise ValueError("{} not one of 'create', 'update', or 'delete'".format(action))
+        log = None
+        signature = None
+        if action == PublicRecordAuditLogEntry.ActionTypes.CREATE:
+            log = serializers.serialize(
+                'json',
+                [
+                    DriverPublicRecord.objects.get(pk=instance.pk),
+                    Record.objects.get(pk=instance.record_ptr_id)
+                ]
+            )
+            signature = hashlib.md5(log).hexdigest()
+        PublicRecordAuditLogEntry.objects.create(
+            user=request.user,
+            username=request.user.username,
+            record=instance,
+            record_uuid=str(instance.pk),
+            action=action,
+            log=log,
+            signature=signature
+        )
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+        instance = serializer.save()
+        self.add_to_audit_log(self.request, instance, PublicRecordAuditLogEntry.ActionTypes.CREATE)
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        instance = serializer.save()
+        self.add_to_audit_log(self.request, instance, PublicRecordAuditLogEntry.ActionTypes.UPDATE)
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        self.add_to_audit_log(self.request, instance, PublicRecordAuditLogEntry.ActionTypes.DELETE)
+        instance.delete()
+
 
 class DriverRecordAuditLogViewSet(viewsets.ModelViewSet):
     """Viewset for accessing audit logs; will output CSVs if Accept text/csv is specified"""

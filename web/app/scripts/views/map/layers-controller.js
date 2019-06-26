@@ -699,7 +699,7 @@
 
                 new L.popup(popupOptions)
                     .setLatLng(e.latlng)
-                    .setContent(ctl.buildRecordPopup(e.data, popupParams, e.latlng))
+                    .setContent(builder(e.data, popupParams, e.latlng))
                     .openOn(ctl.map);
 
                 $compile($('#record-popup'))($scope);
@@ -995,7 +995,7 @@
                 /* jshint camelcase: false */
                 params.record_type = ctl.secondaryType.uuid;
                 /* jshint camelcase: true */
-                secondary = QueryBuilder.djangoQuery(0, params, {doJsonFilters: false}, false).then(
+                secondary = QueryBuilder.djangoQuery(0, params, {doJsonFilters: false, timeless: true}, false).then(
                     function(records) { ctl.secondaryTilekey = records.tilekey; }
                 );
             }
@@ -1004,7 +1004,8 @@
                 /* jshint camelcase: false */
                 p.record_type = ctl.publicType.uuid;
                 /* jshint camelcase: true */
-                publicLayer = QueryBuilder.djangoQuery(0, p, {doJsonFilters: false, doAttrFilters:false}, false).then(
+                p.service = 'PublicRecords';
+                publicLayer = QueryBuilder.djangoQuery(0, p, {doJsonFilters: false, doAttrFilters:false, timeless: true}, false).then(
                     function(records) { ctl.publicTilekey = records.tilekey; }
                 );
             }

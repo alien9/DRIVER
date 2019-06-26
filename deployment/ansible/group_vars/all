@@ -48,11 +48,23 @@ redis_version: 2:2.8.4-2ubuntu0.2
 letsencrypt_post_renew_cmd: "service nginx reload"
 application_name: "DRIVER"
 hidden_fields: ["acidente_id","Tipo de Acidente","Veículo"]
+
+
+## DEDUPLICATION SETTINGS
+dedupe_time_range_hours: "12"
+dedupe_distance_degrees: "0.0008"
+
+## WEB SETTINGS
 web_js_nominatim_key: "NmfGZYebsExMYfFWP4Tf"
 web_js_nominatim_url: "http://localhost:3001/geocode" #'https://pickpoint.io/api/v1/';
 
+js_html5mode: "false"
+js_html5mode_prefix: "!"
 web_js_html5mode: "{{ js_html5mode }}"
 web_js_html5mode_prefix: "{{ js_html5mode_prefix }}"
+editor_js_html5mode: "{{ js_html5mode }}"
+editor_js_html5mode_prefix: "{{ js_html5mode_prefix }}"
+
 web_js_record_type_visible: "false"
 web_js_record_type_primary_label: "Incidente"
 web_js_record_type_secondary_label: "Fiscalização Existente"
@@ -66,11 +78,23 @@ web_js_weather_filter_visible: "false"
 web_js_created_by_filter_visible: "false"
 web_js_created_date_filter_visible: "false"
 web_js_outside_boundary_quality_check_visible: "false"
+web_js_map_address_search_visible: "true"
+web_js_duplicate_records_link_visible: "true"
+web_js_nominatim_key: ""
+web_js_mapillary: "false"
+web_js_mapillary_client_id: ""
+web_js_mapillary_range: 10
 
-editor_js_html5mode: "{{ js_html5mode }}"
-editor_js_html5mode_prefix: "{{ js_html5mode_prefix }}"
 server_name: "_"
 geoserver: 'localhost'
 
 languages:
     - { id: 'pt-br', label: 'português do Brasil', rtl: false }
+
+aws_access_key_id: AKIAIPHJGEKJBPGMKJVQ
+aws_secret_access_key: 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
+aws_region_name: us-east-1
+aws_output_format: text
+
+google_analytics_id: "GTM-5B5G65"
+

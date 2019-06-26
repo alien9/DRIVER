@@ -23,7 +23,7 @@
   when: aws_access_key_id is defined
 
 - name: Authenticate to ECR
-  shell: $(aws ecr get-login --region us-east-1)
+  shell: $(aws ecr get-login --region us-east-1 --no-include-email)
   when: aws_access_key_id is defined
 
 - name: Pull editor Docker image

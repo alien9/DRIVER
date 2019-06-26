@@ -7,7 +7,7 @@ import sys
 
 
 @shared_task(track_started=True)
-def index(root):
+def index():
     '''
     Schema definition: title(name of file), path(as ID), content(indexed
     but not stored),textdata (stored text content)
