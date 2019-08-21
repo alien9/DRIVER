@@ -91,10 +91,4 @@ geoserver: 'localhost'
 languages:
     - { id: 'pt-br', label: 'português do Brasil', rtl: false }
 
-aws_access_key_id: AKIAIPHJGEKJBPGMKJVQ
-aws_secret_access_key: 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
-aws_region_name: us-east-1
-aws_output_format: text
-
-google_analytics_id: "GTM-5B5G65"
 
