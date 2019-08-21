@@ -117,7 +117,8 @@
         "LIMIT_RECORDS_EXCEEDED": "Você excedeu o número permitido de registros. Deseja apagar"
     },
     "LOGIN": {
-        "LOG_IN_TO_DRIVER": "Entrar para MOTORISTA",
+        "LOG_IN_TO": "Acessar",
+        "LOG_IN_TO_DRIVER": "Acessar VIDA SEGURA",
         "LOG_IN_WITH": "Entrar com",
         "EMAIL": "Email",
         "PASSWORD": "Senha",

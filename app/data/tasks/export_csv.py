@@ -337,6 +337,8 @@ class RecordModelWriter(BaseRecordWriter):
                 output_data[column] = _utf8(csv_val)
             else:
                 output_data[column] = ''
+        output_data['lat'] = record.geom.y
+        output_data['lon'] = record.geom.x
         writer = csv.DictWriter(csv_file, fieldnames=self.csv_columns)
         writer.writerow(output_data)
 

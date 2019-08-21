@@ -9,6 +9,9 @@
   apt_repository:
     repo: "ppa:certbot/certbot"
     state: present
+    validate_certs: false
+  environment:
+    http_proxy: http://172.20.1.1:8888/
 
 - name: Install CertBot
   apt:
@@ -34,11 +37,13 @@
   get_url:
     url: "{{ letsencrypt_options_ssl_nginx_url }}"
     dest: "{{ letsencrypt_options_ssl_nginx_path }}"
+    validate_certs: false
 
 - name: Download CertBot Diffie-Hellman Params
   get_url:
     url: "{{ letsencrypt_dhparams_url }}"
     dest: "{{ letsencrypt_dhparams_path }}"
+    validate_certs: false
 
 - name: Start nginx
   service:

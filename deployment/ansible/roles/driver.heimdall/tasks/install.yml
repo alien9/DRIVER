@@ -2,6 +2,7 @@
 - name: Download Heimdall
   get_url: dest=/tmp/heimdall.tar.gz
            url="https://github.com/hectcastro/heimdall/releases/download/{{ heimdall_version }}/linux_amd64_heimdall.tar.gz"
+           validate_certs=false
 
 - name: Expand Heimdall
   unarchive: src="/tmp/heimdall.tar.gz" dest=/tmp/ copy=no creates=/tmp/heimdall

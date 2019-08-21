@@ -3,6 +3,7 @@
   get_url: >
     url=https://mmonit.com/monit/dist/binary/{{ monit_version }}/monit-{{ monit_version }}-linux-x64.tar.gz
     dest=/usr/local/src/monit-{{ monit_version }}-linux-x64.tar.gz
+    validate_certs=false
 
 - name: Extract monit
   unarchive: src=/usr/local/src/monit-{{ monit_version }}-linux-x64.tar.gz

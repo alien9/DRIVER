@@ -480,11 +480,12 @@ if len(GOOGLE_OAUTH_CLIENT_ID) > 0:
 READ_ONLY_FIELDS_REGEX = r'Details$'
 
 
-
-EMAIL_HOST = '10.10.67.34'
+EMAIL_HOST_PASSWORD='CET@2019'
+EMAIL_HOST_USER='vidasegura'
+EMAIL_HOST = '172.20.1.1'
 EMAIL_PORT = 25
 EMAIL_USE_TLS = False
-DEFAULT_FROM_EMAIL = 'webmaster@vidasegura.prefeitura.sp.gov.br'
+DEFAULT_FROM_EMAIL = 'vidasegura@cetsp.com.br'
 
 START_PAGE = os.environ.get('DRIVER_START_PAGE', '/')
 

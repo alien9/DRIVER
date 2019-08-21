@@ -11,7 +11,7 @@
         var userIdCookieString = 'AuthService.userId';
         var tokenCookieString = 'AuthService.token';
         var isAdminCookieString = 'AuthService.isAdmin';
-        var emailCookieString = 'AuthService.email';
+        //var emailCookieString = 'AuthService.email';
         var cookieTimeout = null;
         var cookieTimeoutMillis = 24 * 60 * 60 * 1000;      // 24 hours
 
@@ -36,9 +36,9 @@
                 });
             });
             return dfd.promise;
-        }
+        };
 
-        module.create = function(userdata, needsAdmin){
+        module.create = function(userdata){//}, needsAdmin){
             var dfd = $q.defer();
             $http.post(ASEConfig.api.hostname + '/api/create-user/', userdata)
             //$http({url: ASEConfig.api.hostname + '/api/create-user/', method: 'POST', data: userdata})
@@ -58,15 +58,14 @@
                 dfd.resolve(result);
             });
             return dfd.promise;
-        }
+        };
 
         module.reset = function(userdata){
             var dfd = $q.defer();
-            var body = new URLSearchParams();
+            var body = new window.URLSearchParams();
             for(var k in userdata){
                 body.set(k, userdata[k]);
             }
-            console.debug(userdata);
 //            $http.post(ASEConfig.api.hostname + '/password_reset/', userdata, {headers: {'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'} })
             $http({
                 method: 'POST',
@@ -90,13 +89,13 @@
             });
             return dfd.promise;
 
-        }
+        };
 
         module.getCsrf = function() {
-            $http.get(ASEConfig.api.hostname + '/password_reset/').success(function(data,status){
+            $http.get(ASEConfig.api.hostname + '/password_reset/').success(function(data){
                 $cookies.put('csrftoken', data.match(/csrfmiddlewaretoken' value='(.*?)'/).pop());
             });
-        }
+        };
 
 
         module.authenticate = function(auth, needsAdmin, d) {

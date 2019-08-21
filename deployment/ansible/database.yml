@@ -15,10 +15,13 @@
 
   pre_tasks:
     - name: Add Docker APT key via curl
-      shell: "curl -sSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
+      shell: "export HTTPS_PROXY=172.20.1.1:8888; curl -sSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
 
     - name: Update APT cache
       apt: update_cache=yes
 
   roles:
     - { role: "driver.database" }
+  environment:
+    http_proxy: http://172.20.1.1:8888
+    https_proxy: https://172.20.1.1:8888

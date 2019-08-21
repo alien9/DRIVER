@@ -33,6 +33,8 @@
   command: >
     /usr/bin/docker run
       --rm
+      --env HTTP_PROXY="http://172.20.1.1:8888/"
+      --env HTTPS_PROXY="http://172.20.1.1:8888/"
       --name driver-editor
       --volume {{ editor_scripts_dir }}/config.js:{{ editor_scripts_dir }}/config.js
       --volume {{ editor_build_dir }}:{{ editor_build_dir }}
@@ -54,6 +56,8 @@
   command: >
     /usr/bin/docker run
       --rm
+      --env HTTP_PROXY="http://172.20.1.1:8888/"
+      --env HTTPS_PROXY="http://172.20.1.1:8888/"
       --name driver-web
       --volumes-from driver-editor
       --volume {{ editor_scripts_dir }}/config.js:{{ editor_scripts_dir }}/config.js

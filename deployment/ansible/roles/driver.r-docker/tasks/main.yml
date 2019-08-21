@@ -10,3 +10,5 @@
 - name: Pull application Docker image
   command: /usr/bin/docker pull {{ docker_repository }}driver-analysis:{{ docker_image_tag }}
   when: staging or production
+
+

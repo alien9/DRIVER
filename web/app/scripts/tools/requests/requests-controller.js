@@ -46,7 +46,7 @@
             ctl.pending = true;
 
             /* jshint camelcase: false */
-            var params = _.extend({ tilekey: true, record_type: ctl.recordType.uuid },
+            var params = _.extend({ tilekey: true, record_type: ctl.recordType.uuid, service:'PublicRecords' },
                                   ctl.recordQueryParams);
             /* jshint camelcase: true */
             // Get a tilekey then trigger an export

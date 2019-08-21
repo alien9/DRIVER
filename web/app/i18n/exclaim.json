@@ -117,6 +117,7 @@
         "LIMIT_RECORDS_EXCEEDED": "!Registers maximum exceeded. Would you like to erase"
     },
     "LOGIN": {
+        "LOG_IN_TO": "!Log in to",
         "LOG_IN_TO_DRIVER": "!Log in to DRIVER",
         "LOG_IN_WITH": "!Log in with",
         "EMAIL": "Email",

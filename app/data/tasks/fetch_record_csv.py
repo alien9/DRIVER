@@ -54,7 +54,7 @@ def to_utf8(s):
 
 def generate_row_dicts(records_qs, record_detail_fields, details_key):
     transforms = FIELD_TRANSFORMS()
-
+    logger.info(RECORD_FIELDS)
     for record in records_qs.iterator():
         row = dict()
         for field in RECORD_FIELDS:

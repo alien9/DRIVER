@@ -1,7 +1,6 @@
 ---
 
 # Installs packages/dependencies for web servers
-
 - hosts: all
 
   pre_tasks:
@@ -15,7 +14,7 @@
 
   pre_tasks:
     - name: Add Docker APT key via curl
-      shell: "curl -sSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
+      shell: "export HTTPS_PROXY=172.20.1.1:8888; curl -sSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
 
     - name: Update APT cache
       apt: update_cache=yes
@@ -28,6 +27,10 @@
     - { role: "driver.windshaft" }
     - { role: "driver.app" }
     - { role: "driver.nginx" }
+  environment:
+    http_proxy: http://172.20.1.1:8888
+    https_proxy: https://172.20.1.1:8888
+
 
 - hosts: database-servers
 
